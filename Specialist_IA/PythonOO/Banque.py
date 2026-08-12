@@ -36,9 +36,11 @@ class Courant:
         else:
             raise TypeError("On peut additionner seulement un Courant ou un nombre.")
 
+        
+        def __str__(self):
+            return f"{self.prenom} {self.nom} {solde_self} + {solde_other}"
+        
         return float(solde_self + solde_other)
-    def __str__(self):
-         return f"{self.prenom} {self.nom} {solde_self} + {solde_other}"
 
 # comptes = dict()
 

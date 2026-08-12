@@ -15,6 +15,8 @@ class Voiture:
 
 #mon_instance.accelerer(50)
     def accelerer(self, acceleration = 50):
+            if acceleration < 0:
+                 print( "pas d'acceleration négative")
             self.vitesse += acceleration
 
     def deccelerer(self, decceleration = 50):
