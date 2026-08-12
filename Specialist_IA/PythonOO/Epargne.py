@@ -21,20 +21,15 @@
 # Si nous ajoutions la « ligne_de_credit » dans « Compte », définir sur papier les modifications qu’il faudrait apporter à nos classes.
 from personne import Personne
 from compte_courant import CompteCourant
+from datetime import datetime
 
 class Epargne (CompteCourant):
-    def __init__(self, numero: str, titulaire: Personne,  DateDernierRetrait, solde = 0,):
-             self.numero = numero
-             self.titulaire = titulaire
-             self.solde = solde
-             self.DateDernierRetrait = DateDernierRetrait
-
-    def Depot(self,somme: float) -> None:
-            if somme <=0:
-                print("Somme doive pas etre negative")
-            else:
-                self.solde += somme
-    
+    def __init__(self, numero: str, titulaire: Personne,  DateDernierRetrait, solde = 0.0,):
+             # variables inherited from CompteCourant
+             super().__init__(numero, titulaire, solde, ligne_credit=0.0)
+             self.DateDernierRetrait = None
+    # def Depot(self,somme: float) -> None: is inherited
+ 
     def Retrait(self, somme: float) -> None:
             if somme <=0:
                 print("Somme doive pas etre negative")
@@ -42,6 +37,7 @@ class Epargne (CompteCourant):
                 print("Somme doive pas depacais 100")
             else:
                 self.solde -= somme
+                self.DateDernierRetrait = datetime.now()
             return self.solde
 
 
@@ -49,5 +45,27 @@ class Epargne (CompteCourant):
     
 if __name__ == "__main__":
 
+    john = Personne(1, "Doe", "John")
 
-    pass
+    epargne = Epargne("EP01", john, 1000)
+
+    epargne.afficher_compte()
+
+    epargne.Depot(200)
+  
+    epargne.Retrait(100)
+
+    epargne.afficher_compte()
+    print(f"Date dernier retrait : {epargne.DateDernierRetrait}")
+
+    epargne = Epargne("EP01", john, 1000)
+    
+
+
+    print("_" * 50)
+    epargne.Depot(200)
+    epargne.Retrait(150)
+    epargne.afficher_compte()
+    print("_" * 50)
+    epargne.Retrait(300)
+    epargne.afficher_compte()
