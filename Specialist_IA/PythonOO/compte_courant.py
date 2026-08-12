@@ -22,6 +22,16 @@ if __name__ == "__main__":
             print("Somme doive pas etre negative")
         else:
             self.solde += somme
+        # def accelerer(self, est_sur_eau, acceleration=50):
+        # if est_sur_eau:
+        #     Bateau.accelerer(self,self.acceleration)
+        #                 #Methode d'aceleration du bateau
+        # else: 
+        #     Voiture.accelerer(self,self.acceleration)
+        #     return super().accelerer(acceleration)
+        # def __str__(self):
+        #  return Voiture.__str__(self)
+    
 
     def Retrait(self, somme: float) -> None:
         if somme <=0:
