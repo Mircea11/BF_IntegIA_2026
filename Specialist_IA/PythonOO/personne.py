@@ -1,8 +1,15 @@
 class Personne:
-    def __init__(self, id, nom, prenom):
+    def __init__(self, id: int, nom: str, prenom: str):
         self.id = id
         self.nom = nom
         self.prenom = prenom
+
+    def nom_complet2(self):
+        return f"{self.prenom} {self.nom}"
+
+    @property
+    def nom_complet(self):
+        return f"{self.prenom} {self.nom}"
 
 if __name__ == "__main__":
             
@@ -76,3 +83,9 @@ if __name__ == "__main__":
     client2.afficher_personne()
 
     print(client2.id)
+    print('_'*50)
+    john_doe = Personne(1, "Doe", "John")
+    print(john_doe.prenom)
+    print(john_doe.nom_complet)
+    
+    print(john_doe.nom_complet2())

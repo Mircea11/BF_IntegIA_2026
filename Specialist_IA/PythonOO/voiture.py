@@ -1,6 +1,7 @@
 # UpperCamelCase : sans espace
 # et chaque mot commence par une majuscule
 #fishier une minuscule san charactere spciale
+from nombre_roue_exception import NombreRoueException
 
 class Voiture:
     # atttribut lié a la class 
@@ -12,6 +13,20 @@ class Voiture:
         self.nb_roue = nb_roue
         self.couleur = couleur
         self.vitesse = 20
+
+    @property
+    def nb_roue(self):
+         return self.__nb_roue
+
+
+    @nb_roue.setter
+    def nb_roue(self, nb_roue):
+        print(nb_roue, "ici")
+        if nb_roue < 0:
+            raise NombreRoueException(nb_roue)
+        else:
+             self.__nb_roue = nb_roue
+
 
 #mon_instance.accelerer(50)
     def accelerer(self, acceleration = 50):
@@ -27,10 +42,17 @@ class Voiture:
 
     def __str__(self):
      return f"voiture {self.id} {self.couleur} {self.nb_roue} {self.vitesse}"
-#resultat = voiture - other
+
+    #resultat = voiture - other
     def __sub__(self, other:int):
-        self.nb_roue -= other
+        print(other, "depui sub")
+        try:
+            self.nb_roue -= other
+        except NombreRoueException as exception:
+             raise exception
+        #finally:
         return self.nb_roue
+
     def __isup__(self, other):
          pass
          
@@ -61,9 +83,11 @@ if __name__ == "__main__":
     print("_"*50)
     print(voiture_rouge)
     print(voiture_blanche)
-    print(voiture_blanche-2)
-    #voiture_bleue.nb_roue
-
+    try:
+        print(voiture_blanche-2)
+        #voiture_bleue.nb_roue
+    except NombreRoueException as exception:
+         print(exception)
     print(f"depuis main : {__name__}")
     
 
