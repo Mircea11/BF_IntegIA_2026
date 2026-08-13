@@ -19,17 +19,20 @@
 # Créer une classe « Compte » avec tous les éléments communs à « Courant » et « Épargne »
 
 # Si nous ajoutions la « ligne_de_credit » dans « Compte », définir sur papier les modifications qu’il faudrait apporter à nos classes.
+
 from personne import Personne
 from compte import Compte
 from compte_courant import Courant
 from solde_insuffisant_exception import SoldeInsuffisantException
-#from datetime import datetime
+from datetime import datetime
 
 class Epargne (Compte):
-    def __init__(self, numero: str, titulaire: Personne, solde: float = 0.0,):
+    def __init__(self, numero: str, titulaire: Personne, date_dernier_retrait = None, solde: float = 0.0):
              # variables inherited from CompteCourant
-             super().__init__(numero, titulaire, solde )
-             #self.DateDernierRetrait = None
+            super().__init__(numero, titulaire, solde )
+            if date_dernier_retrait is None:
+                   date_dernier_retrait = date_dernier_retrait
+            self.date_dernier_retrait = datetime.datetime.now
     # def Depot(self,somme: float) -> None: is inherited
  
     def retrait(self, montant: float) -> None:

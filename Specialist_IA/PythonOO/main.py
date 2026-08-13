@@ -24,12 +24,14 @@ except SoldeInsuffisantException as exception:
     print(exception)
 
 
-epargne = Epargne("BE01", john_doe, 100)
+#epargne = Epargne("BE01", john_doe, 100)
 try: 
     epargne.retrait(50)
+    print(epargne.date_dernier_retrait)
 except ValueError as error:
     print(error)
 except SoldeInsuffisantException as exception:
     print(exception)
-    
-python -c "import sys; print(sys.executable); print(sys.version)"
+print(epargne)
+
+#python -c "import sys; print(sys.executable); print(sys.version)"
