@@ -22,6 +22,7 @@
 from personne import Personne
 from compte import Compte
 from compte_courant import Courant
+from solde_insuffisant_exception import SoldeInsuffisantException
 #from datetime import datetime
 
 class Epargne (Compte):
@@ -33,8 +34,10 @@ class Epargne (Compte):
  
     def retrait(self, montant: float) -> None:
             if self.solde < montant:
-                print("Solde insuffisant")
-            else:
+                raise SoldeInsuffisantException(self.solde)
+
+            #     print("Solde insuffisant")
+            # else:
                 super().retrait(montant)
 
     def __str__(self):

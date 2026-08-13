@@ -4,7 +4,17 @@ from compte import Compte
 class Courant(Compte):
     def __init__(self, numero: str, titulaire: Personne, ligne_de_credit: float, solde:float = 0):
         super().__init__(numero, titulaire, solde)
-        self.ligne_de_credit = ligne_de_credit
+        self.ligne_de_credit = 0
+        try:
+            self.ligne_de_credit = ligne_de_credit
+        except ValueError as error:
+            print(error)
+    #setter
+    @ligne_de_credit.setter
+    def ligne_de_credit(self, valeur):
+        if valeur < 0:
+            raise ValueError("La ligne de crdit ne peut pas etre negative")
+        
 
 
     def retrait(self, montant: float) -> None:
