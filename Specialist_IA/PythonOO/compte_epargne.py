@@ -27,12 +27,12 @@ from solde_insuffisant_exception import SoldeInsuffisantException
 from datetime import datetime
 
 class Epargne (Compte):
-    def __init__(self, numero: str, titulaire: Personne, date_dernier_retrait = None, solde: float = 0.0):
+    def __init__(self, numero: str, titulaire: Personne, solde: float = 0.0, date_dernier_retrait = None):
              # variables inherited from CompteCourant
             super().__init__(numero, titulaire, solde )
             if date_dernier_retrait is None:
                    date_dernier_retrait = date_dernier_retrait
-            self.date_dernier_retrait = datetime.datetime.now
+            self.date_dernier_retrait = datetime.now()
     # def Depot(self,somme: float) -> None: is inherited
  
     def retrait(self, montant: float) -> None:
@@ -46,6 +46,8 @@ class Epargne (Compte):
     def __str__(self):
           return f"Le compte épargne {self.numero} posédé par {self.titulaire.prenom} avec { self.solde} eur"
 
+    def CalcullInteret(self) -> float:
+          return self.solde*0.045
 
 
     
@@ -81,3 +83,8 @@ if __name__ == "__main__":
     epargne.retrait(300)
     #epargne.afficher_compte()
     print(epargne)
+    print("_" * 50)
+    print("_" * 50)
+    print(epargne.CalcullInteret())
+
+

@@ -22,16 +22,24 @@ class Courant(Compte):
     def ligne_de_credit(self, valeur):
         if valeur < 0:
             raise ValueError("La ligne de crdit ne peut pas etre negative")
+        self.__ligne_de_credit = valeur
         
 
 
     def retrait(self, montant: float) -> None:
         if montant < 0:
-            raise ValueError
-        pass
+            raise ValueError("Montant invalide pour un retrait")
+
         if self.solde - montant < - self.ligne_de_credit:
-             raise SoldeInsuffisantException(self.solde)
-        else: super().retrait(montant)
+            raise SoldeInsuffisantException(self.solde)
+        else:
+            super().retrait(montant)
+
+    def CalcullInteret(self) -> float:
+        if self.solde >= 0:
+            return self.solde * 0.03
+        else:
+            return self.solde * 0.0975
 
     def __str__(self):
         return f"Le compte courant {self.numero} posédé par {self.titulaire.prenom} avec {self.solde} EUR"
@@ -44,7 +52,7 @@ class Courant(Compte):
 
 if __name__ == "__main__":
     john_doe = Personne(1, "Doe", "John")
-    courant = Courant("BE01", john_doe, 100)
+    courant = Courant("BE01", john_doe, 100, 500)
     print("_"*50)
     print(f"Le compte corant {courant.numero} pocédé par { courant.titulaire.prenom} { courant.titulaire.nom} ")  
     # courant.Retrait (25)
@@ -53,7 +61,7 @@ if __name__ == "__main__":
 
     print("_"*50)
     john = Personne(1, "Doe", "John")
-
+ 
     courant = Courant("BE01", john, 100, 500)
     print("_" * 50)
     courant.retrait(300)
