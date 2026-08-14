@@ -39,7 +39,7 @@ class Courant(Compte):
         if self.solde >= 0:
             return self.solde * 0.03
         else:
-            return self.solde * 0.0975
+            return self.solde * 0.0975 
 
     def __str__(self):
         return f"Le compte courant {self.numero} posédé par {self.titulaire.prenom} avec {self.solde} EUR"

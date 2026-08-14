@@ -1,5 +1,5 @@
-from bateau import Bateau
-from voiture import Voiture
+from Specialist_IA.PythonOO.Car_class.bateau import Bateau
+from Specialist_IA.PythonOO.Car_class.voiture import Voiture
 
 class VoitureAmphibie(Voiture, Bateau):
     def __init__(self, nb_roue, couleur, tirant_eau):

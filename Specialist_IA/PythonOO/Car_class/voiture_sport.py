@@ -1,4 +1,4 @@
-from voiture import Voiture
+from Specialist_IA.PythonOO.Car_class.voiture import Voiture
 
 class VoitureSport(Voiture):
     def __init__(self, nb_roue, couleur='blanc', a_turbo = False):

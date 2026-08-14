@@ -1,4 +1,4 @@
-from voiture import Voiture
+from Specialist_IA.PythonOO.Car_class.voiture import Voiture
 
 #def test (param1, param2, param3:int = 0, param4:str = "blanc", param5 = True):
 #    print(param1, param2, param3, param4, param5)

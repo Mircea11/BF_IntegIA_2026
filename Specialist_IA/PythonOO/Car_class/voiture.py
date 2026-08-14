@@ -1,7 +1,7 @@
 # UpperCamelCase : sans espace
 # et chaque mot commence par une majuscule
 #fishier une minuscule san charactere spciale
-from nombre_roue_exception import NombreRoueException
+from Specialist_IA.PythonOO.Car_class.nombre_roue_exception import NombreRoueException
 
 class Voiture:
     # atttribut lié a la class 

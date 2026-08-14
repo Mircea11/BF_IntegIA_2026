@@ -47,7 +47,8 @@ class Epargne (Compte):
           return f"Le compte épargne {self.numero} posédé par {self.titulaire.prenom} avec { self.solde} eur"
 
     def CalcullInteret(self) -> float:
-          return self.solde*0.045
+        taux_interet = (4.5 / 100)
+        return self.solde*taux_interet
 
 
     

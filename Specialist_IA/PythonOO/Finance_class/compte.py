@@ -33,4 +33,7 @@ class Compte(ABC):
         else:
             return self.solde * 0.0975
 
+    def appliquer_interet(self):
+        self.solde += self.CalcullInteret
+
     #def CalcullInteret (taux_livret_eparne: float = 0.045, taux_compte_courant: float):
