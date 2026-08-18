@@ -1,0 +1,82 @@
+stgadmin/Desktop/BF_IntegIA_2026/Specialist_IA/PythonOO/main.py
+La ligne de crdit ne peut pas etre negative
+Le compte courant BE01 posédé par John avec 0 EUR
+Solde de 0 eur est insuffisant
+2026-08-14 10:04:17.256441
+Le compte épargne EP01 posédé par John avec 100 eur
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+__________________________________________________
+TEST 1 — Création d'un compte courant
+Le compte courant BE01 posédé par John avec 500 EUR
+Compte numéro : BE01
+Titulaire : John Doe
+Solde : 500
+Ligne de crédit : 100
+__________________________________________________
+TEST 2 — Dépôt sur compte courant
+
+Dépôt de 50 EUR sur BE01
+Dépôt accepté
+Le compte courant BE01 posédé par John avec 550 EUR
+
+Dépôt de -20 EUR sur BE01
+Erreur ValueError : Montant invalide pour un dépôt
+__________________________________________________
+TEST 3 — Retraits sur compte courant
+
+Retrait de 300 EUR sur BE01
+Retrait accepté
+Le compte courant BE01 posédé par John avec 250 EUR
+
+Retrait de 200 EUR sur BE01
+Retrait accepté
+Le compte courant BE01 posédé par John avec 50 EUR
+
+Retrait de 200 EUR sur BE01
+Erreur SoldeInsuffisantException : Solde de 50 eur est insuffisant
+
+Retrait de -10 EUR sur BE01
+Erreur ValueError : Montant invalide pour un retrait
+__________________________________________________
+TEST 4 — Intérêts compte courant
+Méthode CalculInteret introuvable. Vérifie le nom exact dans Courant et Compte.
+__________________________________________________
+TEST 5 — Création d'un compte épargne
+Le compte épargne EP01 posédé par John avec 1000 eur
+Date dernier retrait : 2026-08-14 10:04:17.258443
+__________________________________________________
+TEST 6 — Dépôt sur épargne
+
+Dépôt de 200 EUR sur EP01
+Dépôt accepté
+Le compte épargne EP01 posédé par John avec 1200 eur
+
+Dépôt de -50 EUR sur EP01
+Erreur ValueError : Montant invalide pour un dépôt
+__________________________________________________
+TEST 7 — Retraits sur épargne
+
+Retrait de 100 EUR sur EP01
+Retrait accepté
+Le compte épargne EP01 posédé par John avec 1200 eur
+Date dernier retrait : 2026-08-14 10:04:17.258443
+
+Retrait de 5000 EUR sur EP01
+Erreur SoldeInsuffisantException : Solde de 1200 eur est insuffisant
+
+Retrait de -10 EUR sur EP01
+Retrait accepté
+Le compte épargne EP01 posédé par John avec 1200 eur
+__________________________________________________
+TEST 8 — Intérêts épargne
+Méthode CalculInteret introuvable. Vérifie le nom exact dans Epargne et Compte.
+__________________________________________________
+TEST 9 — Opérateur +
+courant + 50 = 100
+courant2 + 50 = 50
+courant + courant2 = -150
+__________________________________________________
+FIN DES TESTS
