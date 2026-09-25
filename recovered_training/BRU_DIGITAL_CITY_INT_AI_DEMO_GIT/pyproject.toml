@@ -1,0 +1,19 @@
+[project]
+name = "intro-git"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Mircea Bordeianu~", email = "m.bordeianu@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "sqlalchemy>=2.0.52",
+]
+
+[project.scripts]
+intro-git = "intro_git:main"
+
+[build-system]
+requires = ["uv_build>=0.12.9,<0.13.0"]
+build-backend = "uv_build"
