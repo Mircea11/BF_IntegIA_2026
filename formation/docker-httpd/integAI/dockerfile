@@ -1,0 +1,13 @@
+#FROM postgres:https://github.com/docker-library/postgres/blob/e00e1bd34ec5c8a8e7ad89b273b3d42efaf6d5bc/18/alpine3.24/Dockerfile
+FROM postgres:18-alpine3.24
+
+COPY ./init.sql /docker-entrypoint-initdb.d/init.sql
+
+#le  route ./ relative a aprtir de ou est maintenant et 
+#/ s'est une ... relative
+
+
+EXPOSE 5432
+
+#bm@bm-HP-Z4-G4-Workstation:~/formation/formation/docker-httpd$ docker build -t mypg:1.0 -t mypg/latest .
+#si jamais une faile avec autre name que docker

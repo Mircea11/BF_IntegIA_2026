@@ -1,0 +1,25 @@
+# Python environments
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Large model/archive files
+*.gguf
+*.safetensors
+*.bin
+models.tar
+*.tar
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Credentials
+.env
+.env.*
+*.zip

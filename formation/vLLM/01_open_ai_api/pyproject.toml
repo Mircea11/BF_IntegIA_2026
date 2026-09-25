@@ -1,0 +1,26 @@
+[project]
+name = "01-open-ai-api"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Mircea Bordeianu~", email = "m.bordeianu@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "gguf>=0.19.0",
+    "ipykernel>=7.3.0",
+    "matplotlib>=3.11.2",
+    "openai>=3.19.2",
+    "openapi>=2.0.0",
+    "pandas>=3.0.6",
+    "polars>=1.44.2",
+    "requests>=2.34.2",
+]
+
+[project.scripts]
+01-open-ai-api = "01_open_ai_api:main"
+
+[build-system]
+requires = ["uv_build>=0.12.9,<0.13.0"]
+build-backend = "uv_build"

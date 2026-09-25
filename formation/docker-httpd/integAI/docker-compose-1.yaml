@@ -1,0 +1,19 @@
+services:
+  ma_belle_db:
+    image: mypg:1.0
+    container_name: my_pg
+    environment:
+      POSTGRES_PASSWORD: $PASSWORD
+    #image: postgres:18
+    ports:
+      - "55432:5432"
+    volumes:
+      - pg_data_volume:/var/lib/postgresql/18/docker
+      - ./data:/data #bind mount normalimant cree automatic par dB
+volumes:
+  pg_data_volume:
+
+      
+
+
+
