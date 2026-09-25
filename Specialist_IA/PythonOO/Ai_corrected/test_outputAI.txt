@@ -1,0 +1,49 @@
+__________________________________________________
+Création Personne
+John Doe
+__________________________________________________
+Création compte courant
+Compte courant BE01 | Titulaire : John Doe | Solde : 500.0 EUR | Ligne de crédit : 100.0 EUR
+__________________________________________________
+Création compte épargne
+Compte épargne EP01 | Titulaire : John Doe | Solde : 1000.0 EUR | Dernier retrait : None
+__________________________________________________
+Dépôt valide sur courant: +50
+Compte courant BE01 | Titulaire : John Doe | Solde : 550.0 EUR | Ligne de crédit : 100.0 EUR
+__________________________________________________
+Dépôt invalide sur courant: -20
+ValueError : Montant invalide pour un dépôt
+__________________________________________________
+Retrait valide courant: -600, autorisé grâce à ligne de crédit
+Compte courant BE01 | Titulaire : John Doe | Solde : -50.0 EUR | Ligne de crédit : 100.0 EUR
+__________________________________________________
+Retrait refusé courant: dépasse ligne de crédit
+SoldeInsuffisantException : Solde insuffisant. Solde actuel : -50.0 EUR
+__________________________________________________
+Retrait valide épargne: -100
+Compte épargne EP01 | Titulaire : John Doe | Solde : 900.0 EUR | Dernier retrait : 2026-08-14 08:04:28.602418
+__________________________________________________
+Retrait refusé épargne: solde insuffisant
+SoldeInsuffisantException : Solde insuffisant. Solde actuel : 900.0 EUR
+__________________________________________________
+Intérêt courant positif/négatif
+(-4.875, -19.5)
+__________________________________________________
+Intérêt épargne
+40.5
+__________________________________________________
+Appliquer intérêt épargne
+Compte épargne EP01 | Titulaire : John Doe | Solde : 940.5 EUR | Dernier retrait : 2026-08-14 08:04:28.602418
+__________________________________________________
+Opérateur + avec nombre
+50.0
+__________________________________________________
+Opérateur + entre comptes
+0.0
+Ce n'est pas un compte valide.
+__________________________________________________
+Avoirs de John dans la banque
+940.5
+__________________________________________________
+Avoirs de Anna dans la banque
+300.0

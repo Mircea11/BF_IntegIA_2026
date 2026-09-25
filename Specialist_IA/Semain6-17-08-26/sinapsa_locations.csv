@@ -1,0 +1,47 @@
+country,country_code,area_type,area,representative_city,latitude,longitude,timezone,geocoded_name,geocoding_status
+Belgium,BE,Region,Brussels-Capital Region,Brussels,50.85045,4.34878,Europe/Brussels,Brussels,OK
+Belgium,BE,Province,Antwerp Province,Antwerp,51.22047,4.40026,Europe/Brussels,Antwerp,OK
+Belgium,BE,Province,Limburg Province,Hasselt,50.93106,5.33781,Europe/Brussels,Hasselt,OK
+Belgium,BE,Province,East Flanders Province,Ghent,51.05,3.71667,Europe/Brussels,Ghent,OK
+Belgium,BE,Province,West Flanders Province,Bruges,51.20892,3.22424,Europe/Brussels,Bruges,OK
+Belgium,BE,Province,Flemish Brabant Province,Leuven,50.87959,4.70093,Europe/Brussels,Leuven,OK
+Belgium,BE,Province,Hainaut Province,Mons,50.45413,3.95229,Europe/Brussels,Mons,OK
+Belgium,BE,Province,Liège Province,Liège,50.63373,5.56749,Europe/Brussels,Liège,OK
+Belgium,BE,Province,Luxembourg Province,Arlon,49.68333,5.81667,Europe/Brussels,Arlon,OK
+Belgium,BE,Province,Namur Province,Namur,50.4669,4.86746,Europe/Brussels,Namur,OK
+Belgium,BE,Province,Walloon Brabant Province,Wavre,50.71717,4.60138,Europe/Brussels,Wavre,OK
+Moldova,MD,Municipality,Chișinău Municipality,Chișinău,47.00902,28.85938,Europe/Chisinau,Chișinău,OK
+Moldova,MD,Municipality,Bălți Municipality,Bălți,47.76291,27.92854,Europe/Chisinau,Bălţi,OK
+Moldova,MD,Autonomous territorial unit,Gagauzia,Comrat,46.29488,28.65713,Europe/Chisinau,Comrat,OK
+Moldova,MD,Raion,Anenii Noi Raion,Anenii Noi,46.87795,29.23503,Europe/Chisinau,Anenii Noi,OK
+Moldova,MD,Raion,Basarabeasca Raion,Basarabeasca,46.33352,28.96165,Europe/Chisinau,Basarabeasca,OK
+Moldova,MD,Raion,Briceni Raion,Briceni,48.36302,27.07847,Europe/Chisinau,Briceni,OK
+Moldova,MD,Raion,Cahul Raion,Cahul,45.90456,28.19516,Europe/Chisinau,Cahul,OK
+Moldova,MD,Raion,Călărași Raion,Călărași,47.25548,28.30953,Europe/Chisinau,Calarasi,OK
+Moldova,MD,Raion,Cantemir Raion,Cantemir,46.27749,28.20052,Europe/Chisinau,Cantemir,OK
+Moldova,MD,Raion,Căușeni Raion,Căușeni,46.63738,29.41087,Europe/Chisinau,Căușeni,OK
+Moldova,MD,Raion,Cimișlia Raion,Cimișlia,46.52629,28.7649,Europe/Chisinau,Cimislia,OK
+Moldova,MD,Raion,Criuleni Raion,Criuleni,47.2134,29.15847,Europe/Chisinau,Criuleni,OK
+Moldova,MD,Raion,Dondușeni Raion,Dondușeni,48.24268,27.6101,Europe/Chisinau,Donduseni,OK
+Moldova,MD,Raion,Drochia Raion,Drochia,48.03686,27.81242,Europe/Chisinau,Drochia,OK
+Moldova,MD,Raion,Dubăsari Raion,Cocieri,47.3017,29.11755,Europe/Chisinau,Cocieri,OK
+Moldova,MD,Raion,Edineț Raion,Edineț,48.17319,27.30075,Europe/Chisinau,Edineţ,OK
+Moldova,MD,Raion,Fălești Raion,Fălești,47.57667,27.71264,Europe/Chisinau,Fălești,OK
+Moldova,MD,Raion,Florești Raion,Florești,47.89168,28.29339,Europe/Chisinau,Floresti,OK
+Moldova,MD,Raion,Glodeni Raion,Glodeni,47.77467,27.51753,Europe/Chisinau,Glodeni,OK
+Moldova,MD,Raion,Hîncești Raion,Hîncești,46.83089,28.58999,Europe/Chisinau,Hincesti,OK
+Moldova,MD,Raion,Ialoveni Raion,Ialoveni,46.94357,28.78153,Europe/Chisinau,Ialoveni,OK
+Moldova,MD,Raion,Leova Raion,Leova,46.48195,28.25298,Europe/Chisinau,Leova,OK
+Moldova,MD,Raion,Nisporeni Raion,Nisporeni,47.08025,28.17098,Europe/Chisinau,Nisporeni,OK
+Moldova,MD,Raion,Ocnița Raion,Ocnița,48.38231,27.43864,Europe/Chisinau,Ocnita,OK
+Moldova,MD,Raion,Orhei Raion,Orhei,47.38503,28.82535,Europe/Chisinau,Orhei,OK
+Moldova,MD,Raion,Rezina Raion,Rezina,47.74857,28.96769,Europe/Chisinau,Rezina,OK
+Moldova,MD,Raion,Rîșcani Raion,Rîșcani,47.94829,27.56669,Europe/Chisinau,Riscani,OK
+Moldova,MD,Raion,Sîngerei Raion,Sîngerei,47.63694,28.1407,Europe/Chisinau,Singerei,OK
+Moldova,MD,Raion,Soroca Raion,Soroca,48.15659,28.28489,Europe/Chisinau,Soroca,OK
+Moldova,MD,Raion,Strășeni Raion,Strășeni,47.14216,28.60774,Europe/Chisinau,Straseni,OK
+Moldova,MD,Raion,Șoldănești Raion,Șoldănești,47.81618,28.79841,Europe/Chisinau,Soldanesti,OK
+Moldova,MD,Raion,Ștefan Vodă Raion,Ștefan Vodă,46.51294,29.66223,Europe/Chisinau,Stefan Voda,OK
+Moldova,MD,Raion,Taraclia Raion,Taraclia,45.90321,28.66628,Europe/Chisinau,Taraclia,OK
+Moldova,MD,Raion,Telenești Raion,Telenești,47.50179,28.36478,Europe/Chisinau,Telenesti,OK
+Moldova,MD,Raion,Ungheni Raion,Ungheni,47.21023,27.80013,Europe/Chisinau,Ungheni,OK

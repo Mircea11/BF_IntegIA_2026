@@ -1,0 +1,21 @@
+PS C:\Users\stgadmin> uv --version
+uv 0.12.1 (329541a50 2026-07-31 x86_64-pc-windows-msvc)
+PS C:\Users\stgadmin> uv venv --python 3.12
+Using CPython 3.12.13
+Creating virtual environment at: .venv
+Activate with: .venv\Scripts\activate
+PS C:\Users\stgadmin> cd C:\Users\stgadmin\Desktop\BF_IntegIA_2026
+PS C:\Users\stgadmin\Desktop\BF_IntegIA_2026> uv venv --python 3.12
+Using CPython 3.12.13
+Creating virtual environment at: .venv
+Activate with: .venv\Scripts\activate
+PS C:\Users\stgadmin\Desktop\BF_IntegIA_2026> uv init
+Initialized project `bf-integia-2026`
+PS C:\Users\stgadmin\Desktop\BF_IntegIA_2026> Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+PS C:\Users\stgadmin\Desktop\BF_IntegIA_2026> .venv\Scripts\activate
+(BF_IntegIA_2026) PS C:\Users\stgadmin\Desktop\BF_IntegIA_2026> uv add numpy
+Resolved 2 packages in 237ms
+      Built bf-integia-2026 @ file:///C:/Users/stgadmin/Desktop/BF_IntegIA_2026                                         Prepared 2 packages in 2.23s
+Installed 2 packages in 566ms
+ + bf-integia-2026==0.1.0 (from file:///C:/Users/stgadmin/Desktop/BF_IntegIA_2026)
+ + numpy==2.5.1

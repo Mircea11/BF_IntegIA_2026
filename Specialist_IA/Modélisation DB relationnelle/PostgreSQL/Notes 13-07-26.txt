@@ -1,0 +1,25 @@
+1.Definition Generqle 
+2. Hystoire
+3. Utilisqtion
+4. SGBD 
+5. Les propriete d1une BD
+6. Les fonctions d'un SGDB
+7. Donnée persistante vs. donnée transitoire
+8. Les métadonnées Le typage de colonnes, les idetifiantes  clé primare
+9. Trois couches dans un SGDB
+10 Modélisation d"une BD : Modélisation conceptuelle (analystes et arhitectes BD)/logique (schema relationnel/physique (administrateur système) (Un modéle de données pour chaqune couche)
+11. Modélisation conceptuelle Entite-Association (E-A) UML - diagramme de classes
+12. Modélisation logique Schema relationnel Modele oriente objets
+13. Modélisation physique DDLData Definition Laguage  DML Data Manipulatio Language  DRL Data Retrieval Language
+
+CREATE TABLE studentFirst (
+	student_id int GENERATED ALWAYS AS IDENTITY,
+	first_name varchar(50),
+	last_name varchar(50) DEFAULT 'Smith',
+	birth_date timestamp,
+	login varchar(50),
+	section_id int,
+	year_result int,
+	course_id varchar(6),
+	noteMoyenne 
+	);

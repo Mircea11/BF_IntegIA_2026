@@ -1,0 +1,35 @@
+from datetime import datetime
+from personne import Personne
+
+
+class Epargne:
+    def __init__(self, numero: str, titulaire: Personne, solde: float = 0.0):
+        self.numero = numero
+        self.titulaire = titulaire
+        self.__solde = solde
+        self.DateDernierRetrait = None
+
+    @property
+    def solde(self):
+        return self.__solde
+
+    def Depot(self, montant: float) -> None:
+        if montant <= 0:
+            print("Le montant du dépôt doit être positif.")
+        else:
+            self.__solde += montant
+
+    def Retrait(self, montant: float) -> None:
+        if montant <= 0:
+            print("Le montant du retrait doit être positif.")
+        elif montant > self.__solde:
+            print("Solde insuffisant.")
+        else:
+            self.__solde -= montant
+            self.DateDernierRetrait = datetime.now()
+
+    def afficher_compte(self):
+        print(f"Numéro : {self.numero}")
+        print(f"Titulaire : {self.titulaire.prenom} {self.titulaire.nom}")
+        print(f"Solde : {self.solde}")
+        print(f"Date dernier retrait : {self.DateDernierRetrait}")

@@ -1,0 +1,50 @@
+	https://www.geeksforgeeks.org/maths/descriptive-statistics/	Number System and Arithmetic								
+		Algebra								
+		Set Theory								
+		Probability								
+		Statistics								
+		Geometry								
+		Calculus								
+		Logarithms								
+		Mensuration								
+		Matrices								
+		Trigonometry								
+		Mathematics								
+	https://digital-strategy.ec.europa.eu/en/news	Press release								
+		17 June 2026								
+		2026 State of the Digital Decade report shows progress but urges closing structural gaps to reach 2030 goals								
+										
+		https://docs.python.org/fr/3/tutorial/datastructures.html								
+										
+	https://docs.python-guide.org/	The Hitchhiker’s Guide to Python!								
+	https://peps.python.org/pep-0008/	PEP 8 – Style Guide for Python Code								
+	https://peps.python.org/pep-0020/	PEP 20 – The Zen of Python								
+	https://pandas.pydata.org/	pandas	pandas is a fast, powerful, flexible and easy to use open source data analysis and manipulation tool,	built on top of the Python programming language.						
+	https://www.crummy.com/software/BeautifulSoup/bs4/doc/	Beautiful Soup Documentation¶								
+	https://pypi.org/	The Python Package Index (PyPI) is a repository of software for the Python programming language.								
+	https://docs.python.org/3.14/library/csv.html	csv — CSV File Reading and Writing								
+	https://git-scm.com/book/en/v2	Pro Git book, written by Scott Chacon and Ben Straub and published by Apress								
+	https://docs.github.com/en/get-started	Get started with GitHub documentation								
+										
+	https://media.datacamp.com/cms/the-2026-state-of-data--ai-literacy-report-44mb.pdf?mkt_tok=MzA3LU9BVC05NjgAAAGimP0aR_B-h9848xLexeIabeRgFMbtt7KPJIQWuyaZ5Lh-U5TUz5UAT7fAcePgSkOmdUIGmkmrTpXQfo3HOpORprwiuAceAEA_5clo1TtTe3o62esK	2026 | 4th EDITION The State of Data & AI Literacy Survey results from 500+ US and UK leaders								
+										
+	À regarder									
+										
+	Quelques vidéos TEDx :									
+										
+	de Cédric Villani : Comment l'Intelligence artificielle révolutionnera-t-elle la santé ?									
+	d’Anna Choury : Les leçons de l'intelligence artificielle									
+	de Laurence Devillers : Homme-Machine : émotion, illusion ; et l'éthique ?									
+	À lire									
+	Un rapport de l’Institut Montaigne : Investir l'IA sûre et digne de confiance									
+	Un rapport de l’Institut Montaigne : Algorithmes : contrôle des biais S.V.P									
+	Un article de Télécom Paris et de la Fondation Abeona : Algorithmes : biais, discrimination et équité									
+	Le rapport de Cédric Villani : Donner un sens à l’intelligence artificielle pour une stratégie nationale et européenne									
+	Learn Git through PRACTICEreal Gitreal terminal28 commandsall fully interactive									
+	https://gitbybit.com/									
+	Refactoring.Guru makes it easy for you to discover everything you need to know about refactoring,									
+	design patterns, SOLID principles, and other smart programming topics.									
+	https://refactoring.guru/									
+	List of Websites AI Integration Specialist file of Yanis									
+	https://spicy-action-fbb.notion.site/3a8c8162da7380c088b2cb1746bfbcc0?v=3a8c8162da7380a5b3ac000c2024825d									
+										
