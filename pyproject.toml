@@ -33,4 +33,5 @@ build-backend = "uv_build"
 members = [
     "Specialist_IA/Polars",
     "dataframes_polars",
+    "formation/vLLM/vllm_server",
 ]
