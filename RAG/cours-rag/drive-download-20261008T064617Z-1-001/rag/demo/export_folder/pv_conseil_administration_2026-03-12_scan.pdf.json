@@ -1,0 +1,883 @@
+{
+  "schema_name": "DoclingDocument",
+  "version": "1.10.0",
+  "name": "pv_conseil_administration_2026-03-12_scan",
+  "origin": {
+    "mimetype": "application/pdf",
+    "binary_hash": 7869687048703866676,
+    "filename": "pv_conseil_administration_2026-03-12_scan.pdf"
+  },
+  "furniture": {
+    "self_ref": "#/furniture",
+    "children": [],
+    "content_layer": "furniture",
+    "name": "_root_",
+    "label": "unspecified"
+  },
+  "body": {
+    "self_ref": "#/body",
+    "children": [
+      {
+        "$ref": "#/texts/0"
+      },
+      {
+        "$ref": "#/texts/1"
+      },
+      {
+        "$ref": "#/texts/2"
+      },
+      {
+        "$ref": "#/texts/3"
+      },
+      {
+        "$ref": "#/texts/4"
+      },
+      {
+        "$ref": "#/texts/5"
+      },
+      {
+        "$ref": "#/texts/6"
+      },
+      {
+        "$ref": "#/texts/7"
+      },
+      {
+        "$ref": "#/texts/8"
+      },
+      {
+        "$ref": "#/texts/9"
+      },
+      {
+        "$ref": "#/texts/10"
+      },
+      {
+        "$ref": "#/texts/11"
+      },
+      {
+        "$ref": "#/texts/12"
+      },
+      {
+        "$ref": "#/texts/13"
+      },
+      {
+        "$ref": "#/texts/14"
+      },
+      {
+        "$ref": "#/texts/15"
+      },
+      {
+        "$ref": "#/texts/16"
+      },
+      {
+        "$ref": "#/texts/17"
+      },
+      {
+        "$ref": "#/texts/18"
+      },
+      {
+        "$ref": "#/groups/0"
+      }
+    ],
+    "content_layer": "body",
+    "name": "_root_",
+    "label": "unspecified"
+  },
+  "groups": [
+    {
+      "self_ref": "#/groups/0",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [
+        {
+          "$ref": "#/texts/19"
+        },
+        {
+          "$ref": "#/pictures/0"
+        },
+        {
+          "$ref": "#/pictures/1"
+        },
+        {
+          "$ref": "#/pictures/2"
+        }
+      ],
+      "content_layer": "body",
+      "name": "group",
+      "label": "key_value_area"
+    }
+  ],
+  "texts": [
+    {
+      "self_ref": "#/texts/0",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 255.33333333333334,
+            "t": 762.8898,
+            "r": 324.6666666666667,
+            "b": 751.5564666666667,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            9
+          ]
+        }
+      ],
+      "orig": "VELTIS SA",
+      "text": "VELTIS SA",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/1",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 89.0,
+            "t": 733.8898,
+            "r": 491.6666666666667,
+            "b": 725.8898,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            55
+          ]
+        }
+      ],
+      "orig": "PROC\u00c8S-VERBAL DE LA R\u00c9UNION DU CONSEIL D'ADMINISTRATION",
+      "text": "PROC\u00c8S-VERBAL DE LA R\u00c9UNION DU CONSEIL D'ADMINISTRATION",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/2",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 234.66666666666666,
+            "t": 719.8898,
+            "r": 346.6666666666667,
+            "b": 709.8898,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            15
+          ]
+        }
+      ],
+      "orig": "DU 12 MARS 2026",
+      "text": "DU 12 MARS 2026",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/3",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 68.33333333333333,
+            "t": 689.8898,
+            "r": 514.0,
+            "b": 671.8898,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            135
+          ]
+        }
+      ],
+      "orig": "La s\u00e9ance est ouverte \u00e0 14 h 00 au si\u00e8ge social, Parc d'activit\u00e9s des Tilleuls, \u00e0 Valmont, sous la pr\u00e9sidence de Madame H\u00e9l\u00e8ne Garnier.",
+      "text": "La s\u00e9ance est ouverte \u00e0 14 h 00 au si\u00e8ge social, Parc d'activit\u00e9s des Tilleuls, \u00e0 Valmont, sous la pr\u00e9sidence de Madame H\u00e9l\u00e8ne Garnier."
+    },
+    {
+      "self_ref": "#/texts/4",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 69.33333333333333,
+            "t": 654.8898,
+            "r": 514.3333333333333,
+            "b": 616.5564666666667,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            158
+          ]
+        }
+      ],
+      "orig": "Pr\u00e9sents: H\u00e9l\u00e8ne Garnier (pr\u00e9sidente), Claire Dumont (administratrice d\u00e9l\u00e9gu\u00e9e), Hugo Lef\u00e8vre, Bernard Klein, Isabelle Moreau et Paul Nguyen, administrateurs.",
+      "text": "Pr\u00e9sents: H\u00e9l\u00e8ne Garnier (pr\u00e9sidente), Claire Dumont (administratrice d\u00e9l\u00e9gu\u00e9e), Hugo Lef\u00e8vre, Bernard Klein, Isabelle Moreau et Paul Nguyen, administrateurs."
+    },
+    {
+      "self_ref": "#/texts/5",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 70.66666666666667,
+            "t": 606.2231333333334,
+            "r": 516.0,
+            "b": 580.5564666666667,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            83
+          ]
+        }
+      ],
+      "orig": "Invit\u00e9 : Marc Delvaux, directeur financier, qui assure le secr\u00e9tariat de la s\u00e9ance.",
+      "text": "Invit\u00e9 : Marc Delvaux, directeur financier, qui assure le secr\u00e9tariat de la s\u00e9ance."
+    },
+    {
+      "self_ref": "#/texts/6",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 70.66666666666667,
+            "t": 571.5564666666667,
+            "r": 516.3333333333333,
+            "b": 545.8898,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            78
+          ]
+        }
+      ],
+      "orig": "Le conseil, r\u00e9unissant la totalit\u00e9 de ses membres, peut valablement d\u00e9lib\u00e9rer.",
+      "text": "Le conseil, r\u00e9unissant la totalit\u00e9 de ses membres, peut valablement d\u00e9lib\u00e9rer."
+    },
+    {
+      "self_ref": "#/texts/7",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 72.33333333333333,
+            "t": 534.8898,
+            "r": 405.6666666666667,
+            "b": 529.5564666666667,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            55
+          ]
+        }
+      ],
+      "orig": "1. Approbation du proc\u00e8s-verbal de la s\u00e9ance pr\u00e9c\u00e9dente",
+      "text": "1. Approbation du proc\u00e8s-verbal de la s\u00e9ance pr\u00e9c\u00e9dente",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/8",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 72.33333333333333,
+            "t": 514.2231333333334,
+            "r": 518.3333333333333,
+            "b": 488.22313333333335,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            77
+          ]
+        }
+      ],
+      "orig": "Le proc\u00e8s-verbal de la r\u00e9union du 9 d\u00e9cembre 2025 est approuv\u00e9 sans remarque.",
+      "text": "Le proc\u00e8s-verbal de la r\u00e9union du 9 d\u00e9cembre 2025 est approuv\u00e9 sans remarque."
+    },
+    {
+      "self_ref": "#/texts/9",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 73.33333333333333,
+            "t": 477.88980000000004,
+            "r": 311.33333333333337,
+            "b": 470.5564666666667,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            39
+          ]
+        }
+      ],
+      "orig": "2. Arr\u00eat des comptes de 1'exercice 2025",
+      "text": "2. Arr\u00eat des comptes de 1'exercice 2025",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/10",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 73.66666666666667,
+            "t": 457.22313333333335,
+            "r": 519.6666666666667,
+            "b": 404.88980000000004,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            233
+          ]
+        }
+      ],
+      "orig": "Le directeur financier pr\u00e9sente le rapport de gestion et les comptes annuels. Apr\u00e8s \u00e9change, le conseil arr\u00eate les comptes \u00e0 l'unanimit\u00e9 et d\u00e9cide de proposer \u00e0 l'assembl\u00e9e g\u00e9n\u00e9rale la distribution d'un dividende de 0,80\u20ac par action.",
+      "text": "Le directeur financier pr\u00e9sente le rapport de gestion et les comptes annuels. Apr\u00e8s \u00e9change, le conseil arr\u00eate les comptes \u00e0 l'unanimit\u00e9 et d\u00e9cide de proposer \u00e0 l'assembl\u00e9e g\u00e9n\u00e9rale la distribution d'un dividende de 0,80\u20ac par action."
+    },
+    {
+      "self_ref": "#/texts/11",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 75.33333333333333,
+            "t": 393.5564666666667,
+            "r": 319.3333333333333,
+            "b": 385.22313333333335,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            40
+          ]
+        }
+      ],
+      "orig": "3. Projet de deuxi\u00e8me site de production",
+      "text": "3. Projet de deuxi\u00e8me site de production",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/12",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 75.33333333333333,
+            "t": 372.22313333333335,
+            "r": 521.6666666666667,
+            "b": 341.5564666666667,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            217
+          ]
+        }
+      ],
+      "orig": "La directrice g\u00e9n\u00e9rale pr\u00e9sente le projet d'implantation d'un deuxi\u00e8me site de production \u00e0 Lorvan, destin\u00e9 \u00e0 absorber la croissance des ventes du Veltis Pro L. Monsieur Klein exprime des r\u00e9serves sur le calendrier et",
+      "text": "La directrice g\u00e9n\u00e9rale pr\u00e9sente le projet d'implantation d'un deuxi\u00e8me site de production \u00e0 Lorvan, destin\u00e9 \u00e0 absorber la croissance des ventes du Veltis Pro L. Monsieur Klein exprime des r\u00e9serves sur le calendrier et"
+    },
+    {
+      "self_ref": "#/texts/13",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 77.33333333333333,
+            "t": 329.2231333333333,
+            "r": 451.0,
+            "b": 325.88980000000004,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            62
+          ]
+        }
+      ],
+      "orig": "sur le risque de financement dans le contexte actuel des taux.",
+      "text": "sur le risque de financement dans le contexte actuel des taux."
+    },
+    {
+      "self_ref": "#/texts/14",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 77.0,
+            "t": 309.2231333333333,
+            "r": 524.0,
+            "b": 260.2231333333333,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            254
+          ]
+        }
+      ],
+      "orig": "Apr\u00e8s d\u00e9lib\u00e9ration, le conseil approuve l'ouverture du site de Lorvan, avec une mise en service pr\u00e9vue au second semestre 2027 et un budget d'investissement de 6,5 millions d'euros. La d\u00e9cision est adopt\u00e9e par 5 voix pour et 1 abstention (Bernard Klein).",
+      "text": "Apr\u00e8s d\u00e9lib\u00e9ration, le conseil approuve l'ouverture du site de Lorvan, avec une mise en service pr\u00e9vue au second semestre 2027 et un budget d'investissement de 6,5 millions d'euros. La d\u00e9cision est adopt\u00e9e par 5 voix pour et 1 abstention (Bernard Klein)."
+    },
+    {
+      "self_ref": "#/texts/15",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 88.0,
+            "t": 772.2231333333334,
+            "r": 312.66666666666663,
+            "b": 752.2231333333334,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            37
+          ]
+        }
+      ],
+      "orig": "4. Politique de r\u00e9mun\u00e9ration variable",
+      "text": "4. Politique de r\u00e9mun\u00e9ration variable",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/16",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 85.33333333333333,
+            "t": 751.5564666666667,
+            "r": 530.6666666666667,
+            "b": 693.8898,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            174
+          ]
+        }
+      ],
+      "orig": "t     o       des ressources humaines d'introduire une prime collective li\u00e9e aux objectifs de qualit\u00e9. Le sujet sera approfondi et soumis au vote lors de la prochaine s\u00e9ance.",
+      "text": "t     o       des ressources humaines d'introduire une prime collective li\u00e9e aux objectifs de qualit\u00e9. Le sujet sera approfondi et soumis au vote lors de la prochaine s\u00e9ance."
+    },
+    {
+      "self_ref": "#/texts/17",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 84.66666666666667,
+            "t": 686.8898,
+            "r": 141.66666666666669,
+            "b": 673.8898,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            9
+          ]
+        }
+      ],
+      "orig": "5. Divers",
+      "text": "5. Divers",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/18",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 83.0,
+            "t": 666.5564666666667,
+            "r": 526.0,
+            "b": 626.5564666666667,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            135
+          ]
+        }
+      ],
+      "orig": "La prochaine r\u00e9union du conseil est fix\u00e9e au jeudi 18 juin 2026 \u00e0 14 h 00. L'ordre du jour \u00e9tant \u00e9puis\u00e9, la s\u00e9ance est lev\u00e9e \u00e0 16 h 45.",
+      "text": "La prochaine r\u00e9union du conseil est fix\u00e9e au jeudi 18 juin 2026 \u00e0 14 h 00. L'ordre du jour \u00e9tant \u00e9puis\u00e9, la s\u00e9ance est lev\u00e9e \u00e0 16 h 45."
+    },
+    {
+      "self_ref": "#/texts/19",
+      "parent": {
+        "$ref": "#/groups/0"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 81.33333333333333,
+            "t": 594.2231333333334,
+            "r": 165.0,
+            "b": 578.2231333333334,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            14
+          ]
+        },
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 308.33333333333337,
+            "t": 585.8898,
+            "r": 452.0,
+            "b": 568.2231333333334,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            15,
+            39
+          ]
+        }
+      ],
+      "orig": "La pr\u00e9sidente, Le secr\u00e9taire de s\u00e9ance,",
+      "text": "La pr\u00e9sidente, Le secr\u00e9taire de s\u00e9ance,"
+    },
+    {
+      "self_ref": "#/texts/20",
+      "parent": {
+        "$ref": "#/pictures/0"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "caption",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 78.66666666666667,
+            "t": 522.8898,
+            "r": 164.66666666666669,
+            "b": 507.88980000000004,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            14
+          ]
+        }
+      ],
+      "orig": "H\u00e9l\u00e8ne Garnier",
+      "text": "H\u00e9l\u00e8ne Garnier"
+    },
+    {
+      "self_ref": "#/texts/21",
+      "parent": {
+        "$ref": "#/pictures/1"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "caption",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 305.0,
+            "t": 514.5564666666667,
+            "r": 380.0,
+            "b": 500.22313333333335,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            12
+          ]
+        }
+      ],
+      "orig": "Marc Delvaux",
+      "text": "Marc Delvaux"
+    },
+    {
+      "self_ref": "#/texts/22",
+      "parent": {
+        "$ref": "#/pictures/2"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 181.33333333333331,
+            "t": 464.2231333333334,
+            "r": 324.33333333333337,
+            "b": 413.2231333333334,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            49
+          ]
+        }
+      ],
+      "orig": "VELTIS SA CONSEIL D'ADMINISTRATION COPIE CONFORME",
+      "text": "VELTIS SA CONSEIL D'ADMINISTRATION COPIE CONFORME"
+    }
+  ],
+  "pictures": [
+    {
+      "self_ref": "#/pictures/0",
+      "parent": {
+        "$ref": "#/groups/0"
+      },
+      "children": [
+        {
+          "$ref": "#/texts/20"
+        }
+      ],
+      "content_layer": "body",
+      "label": "picture",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 78.89638327578858,
+            "t": 567.6383449004765,
+            "r": 179.79504437689047,
+            "b": 538.1183747177233,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            0
+          ]
+        }
+      ],
+      "captions": [
+        {
+          "$ref": "#/texts/20"
+        }
+      ],
+      "references": [],
+      "footnotes": [],
+      "annotations": []
+    },
+    {
+      "self_ref": "#/pictures/1",
+      "parent": {
+        "$ref": "#/groups/0"
+      },
+      "children": [
+        {
+          "$ref": "#/texts/21"
+        }
+      ],
+      "content_layer": "body",
+      "label": "picture",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 305.58991494165207,
+            "t": 554.4554086287546,
+            "r": 424.6576965355176,
+            "b": 529.1155248343714,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            0
+          ]
+        }
+      ],
+      "captions": [
+        {
+          "$ref": "#/texts/21"
+        }
+      ],
+      "references": [],
+      "footnotes": [],
+      "annotations": []
+    },
+    {
+      "self_ref": "#/pictures/2",
+      "parent": {
+        "$ref": "#/groups/0"
+      },
+      "children": [
+        {
+          "$ref": "#/texts/22"
+        }
+      ],
+      "content_layer": "body",
+      "label": "picture",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 158.95087261541994,
+            "t": 483.5868774182172,
+            "r": 346.1919034646873,
+            "b": 396.7897366187451,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            0
+          ]
+        }
+      ],
+      "captions": [],
+      "references": [],
+      "footnotes": [],
+      "annotations": []
+    }
+  ],
+  "tables": [],
+  "key_value_items": [],
+  "form_items": [],
+  "pages": {
+    "1": {
+      "size": {
+        "width": 595.2756,
+        "height": 841.8898
+      },
+      "page_no": 1
+    },
+    "2": {
+      "size": {
+        "width": 595.2756,
+        "height": 841.8898
+      },
+      "page_no": 2
+    }
+  }
+}

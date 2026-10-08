@@ -1,0 +1,385 @@
+{
+  "schema_name": "DoclingDocument",
+  "version": "1.10.0",
+  "name": "4",
+  "origin": {
+    "mimetype": "application/pdf",
+    "binary_hash": 340272011913596523,
+    "filename": "4.png"
+  },
+  "furniture": {
+    "self_ref": "#/furniture",
+    "children": [],
+    "content_layer": "furniture",
+    "name": "_root_",
+    "label": "unspecified"
+  },
+  "body": {
+    "self_ref": "#/body",
+    "children": [
+      {
+        "$ref": "#/texts/0"
+      },
+      {
+        "$ref": "#/texts/1"
+      },
+      {
+        "$ref": "#/texts/2"
+      },
+      {
+        "$ref": "#/texts/3"
+      }
+    ],
+    "content_layer": "body",
+    "name": "_root_",
+    "label": "unspecified"
+  },
+  "groups": [],
+  "texts": [
+    {
+      "self_ref": "#/texts/0",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 84.39163208007812,
+            "t": 206.31894450693665,
+            "r": 159.02369181315103,
+            "b": 185.36581950693665,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            7
+          ]
+        },
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 244.56351725260416,
+            "t": 204.57285075693665,
+            "r": 440.9032389322917,
+            "b": 187.11191325693665,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            8,
+            27
+          ]
+        },
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 452.3850911458333,
+            "t": 422.25253825693665,
+            "r": 672.8367106119791,
+            "b": 404.79160075693665,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            28,
+            52
+          ]
+        },
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 456.9778238932292,
+            "t": 397.80722575693665,
+            "r": 669.3921305338541,
+            "b": 380.34628825693665,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            53,
+            80
+          ]
+        },
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 477.6451822916667,
+            "t": 323.88925700693665,
+            "r": 647.5766194661459,
+            "b": 302.93613200693665,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            81,
+            99
+          ]
+        },
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 507.4980061848958,
+            "t": 297.69785075693665,
+            "r": 619.4460856119791,
+            "b": 281.98300700693665,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            100,
+            113
+          ]
+        },
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 511.5166422526042,
+            "t": 205.73691325693665,
+            "r": 613.1310628255209,
+            "b": 186.52988200693665,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            114,
+            124
+          ]
+        },
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 685.4667154947916,
+            "t": 206.31894450693665,
+            "r": 878.9359537760416,
+            "b": 185.94785075693665,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            125,
+            144
+          ]
+        },
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 979.976318359375,
+            "t": 206.31894450693665,
+            "r": 1025.3296712239583,
+            "b": 185.94785075693665,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            145,
+            148
+          ]
+        }
+      ],
+      "orig": "Finance Ressources humaines Conseil d'administration Pr\u00e9sidente : H\u00e9l\u00e8ne Garnier Direction g\u00e9n\u00e9rale Claire Dumont Production Commercial & Export R&D",
+      "text": "Finance Ressources humaines Conseil d'administration Pr\u00e9sidente : H\u00e9l\u00e8ne Garnier Direction g\u00e9n\u00e9rale Claire Dumont Production Commercial & Export R&D"
+    },
+    {
+      "self_ref": "#/texts/1",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 68.31703694661458,
+            "t": 180.12753825693665,
+            "r": 175.6723836263021,
+            "b": 162.66660075693665,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            12
+          ]
+        },
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 283.02773030598956,
+            "t": 179.54550700693665,
+            "r": 401.8649088541667,
+            "b": 162.08456950693665,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            13,
+            27
+          ]
+        },
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 517.257568359375,
+            "t": 180.70956950693665,
+            "r": 607.9642333984375,
+            "b": 160.92050700693665,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            28,
+            39
+          ]
+        },
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 725.0791015625,
+            "t": 180.12753825693665,
+            "r": 841.6199544270834,
+            "b": 162.66660075693665,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            40,
+            52
+          ]
+        },
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 946.678955078125,
+            "t": 181.29160075693665,
+            "r": 1060.3492838541667,
+            "b": 162.08456950693665,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            53,
+            67
+          ]
+        },
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 305.99143473307294,
+            "t": 74.19785075693665,
+            "r": 377.1789143880208,
+            "b": 53.826757006936646,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            68,
+            75
+          ]
+        }
+      ],
+      "orig": "Marc Delvaux Sophie Marchal Julien Roux Thomas Weber \u00c9lodie Vasseur Qualit\u00e9",
+      "text": "Marc Delvaux Sophie Marchal Julien Roux Thomas Weber \u00c9lodie Vasseur Qualit\u00e9"
+    },
+    {
+      "self_ref": "#/texts/2",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 490.2751871744792,
+            "t": 73.61581950693665,
+            "r": 634.3724772135416,
+            "b": 54.408788256936646,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            15
+          ]
+        },
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 696.9485677083334,
+            "t": 74.19785075693665,
+            "r": 867.4541015625,
+            "b": 52.080663256936646,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            16,
+            33
+          ]
+        }
+      ],
+      "orig": "Atelier Valmont Logistique Marnay",
+      "text": "Atelier Valmont Logistique Marnay"
+    },
+    {
+      "self_ref": "#/texts/3",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 287.62046305338544,
+            "t": 48.006444506936646,
+            "r": 397.2721761067708,
+            "b": 30.545507006936646,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            14
+          ]
+        },
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 512.6648356119791,
+            "t": 48.006444506936646,
+            "r": 612.5569661458334,
+            "b": 30.545507006936646,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            15,
+            27
+          ]
+        },
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 741.7278645833334,
+            "t": 48.588475756936646,
+            "r": 824.397216796875,
+            "b": 30.545507006936646,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            28,
+            39
+          ]
+        }
+      ],
+      "orig": "Nadia Ferreira Karim Benali Lucie Petit",
+      "text": "Nadia Ferreira Karim Benali Lucie Petit"
+    }
+  ],
+  "pictures": [],
+  "tables": [],
+  "key_value_items": [],
+  "form_items": [],
+  "pages": {
+    "1": {
+      "size": {
+        "width": 1139.8575178102737,
+        "height": 448.44394450693665
+      },
+      "page_no": 1
+    }
+  }
+}

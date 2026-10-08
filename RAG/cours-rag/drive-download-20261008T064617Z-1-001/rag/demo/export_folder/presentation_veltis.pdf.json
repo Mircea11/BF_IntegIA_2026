@@ -1,0 +1,1219 @@
+{
+  "schema_name": "DoclingDocument",
+  "version": "1.10.0",
+  "name": "presentation_veltis",
+  "origin": {
+    "mimetype": "application/pdf",
+    "binary_hash": 12154354663875116627,
+    "filename": "presentation_veltis.pdf"
+  },
+  "furniture": {
+    "self_ref": "#/furniture",
+    "children": [],
+    "content_layer": "furniture",
+    "name": "_root_",
+    "label": "unspecified"
+  },
+  "body": {
+    "self_ref": "#/body",
+    "children": [
+      {
+        "$ref": "#/texts/0"
+      },
+      {
+        "$ref": "#/texts/1"
+      },
+      {
+        "$ref": "#/texts/2"
+      },
+      {
+        "$ref": "#/texts/3"
+      },
+      {
+        "$ref": "#/texts/4"
+      },
+      {
+        "$ref": "#/texts/5"
+      },
+      {
+        "$ref": "#/texts/6"
+      },
+      {
+        "$ref": "#/texts/7"
+      },
+      {
+        "$ref": "#/texts/8"
+      },
+      {
+        "$ref": "#/groups/0"
+      },
+      {
+        "$ref": "#/texts/13"
+      },
+      {
+        "$ref": "#/texts/14"
+      },
+      {
+        "$ref": "#/texts/15"
+      },
+      {
+        "$ref": "#/texts/16"
+      },
+      {
+        "$ref": "#/texts/17"
+      },
+      {
+        "$ref": "#/texts/18"
+      },
+      {
+        "$ref": "#/texts/19"
+      },
+      {
+        "$ref": "#/texts/20"
+      },
+      {
+        "$ref": "#/groups/1"
+      },
+      {
+        "$ref": "#/texts/23"
+      },
+      {
+        "$ref": "#/groups/2"
+      },
+      {
+        "$ref": "#/texts/25"
+      },
+      {
+        "$ref": "#/texts/26"
+      },
+      {
+        "$ref": "#/texts/27"
+      },
+      {
+        "$ref": "#/groups/3"
+      },
+      {
+        "$ref": "#/texts/33"
+      },
+      {
+        "$ref": "#/texts/34"
+      },
+      {
+        "$ref": "#/texts/35"
+      }
+    ],
+    "content_layer": "body",
+    "name": "_root_",
+    "label": "unspecified"
+  },
+  "groups": [
+    {
+      "self_ref": "#/groups/0",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [
+        {
+          "$ref": "#/texts/9"
+        },
+        {
+          "$ref": "#/texts/10"
+        },
+        {
+          "$ref": "#/texts/11"
+        },
+        {
+          "$ref": "#/texts/12"
+        }
+      ],
+      "content_layer": "body",
+      "name": "list",
+      "label": "list"
+    },
+    {
+      "self_ref": "#/groups/1",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [
+        {
+          "$ref": "#/texts/21"
+        },
+        {
+          "$ref": "#/texts/22"
+        }
+      ],
+      "content_layer": "body",
+      "name": "list",
+      "label": "list"
+    },
+    {
+      "self_ref": "#/groups/2",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [
+        {
+          "$ref": "#/texts/24"
+        }
+      ],
+      "content_layer": "body",
+      "name": "list",
+      "label": "list"
+    },
+    {
+      "self_ref": "#/groups/3",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [
+        {
+          "$ref": "#/texts/28"
+        },
+        {
+          "$ref": "#/texts/29"
+        },
+        {
+          "$ref": "#/texts/30"
+        },
+        {
+          "$ref": "#/texts/31"
+        },
+        {
+          "$ref": "#/texts/32"
+        }
+      ],
+      "content_layer": "body",
+      "name": "list",
+      "label": "list"
+    }
+  ],
+  "texts": [
+    {
+      "self_ref": "#/texts/0",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "furniture",
+      "label": "page_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 56.69291,
+            "t": 813.618,
+            "r": 200.74891000000005,
+            "b": 806.2180000000001,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            40
+          ]
+        }
+      ],
+      "orig": "Veltis SA - Pr\u00e9sentation de l'entreprise",
+      "text": "Veltis SA - Pr\u00e9sentation de l'entreprise"
+    },
+    {
+      "self_ref": "#/texts/1",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 153.19679,
+            "t": 772.9929000000001,
+            "r": 447.8427900000001,
+            "b": 752.6429,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            28
+          ]
+        }
+      ],
+      "orig": "Pr\u00e9sentation de l'entreprise",
+      "text": "Pr\u00e9sentation de l'entreprise",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/2",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 231.27181000000002,
+            "t": 742.8129,
+            "r": 366.66781000000015,
+            "b": 731.7129,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            24
+          ]
+        }
+      ],
+      "orig": "Veltis SA - \u00e9dition 2026",
+      "text": "Veltis SA - \u00e9dition 2026"
+    },
+    {
+      "self_ref": "#/texts/3",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 711.6849,
+            "r": 216.50091000000003,
+            "b": 696.8849,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            17
+          ]
+        }
+      ],
+      "orig": "Qui sommes-nous ?",
+      "text": "Qui sommes-nous ?",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/4",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 685.3769,
+            "r": 540.9026699999996,
+            "b": 648.1269,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            288
+          ]
+        }
+      ],
+      "orig": "Fond\u00e9e en 2011 \u00e0 Valmont par Claire Dumont et Hugo Lef\u00e8vre, Veltis con\u00e7oit et fabrique des v\u00e9los cargo \u00e0 assistance \u00e9lectrique. Nos v\u00e9los transportent des enfants, des colis, des outils et parfois m\u00eame des caf\u00e9s ambulants. Tout est dessin\u00e9, soud\u00e9 et assembl\u00e9 dans nos ateliers de Valmont.",
+      "text": "Fond\u00e9e en 2011 \u00e0 Valmont par Claire Dumont et Hugo Lef\u00e8vre, Veltis con\u00e7oit et fabrique des v\u00e9los cargo \u00e0 assistance \u00e9lectrique. Nos v\u00e9los transportent des enfants, des colis, des outils et parfois m\u00eame des caf\u00e9s ambulants. Tout est dessin\u00e9, soud\u00e9 et assembl\u00e9 dans nos ateliers de Valmont."
+    },
+    {
+      "self_ref": "#/texts/5",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 637.3769,
+            "r": 539.2426719999996,
+            "b": 614.1269,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            110
+          ]
+        }
+      ],
+      "orig": "Fin 2025, Veltis comptait 182 collaboratrices et collaborateurs, et ses v\u00e9los \u00e9taient distribu\u00e9s dans 11 pays.",
+      "text": "Fin 2025, Veltis comptait 182 collaboratrices et collaborateurs, et ses v\u00e9los \u00e9taient distribu\u00e9s dans 11 pays."
+    },
+    {
+      "self_ref": "#/texts/6",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 593.6849,
+            "r": 169.38090999999997,
+            "b": 578.8849,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            13
+          ]
+        }
+      ],
+      "orig": "Notre mission",
+      "text": "Notre mission",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/7",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 567.3769,
+            "r": 534.8026659999998,
+            "b": 544.1269,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            185
+          ]
+        }
+      ],
+      "orig": "Rendre le transport lourd l\u00e9ger : remplacer la voiture et la camionnette pour les trajets urbains de moins de 15 kilom\u00e8tres, sans compromis sur la s\u00e9curit\u00e9 ni sur la charge transport\u00e9e.",
+      "text": "Rendre le transport lourd l\u00e9ger : remplacer la voiture et la camionnette pour les trajets urbains de moins de 15 kilom\u00e8tres, sans compromis sur la s\u00e9curit\u00e9 ni sur la charge transport\u00e9e."
+    },
+    {
+      "self_ref": "#/texts/8",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 523.6849,
+            "r": 153.39691,
+            "b": 508.8849,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            11
+          ]
+        }
+      ],
+      "orig": "Nos valeurs",
+      "text": "Nos valeurs",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/9",
+      "parent": {
+        "$ref": "#/groups/0"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "list_item",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 497.6589,
+            "r": 410.1729099999999,
+            "b": 488.12690000000003,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            75
+          ]
+        }
+      ],
+      "orig": "\u00b7 Robustesse : un v\u00e9lo Veltis est con\u00e7u pour durer quinze ans et se r\u00e9pare.",
+      "text": "Robustesse : un v\u00e9lo Veltis est con\u00e7u pour durer quinze ans et se r\u00e9pare.",
+      "enumerated": false,
+      "marker": "\u00b7"
+    },
+    {
+      "self_ref": "#/texts/10",
+      "parent": {
+        "$ref": "#/groups/0"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "list_item",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 477.6589,
+            "r": 436.29290999999995,
+            "b": 468.12690000000003,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            81
+          ]
+        }
+      ],
+      "orig": "\u00b7 Proximit\u00e9 : nous fabriquons localement et connaissons nos clients par leur nom.",
+      "text": "Proximit\u00e9 : nous fabriquons localement et connaissons nos clients par leur nom.",
+      "enumerated": false,
+      "marker": "\u00b7"
+    },
+    {
+      "self_ref": "#/texts/11",
+      "parent": {
+        "$ref": "#/groups/0"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "list_item",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 457.6589,
+            "r": 410.17291,
+            "b": 448.12690000000003,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            73
+          ]
+        }
+      ],
+      "orig": "\u00b7 Sobri\u00e9t\u00e9 : chaque gramme et chaque watt doivent servir \u00e0 quelque chose.",
+      "text": "Sobri\u00e9t\u00e9 : chaque gramme et chaque watt doivent servir \u00e0 quelque chose.",
+      "enumerated": false,
+      "marker": "\u00b7"
+    },
+    {
+      "self_ref": "#/texts/12",
+      "parent": {
+        "$ref": "#/groups/0"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "list_item",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 437.6589,
+            "r": 460.18290999999994,
+            "b": 428.12690000000003,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            82
+          ]
+        }
+      ],
+      "orig": "\u00b7 Transparence : nos prix, nos d\u00e9lais et nos erreurs sont communiqu\u00e9s honn\u00eatement.",
+      "text": "Transparence : nos prix, nos d\u00e9lais et nos erreurs sont communiqu\u00e9s honn\u00eatement.",
+      "enumerated": false,
+      "marker": "\u00b7"
+    },
+    {
+      "self_ref": "#/texts/13",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 407.6849,
+            "r": 164.93291,
+            "b": 392.8849,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            11
+          ]
+        }
+      ],
+      "orig": "Notre gamme",
+      "text": "Notre gamme",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/14",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 376.53090000000003,
+            "r": 145.78891,
+            "b": 364.50590000000005,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            14
+          ]
+        }
+      ],
+      "orig": "Veltis Famille",
+      "text": "Veltis Famille",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/15",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 353.37690000000003,
+            "r": 532.582666,
+            "b": 330.12690000000003,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            174
+          ]
+        }
+      ],
+      "orig": "Biporteur pour deux enfants avec caisse en bois et capote de pluie. Autonomie de 90 km, prix public de 4 290 \u20ac. C'est notre mod\u00e8le le plus vendu depuis son lancement en 2014.",
+      "text": "Biporteur pour deux enfants avec caisse en bois et capote de pluie. Autonomie de 90 km, prix public de 4 290 \u20ac. C'est notre mod\u00e8le le plus vendu depuis son lancement en 2014."
+    },
+    {
+      "self_ref": "#/texts/16",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 314.5309000000001,
+            "r": 134.21891,
+            "b": 302.5059,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            12
+          ]
+        }
+      ],
+      "orig": "Veltis Pro L",
+      "text": "Veltis Pro L",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/17",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 291.3769000000001,
+            "r": 534.24267,
+            "b": 268.1269000000001,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            146
+          ]
+        }
+      ],
+      "orig": "Biporteur professionnel destin\u00e9 \u00e0 la livraison urbaine : charge utile de 250 kg, caisse verrouillable de 1,5 m\u00b3 et batterie double. Lanc\u00e9 en 2017.",
+      "text": "Biporteur professionnel destin\u00e9 \u00e0 la livraison urbaine : charge utile de 250 kg, caisse verrouillable de 1,5 m\u00b3 et batterie double. Lanc\u00e9 en 2017."
+    },
+    {
+      "self_ref": "#/texts/18",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 252.53089999999997,
+            "r": 132.06090999999998,
+            "b": 240.5059,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            12
+          ]
+        }
+      ],
+      "orig": "Veltis Trike",
+      "text": "Veltis Trike",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/19",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 229.37689999999998,
+            "r": 536.46267,
+            "b": 206.12689999999998,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            165
+          ]
+        }
+      ],
+      "orig": "Triporteur stable \u00e0 trois roues, pens\u00e9 pour les collectivit\u00e9s, les services techniques et les personnes qui ne se sentent pas \u00e0 l'aise sur deux roues. Lanc\u00e9 en 2022.",
+      "text": "Triporteur stable \u00e0 trois roues, pens\u00e9 pour les collectivit\u00e9s, les services techniques et les personnes qui ne se sentent pas \u00e0 l'aise sur deux roues. Lanc\u00e9 en 2022."
+    },
+    {
+      "self_ref": "#/texts/20",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 185.68489999999997,
+            "r": 133.82891,
+            "b": 170.88490000000002,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            9
+          ]
+        }
+      ],
+      "orig": "Nos sites",
+      "text": "Nos sites",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/21",
+      "parent": {
+        "$ref": "#/groups/1"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "list_item",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 159.65890000000002,
+            "r": 396.2429100000001,
+            "b": 150.12689999999998,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            76
+          ]
+        }
+      ],
+      "orig": "\u00b7 Valmont : si\u00e8ge social et usine (9 000 m\u00b2), Parc d'activit\u00e9s des Tilleuls.",
+      "text": "Valmont : si\u00e8ge social et usine (9 000 m\u00b2), Parc d'activit\u00e9s des Tilleuls.",
+      "enumerated": false,
+      "marker": "\u00b7"
+    },
+    {
+      "self_ref": "#/texts/22",
+      "parent": {
+        "$ref": "#/groups/1"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "list_item",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 139.65890000000002,
+            "r": 407.9729099999999,
+            "b": 130.12689999999998,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            77
+          ]
+        }
+      ],
+      "orig": "\u00b7 Marnay : centre logistique et atelier de reconditionnement, ouvert en 2019.",
+      "text": "Marnay : centre logistique et atelier de reconditionnement, ouvert en 2019.",
+      "enumerated": false,
+      "marker": "\u00b7"
+    },
+    {
+      "self_ref": "#/texts/23",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "section_header",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 109.68484999999998,
+            "r": 145.39691,
+            "b": 94.88485000000003,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            10
+          ]
+        }
+      ],
+      "orig": "Dates cl\u00e9s",
+      "text": "Dates cl\u00e9s",
+      "level": 1
+    },
+    {
+      "self_ref": "#/texts/24",
+      "parent": {
+        "$ref": "#/groups/2"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "list_item",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 62.69291,
+            "t": 83.65885000000003,
+            "r": 346.81291,
+            "b": 74.12684999999999,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            62
+          ]
+        }
+      ],
+      "orig": "\u00b7 2011 : cr\u00e9ation de Veltis par Claire Dumont et Hugo Lef\u00e8vre.",
+      "text": "2011 : cr\u00e9ation de Veltis par Claire Dumont et Hugo Lef\u00e8vre.",
+      "enumerated": false,
+      "marker": "\u00b7"
+    },
+    {
+      "self_ref": "#/texts/25",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "furniture",
+      "label": "page_footer",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 56.69291,
+            "t": 36.92510000000004,
+            "r": 232.31691000000004,
+            "b": 29.525099999999952,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            49
+          ]
+        }
+      ],
+      "orig": "Document interne Veltis SA - diffusion restreinte",
+      "text": "Document interne Veltis SA - diffusion restreinte"
+    },
+    {
+      "self_ref": "#/texts/26",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "furniture",
+      "label": "page_footer",
+      "prov": [
+        {
+          "page_no": 1,
+          "bbox": {
+            "l": 513.2307,
+            "t": 36.92510000000004,
+            "r": 538.5826999999999,
+            "b": 29.525099999999952,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            6
+          ]
+        }
+      ],
+      "orig": "Page 1",
+      "text": "Page 1"
+    },
+    {
+      "self_ref": "#/texts/27",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "furniture",
+      "label": "page_header",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 56.69291,
+            "t": 813.618,
+            "r": 200.74891000000005,
+            "b": 806.2180000000001,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            40
+          ]
+        }
+      ],
+      "orig": "Veltis SA - Pr\u00e9sentation de l'entreprise",
+      "text": "Veltis SA - Pr\u00e9sentation de l'entreprise"
+    },
+    {
+      "self_ref": "#/texts/28",
+      "parent": {
+        "$ref": "#/groups/3"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "list_item",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 62.69291,
+            "t": 776.6589,
+            "r": 229.50291000000004,
+            "b": 767.1269,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            38
+          ]
+        }
+      ],
+      "orig": "\u00b7 2014 : premier Veltis Famille livr\u00e9.",
+      "text": "2014 : premier Veltis Famille livr\u00e9.",
+      "enumerated": false,
+      "marker": "\u00b7"
+    },
+    {
+      "self_ref": "#/texts/29",
+      "parent": {
+        "$ref": "#/groups/3"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "list_item",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 62.69291,
+            "t": 756.6589,
+            "r": 223.99291000000005,
+            "b": 747.1269,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            35
+          ]
+        }
+      ],
+      "orig": "\u00b7 2017 : lancement du Veltis Pro L.",
+      "text": "2017 : lancement du Veltis Pro L.",
+      "enumerated": false,
+      "marker": "\u00b7"
+    },
+    {
+      "self_ref": "#/texts/30",
+      "parent": {
+        "$ref": "#/groups/3"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "list_item",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 62.69291,
+            "t": 736.6589,
+            "r": 291.80291000000005,
+            "b": 727.1269,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            50
+          ]
+        }
+      ],
+      "orig": "\u00b7 2019 : ouverture du centre logistique de Marnay.",
+      "text": "2019 : ouverture du centre logistique de Marnay.",
+      "enumerated": false,
+      "marker": "\u00b7"
+    },
+    {
+      "self_ref": "#/texts/31",
+      "parent": {
+        "$ref": "#/groups/3"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "list_item",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 62.69291,
+            "t": 716.6589,
+            "r": 222.31291000000004,
+            "b": 707.1269,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            35
+          ]
+        }
+      ],
+      "orig": "\u00b7 2022 : lancement du Veltis Trike.",
+      "text": "2022 : lancement du Veltis Trike.",
+      "enumerated": false,
+      "marker": "\u00b7"
+    },
+    {
+      "self_ref": "#/texts/32",
+      "parent": {
+        "$ref": "#/groups/3"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "list_item",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 62.69291,
+            "t": 696.6589,
+            "r": 320.17291000000006,
+            "b": 687.1269,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            55
+          ]
+        }
+      ],
+      "orig": "\u00b7 2026 : pr\u00e9sentation du plan strat\u00e9gique \u00ab Cap 2028 \u00bb.",
+      "text": "2026 : pr\u00e9sentation du plan strat\u00e9gique \u00ab Cap 2028 \u00bb.",
+      "enumerated": false,
+      "marker": "\u00b7"
+    },
+    {
+      "self_ref": "#/texts/33",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "body",
+      "label": "text",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 62.69291,
+            "t": 666.7999,
+            "r": 531.8249099999999,
+            "b": 647.9374,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            248
+          ]
+        }
+      ],
+      "orig": "\u00c0 propos de Veltis - Fond\u00e9e en 2011, Veltis SA con\u00e7oit et fabrique \u00e0 Valmont des v\u00e9los cargo \u00e0 assistance \u00e9lectrique pour les familles, les professionnels et les collectivit\u00e9s. L'entreprise emploie 182 personnes et distribue ses v\u00e9los dans 11 pays.",
+      "text": "\u00c0 propos de Veltis - Fond\u00e9e en 2011, Veltis SA con\u00e7oit et fabrique \u00e0 Valmont des v\u00e9los cargo \u00e0 assistance \u00e9lectrique pour les familles, les professionnels et les collectivit\u00e9s. L'entreprise emploie 182 personnes et distribue ses v\u00e9los dans 11 pays."
+    },
+    {
+      "self_ref": "#/texts/34",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "furniture",
+      "label": "page_footer",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 56.69291,
+            "t": 36.92510000000004,
+            "r": 232.31691000000004,
+            "b": 29.525099999999952,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            49
+          ]
+        }
+      ],
+      "orig": "Document interne Veltis SA - diffusion restreinte",
+      "text": "Document interne Veltis SA - diffusion restreinte"
+    },
+    {
+      "self_ref": "#/texts/35",
+      "parent": {
+        "$ref": "#/body"
+      },
+      "children": [],
+      "content_layer": "furniture",
+      "label": "page_footer",
+      "prov": [
+        {
+          "page_no": 2,
+          "bbox": {
+            "l": 513.2307,
+            "t": 36.92510000000004,
+            "r": 538.5826999999999,
+            "b": 29.525099999999952,
+            "coord_origin": "BOTTOMLEFT"
+          },
+          "charspan": [
+            0,
+            6
+          ]
+        }
+      ],
+      "orig": "Page 2",
+      "text": "Page 2"
+    }
+  ],
+  "pictures": [],
+  "tables": [],
+  "key_value_items": [],
+  "form_items": [],
+  "pages": {
+    "1": {
+      "size": {
+        "width": 595.2756,
+        "height": 841.8898
+      },
+      "page_no": 1
+    },
+    "2": {
+      "size": {
+        "width": 595.2756,
+        "height": 841.8898
+      },
+      "page_no": 2
+    }
+  }
+}

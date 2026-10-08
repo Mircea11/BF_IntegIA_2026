@@ -23,3 +23,9 @@ models.tar
 .env
 .env.*
 *.zip
+
+# RAG local/runtime files
+RAG/backups/
+RAG/cours-rag/drive-download-20261008T064617Z-1-001/data_exo/data/
+.getenv
+docker-compose.yml
