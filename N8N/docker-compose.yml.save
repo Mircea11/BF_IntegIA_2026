@@ -1,0 +1,57 @@
+
+services:
+  # Base de données PostgreSQL : c'est ici que vivront workflows et credentials
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - db_storage:/var/lib/postgresql/data
+    healthcheck:
+      # n8n n'attendra que la base soit réellement prête
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # L'application n8n
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      # Connexion à PostgreSQL
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
+      - DB_POSTGRESDB_USER=${POSTGRES_USER}
+      - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
+      # Active les task runners (exécution des nœuds Code) — évite un avertissement de dépréciation
+      - N8N_RUNNERS_ENABLED=true
+      # Fuseau horaire (planifications, dates) — adapté à la Belgique
+      - GENERIC_TIMEZONE=Europe/Brussels
+      - TZ=Europe/Brussels
+      # Clé de chiffrement des credentials
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+   
+     volumes:
+      - n8n_storage:/home/node/.n8n
+      # Dossier hôte partagé : déposez vos fichiers (CSV…) dans ./data,
+      # ils sont lisibles dans n8n via le chemin interne /data/…
+      - ./data:/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+# Volumes nommés : les données survivent à la suppression des conteneurs
+volumes:
+  db_storage:
+  n8n_storage:
+      - N8N_RESTRICT_FILE_ACCESS_TO=/data

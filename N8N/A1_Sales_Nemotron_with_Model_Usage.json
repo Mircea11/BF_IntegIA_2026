@@ -1,0 +1,467 @@
+{
+  "name": "A.1 — Sales Report + Local Nemotron + Model Usage (v2)",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ],
+      "id": "af83312c-48b3-43d0-b3b1-9a5eafe56459",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://dummyjson.com/carts?limit=0",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        200,
+        480
+      ],
+      "id": "ab90747b-a6b4-4e4c-9d7f-25f2a25ade17",
+      "name": "HTTP Request",
+      "executeOnce": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://api.frankfurter.app/latest?from=USD&to=EUR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        200,
+        120
+      ],
+      "id": "8c0c5eff-6d2a-44c8-a81c-c3703762c62a",
+      "name": "HTTP Reques-tUSD-EUR"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        420,
+        300
+      ],
+      "id": "d37e718a-afbd-4e73-8acc-2e4262d12749",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "// A.1 — RAPPORT DES VENTES\n// Calcul du chiffre d'affaires total et du panier moyen\n// Toutes les valeurs sont calculées après remises\n\n// 1. Récupérer les données des deux API\nconst donnees = $input.all().map(item => item.json);\n\n// 2. Identifier les paniers et le taux de change\nconst ventes = donnees.find(d => Array.isArray(d.carts));\nconst change = donnees.find(d => d.rates?.EUR !== undefined);\n\n// 3. Vérifier la disponibilité des données\nif (!ventes || !change) {\n  throw new Error(\"Données des ventes ou taux de change manquants\");\n}\n\n// 4. Récupérer les paniers et le taux EUR\nconst paniers = ventes.carts;\nconst taux = Number(change.rates.EUR);\n\n// 5. Vérifier que tous les paniers ont été récupérés\nif (paniers.length !== ventes.total) {\n  throw new Error(\n    `Données incomplètes : ${paniers.length} paniers reçus sur ${ventes.total}`\n  );\n}\n\n// 6. Vérifier le taux de change\nif (!Number.isFinite(taux) || taux <= 0) {\n  throw new Error(\"Taux de change EUR invalide\");\n}\n\n// 7. Calculer le chiffre d'affaires total USD après remises\nconst ca_usd = paniers.reduce(\n  (somme, panier) => somme + Number(panier.discountedTotal),\n  0\n);\n\n// 8. Vérifier le chiffre d'affaires\nif (!Number.isFinite(ca_usd)) {\n  throw new Error(\"Chiffre d'affaires invalide\");\n}\n\nif (paniers.length === 0) {\n  throw new Error(\"Aucun panier disponible\");\n}\n\n// 9. Convertir le chiffre d'affaires en EUR\nconst ca_eur = ca_usd * taux;\n\n// 10. Calculer le nombre de paniers et le panier moyen\nconst nombre_paniers = paniers.length;\nconst panier_moyen = ca_eur / nombre_paniers;\n\n// 11. Retourner le rapport des ventes\nreturn [{\n  json: {\n    nombre_paniers: nombre_paniers,\n    ca_total_usd: Number(ca_usd.toFixed(2)),\n    taux_change: taux,\n    date_taux: change.date,\n    ca_total_eur: Number(ca_eur.toFixed(2)),\n    panier_moyen_eur: Number(panier_moyen.toFixed(2))\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        80
+      ],
+      "id": "7c2b8e91-cb7d-48ca-8217-5ab02f78da02",
+      "name": "Code in JavaScript chiffre d'affaires"
+    },
+    {
+      "parameters": {
+        "jsCode": "// A.1 — TOP 5 PRODUCTS BY QUANTITY SOLD\n// Input: Shopping carts (USD) + USD/EUR exchange rate\n// Output: 5 products with quantity and discounted revenue in EUR\n\n// 1. Retrieve data from both APIs\nconst data = $input.all().map(item => item.json);\n\n// 2. Identify shopping carts and exchange rate\nconst sales = data.find(d => Array.isArray(d.carts));\nconst exchange = data.find(d => d.rates?.EUR !== undefined);\n\n// 3. Validate input data\nif (!sales || !exchange) {\n  throw new Error(\"Missing shopping carts or USD/EUR exchange rate\");\n}\n\nconst carts = sales.carts;\nconst rate_eur = Number(exchange.rates.EUR);\n\nif (carts.length !== sales.total) {\n  throw new Error(\n    `Incomplete data: received ${carts.length} of ${sales.total} carts`\n  );\n}\n\nif (!Number.isFinite(rate_eur) || rate_eur <= 0) {\n  throw new Error(\"Invalid EUR exchange rate\");\n}\n\n// 4. Aggregate products by product ID\nconst products = {};\n\nfor (const cart of carts) {\n  for (const product of cart.products) {\n\n    const id = product.id;\n\n    if (!products[id]) {\n      products[id] = {\n        product: product.title,\n        quantity: 0,\n        revenue_usd: 0\n      };\n    }\n\n    // Accumulate quantities\n    products[id].quantity += Number(product.quantity);\n\n    // Accumulate revenue after discounts\n    products[id].revenue_usd += Number(product.discountedTotal);\n  }\n}\n\n// 5. Sort products by quantity sold (descending)\n// Keep only the five best-selling products\nconst top5 = Object.values(products)\n  .sort((a, b) => b.quantity - a.quantity)\n  .slice(0, 5);\n\n// 6. Convert revenue to EUR\n// Return 5 separate items for the CSV node\nreturn top5.map(product => ({\n  json: {\n    product: product.product,\n    quantity: product.quantity,\n    revenue_eur: Number(\n      (product.revenue_usd * rate_eur).toFixed(2)\n    )\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        510
+      ],
+      "id": "fe2a4aad-0453-4f05-b6bc-cf9e4c6ae641",
+      "name": "Code in JavaScript1 Top 5"
+    },
+    {
+      "parameters": {
+        "options": {
+          "fileName": "top5_produits.csv",
+          "headerRow": true
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        860,
+        740
+      ],
+      "id": "933df80d-6e40-428b-bfbc-2cdd8837fb71",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/data/top5_produits.csv",
+        "options": {
+          "append": false
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        1050,
+        740
+      ],
+      "id": "1a3c1ed8-94b9-4792-97cb-74f08c9ea2e9",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "jsCode": "// A.1 — RAPPORT DE VENTES : SYNTHÈSE TEXTUELLE\n\n// 1. Retrieve calculated sales indicators\nconst data = $input.first().json;\n\n// 2. Format EUR amounts\nconst euros = (value) =>\n  new Intl.NumberFormat(\"fr-BE\", {\n    style: \"currency\",\n    currency: \"EUR\",\n    minimumFractionDigits: 2,\n    maximumFractionDigits: 2\n  }).format(Number(value));\n\n// 3. Format the exchange-rate date\nconst date = data.date_taux.split(\"-\").reverse().join(\"/\");\n\n// 4. Build the report\nconst rapport = `\nRAPPORT DES VENTES\n\nChiffre d'affaires total après remises :\n${euros(data.ca_total_eur)}\n\nNombre de paniers :\n${data.nombre_paniers}\n\nPanier moyen :\n${euros(data.panier_moyen_eur)}\n\nTAUX DE CHANGE\n\n1 USD = ${data.taux_change} EUR\nDate du taux : ${date}\n\nLes montants sont exprimés en euros,\naprès remises et arrondis à deux décimales.\n`.trim();\n\n// 5. Return the report\nreturn [{\n  json: {\n    rapport_texte: rapport\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        870,
+        -80
+      ],
+      "id": "fbfb264c-b63a-4938-b750-1666e058b173",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://172.21.0.1:8000/v1/chat/completions",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.ai_request) }}",
+        "options": {
+          "timeout": 120000
+        },
+        "authentication": "none"
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1350,
+        420
+      ],
+      "id": "f4ab09da-abf3-4f3c-b4fb-cd2179b8f862",
+      "name": "HTTP Request1-AI Sales Report",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "mode": "append",
+        "numberInputs": 2
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        900,
+        420
+      ],
+      "id": "538efd56-c6a1-4a9c-aec1-b39636f75400",
+      "name": "Merge — Sales + Top5 for AI"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// A.1 — Construct one validated payload for Nemotron (one request, not six).\nconst input = $input.all().map(item => item.json);\nconst sales = input.find(x => Number.isFinite(Number(x.nombre_paniers)) && x.ca_total_eur !== undefined);\nconst top5 = input.filter(x => typeof x.product === 'string' && x.quantity !== undefined && x.revenue_eur !== undefined);\nif (!sales) throw new Error('Sales summary missing from merged input');\nif (top5.length !== 5) throw new Error(`Expected 5 Top 5 products; received ${top5.length}`);\nconst mandatory = ['nombre_paniers','ca_total_usd','ca_total_eur','panier_moyen_eur','taux_change'];\nfor (const key of mandatory) {\n  if (!Number.isFinite(Number(sales[key]))) throw new Error('Invalid field: ' + key);\n}\nif (!/^\\d{4}-\\d{2}-\\d{2}$/.test(String(sales.date_taux))) throw new Error('Invalid exchange date');\nif (Number(sales.nombre_paniers) <= 0) throw new Error('Number of carts must be positive');\nif (Math.abs(Number((sales.ca_total_usd * sales.taux_change).toFixed(2)) - Number(sales.ca_total_eur)) > 0.011) {\n  throw new Error('USD-to-EUR validation failed');\n}\nconst products = top5.map(item => ({\n  product: item.product,\n  quantity: Number(item.quantity),\n  revenue_eur: Number(item.revenue_eur)\n}));\nif (products.some(p => !Number.isFinite(p.quantity) || !Number.isFinite(p.revenue_eur))) {\n  throw new Error('Invalid Top 5 numbers');\n}\nproducts.sort((a,b) => b.quantity-a.quantity || a.product.localeCompare(b.product));\nconst system = [\n  'Tu es analyste commercial pour la direction. Réponds EXCLUSIVEMENT en français.',\n  'Rédige UNIQUEMENT un commentaire analytique, pas le tableau des données.',\n  'Structure : CONSTATS, INTERPRÉTATIONS, LIMITES, ACTIONS RECOMMANDÉES.',\n  'Compare les quantités vendues et les revenus au sein du TOP 5 seulement.',\n  'Propose deux actions concrètes vérifiables à partir des données manquantes.',\n  'Ne présente aucune tendance temporelle, marge, rentabilité ou concentration du CA total sans données correspondantes.',\n  'Ne confonds jamais chiffre d’affaires et bénéfice.',\n  'IMPORTANT : N’utilise AUCUN CHIFFRE, numéro, montant, pourcentage ni devise dans ton texte : les indicateurs sont insérés séparément et sans IA.',\n  'Ne recalcule aucune valeur. N’invente aucun fait. Evite le raisonnement intermédiaire.',\n  'Longueur : environ 100 à 150 mots.'\n].join(' ');\nconst data = {\n  nombre_paniers: Number(sales.nombre_paniers),\n  ca_total_eur: Number(sales.ca_total_eur),\n  panier_moyen_eur: Number(sales.panier_moyen_eur),\n  taux_usd_vers_eur: Number(sales.taux_change),\n  date_taux: String(sales.date_taux),\n  classement_top5_par_quantite: products\n};\nconst ai_request = {\n  model: 'veltis-llm',\n  messages: [\n    {role:'system',content:system},\n    {role:'user',content: 'Voici les faits validés par le code. Analyse sans répéter les nombres :\\n' + JSON.stringify(data)}\n  ],\n  max_tokens: 420,\n  temperature: 0.2,\n  stream: false,\n  chat_template_kwargs: {enable_thinking: false}\n};\nreturn [{ json: {\n  sent_at_utc: new Date().toISOString(),\n  model_endpoint: 'http://172.21.0.1:8000/v1/chat/completions',\n  model_max_context_tokens_last_verified: 2048,\n  calculated_sales: sales,\n  top5: products,\n  ai_request\n}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1110,
+        420
+      ],
+      "id": "26b30e34-daf3-4d3f-a32d-233cfb93ff8a",
+      "name": "Prepare — Nemotron input"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// A.1 — Assemble trusted financial results + AI-only interpretation;\n// separately report token usage, generation parameters and quality warnings.\nconst response = $input.first().json || {};\nconst original = $('Prepare — Nemotron input').first().json;\nconst sales = original.calculated_sales;\nconst top5 = original.top5;\nconst choice = response.choices?.[0] ?? {};\nconst message = choice.message ?? {};\nconst raw = String(message.content ?? '');\nconst interpretation = raw.replace(/<think>[\\s\\S]*?<\\/think>/gi,'').trim();\nconst usage = response.usage ?? {};\nconst endUtc = new Date().toISOString();\nconst elapsedMs = Math.max(0, Date.parse(endUtc) - Date.parse(original.sent_at_utc));\nconst decimals = (x) => new Intl.NumberFormat('fr-BE', {\n  minimumFractionDigits:2, maximumFractionDigits:2\n}).format(Number(x));\nconst euros = (x) => decimals(x) + ' EUR';\nconst warnings = [];\nif (response.error) warnings.push('Nemotron HTTP request failed: ' + (typeof response.error === 'string' ? response.error : JSON.stringify(response.error)));\nif (!interpretation) warnings.push('No final interpretation in the response');\nif (/\\d/.test(interpretation)) warnings.push('AI interpretation includes digits; verify any numerical claims');\nif (/\\b(?:USD|EUR)\\b|\\$|€/.test(interpretation)) warnings.push('AI interpretation includes a currency or currency symbol');\nif (choice.finish_reason === 'length') warnings.push('Model stopped at max_tokens; commentary may be incomplete');\nconst hasReasoning = Boolean(message.reasoning || message.reasoning_content || /<think>/i.test(raw));\nif (hasReasoning) warnings.push('Reasoning output detected; not included in diagnostic file');\nif (response.model && response.model !== original.ai_request.model) warnings.push('Returned model ID does not match requested model');\nconst countCheck = Math.abs(Number(sales.panier_moyen_eur) * Number(sales.nombre_paniers) - Number(sales.ca_total_eur)) <= 0.011 * Number(sales.nombre_paniers);\nif (!countCheck) warnings.push('Average-cart consistency check failed');\nconst commentary = (!interpretation || /\\d|\\b(?:USD|EUR)\\b|\\$|€|<think>/i.test(interpretation))\n  ? 'Le commentaire automatique nécessite une vérification et n’a pas été repris dans le rapport. Consulter le fichier de diagnostic.'\n  : interpretation;\nconst leaderQuantity = top5[0];\nconst leaderRevenue = [...top5].sort((a,b)=>b.revenue_eur-a.revenue_eur)[0];\nconst lines = [\n  'RAPPORT DES VENTES — A.1',\n  '',\n  'INDICATEURS VALIDÉS (CALCULS JAVASCRIPT)',\n  'Nombre de paniers : ' + sales.nombre_paniers,\n  'Chiffre d’affaires total après remises : ' + euros(sales.ca_total_eur),\n  'Panier moyen : ' + euros(sales.panier_moyen_eur),\n  'Taux de change appliqué : 1 USD = ' + sales.taux_change + ' EUR',\n  'Date du taux : ' + sales.date_taux,\n  '',\n  'TOP 5 DES PRODUITS — CLASSÉS PAR QUANTITÉ',\n  ...top5.map((p,i) => `${i+1}. ${p.product} | ${p.quantity} unités | CA ${euros(p.revenue_eur)}`),\n  '',\n  'CONSTAT CALCULÉ : ' + leaderQuantity.product + ' domine les quantités au sein du Top 5 ; ' + leaderRevenue.product + ' domine les revenus au sein de ces cinq produits.',\n  '',\n  'COMMENTAIRE ANALYTIQUE NEMOTRON',\n  commentary,\n  '',\n  'LIMITES : extraction de données factices ; absence de série temporelle, de coûts et de marges.',\n  'NOTE : commentaire généré automatiquement ; validation humaine recommandée avant diffusion.'\n];\nconst requested = original.ai_request;\nconst promptTokens = usage.prompt_tokens != null && Number.isFinite(Number(usage.prompt_tokens)) ? Number(usage.prompt_tokens) : null;\nconst completionTokens = usage.completion_tokens != null && Number.isFinite(Number(usage.completion_tokens)) ? Number(usage.completion_tokens) : null;\nconst totalTokens = usage.total_tokens != null && Number.isFinite(Number(usage.total_tokens)) ? Number(usage.total_tokens) : null;\nconst durationS = elapsedMs / 1000;\nconst metrics = {\n  schema: 'A1-Nemotron-Usage-v1',\n  run: {started_at_utc:original.sent_at_utc,finished_at_utc:endUtc,\n        elapsed_end_to_end_seconds:Number(durationS.toFixed(3)),\n        note:'Elapsed time includes n8n orchestration; not pure GPU inference time.'},\n  model: {requested_id:requested.model,returned_id:response.model ?? null,\n          engine:'vLLM',endpoint:original.model_endpoint,\n          max_context_tokens_last_verified:original.model_max_context_tokens_last_verified},\n  generation_settings: {temperature:requested.temperature,max_output_tokens:requested.max_tokens,\n                        stream:requested.stream,thinking_requested:requested.chat_template_kwargs?.enable_thinking,\n                        input_messages:requested.messages.length},\n  usage: {prompt_tokens:promptTokens,completion_tokens:completionTokens,total_tokens:totalTokens,\n          tokens_per_second_end_to_end_approx:(completionTokens !== null && durationS > 0)\n            ? Number((completionTokens / durationS).toFixed(2)) : null,\n          context_consumption_fraction:(promptTokens !== null && original.model_max_context_tokens_last_verified)\n            ? Number((promptTokens / original.model_max_context_tokens_last_verified).toFixed(4)) : null},\n  completion: {response_id:response.id ?? null,finish_reason:choice.finish_reason ?? null,\n               text_characters:interpretation.length,reasoning_field_present:hasReasoning},\n  controls: {cart_count:sales.nombre_paniers,total_eur_validated:sales.ca_total_eur,\n             average_cart_arithmetic_consistent:countCheck,\n             products_count:top5.length,top5_descending_by_quantity:top5.every((p,i)=>i===0||top5[i-1].quantity >= p.quantity),\n             final_commentary_accepted:commentary===interpretation},\n  warnings: warnings,\n  unmeasured: ['Exact GPU VRAM usage','GPU utilization','True model inference duration','Independent semantic fact-checking'],\n  provenance: 'Model usage from vLLM /v1/chat/completions; financial numbers from the JavaScript calculation nodes.'\n};\nreturn [{json:{rapport_ventes:lines.join('\\n'),diagnostics:metrics}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1570,
+        420
+      ],
+      "id": "69b0db17-33a6-48d6-a77d-d83dbe70c128",
+      "name": "Build — Verified Report + Diagnostics"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Preserve diagnostics object only, for clean JSON export.\nreturn [{json:$input.first().json.diagnostics}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1790,
+        570
+      ],
+      "id": "ec466830-c594-4381-a1f8-cdbffeaca67e",
+      "name": "Select — Model Usage JSON"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "rapport_ventes",
+        "options": {
+          "fileName": "rapport_ventes_IA.txt"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1790,
+        220
+      ],
+      "id": "d682cc27-1948-4161-a515-2e7153617b05",
+      "name": "Convert — AI Report to TXT"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/data/rapport_ventes_IA.txt",
+        "dataPropertyName": "data",
+        "options": {
+          "append": false
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        2020,
+        220
+      ],
+      "id": "ac5e4aa1-2342-4d0f-ba98-ced61b015d52",
+      "name": "Save — /data/rapport_ventes_IA.txt"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "mode": "each",
+        "options": {
+          "fileName": "rapport_usage_modele.json",
+          "format": true
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        2020,
+        570
+      ],
+      "id": "811f4353-b0ec-4292-9aa0-39c72c34cd62",
+      "name": "Convert — Model Usage to JSON"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/data/rapport_usage_modele.json",
+        "dataPropertyName": "data",
+        "options": {
+          "append": false
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        2230,
+        570
+      ],
+      "id": "0856bbe5-05f4-4e6f-a662-82bd023eeb7e",
+      "name": "Save — /data/rapport_usage_modele.json"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Reques-tUSD-EUR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "HTTP Reques-tUSD-EUR": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript chiffre d'affaires",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript1 Top 5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1 Top 5": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge — Sales + Top5 for AI",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript chiffre d'affaires": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge — Sales + Top5 for AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge — Sales + Top5 for AI": {
+      "main": [
+        [
+          {
+            "node": "Prepare — Nemotron input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare — Nemotron input": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1-AI Sales Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1-AI Sales Report": {
+      "main": [
+        [
+          {
+            "node": "Build — Verified Report + Diagnostics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build — Verified Report + Diagnostics": {
+      "main": [
+        [
+          {
+            "node": "Select — Model Usage JSON",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Convert — AI Report to TXT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert — AI Report to TXT": {
+      "main": [
+        [
+          {
+            "node": "Save — /data/rapport_ventes_IA.txt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select — Model Usage JSON": {
+      "main": [
+        [
+          {
+            "node": "Convert — Model Usage to JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert — Model Usage to JSON": {
+      "main": [
+        [
+          {
+            "node": "Save — /data/rapport_usage_modele.json",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "nodeGroups": [],
+  "tags": []
+}

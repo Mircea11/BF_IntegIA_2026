@@ -1,0 +1,52 @@
+{
+  "schema": "A1-Nemotron-Usage-v1",
+  "run": {
+    "started_at_utc": "2026-10-16T12:50:32.782Z",
+    "finished_at_utc": "2026-10-16T12:50:37.171Z",
+    "elapsed_end_to_end_seconds": 4.389,
+    "note": "Elapsed time includes n8n orchestration; not pure GPU inference time."
+  },
+  "model": {
+    "requested_id": "veltis-llm",
+    "returned_id": "veltis-llm",
+    "engine": "vLLM",
+    "endpoint": "http://172.21.0.1:8000/v1/chat/completions",
+    "max_context_tokens_last_verified": 2048
+  },
+  "generation_settings": {
+    "temperature": 0.2,
+    "max_output_tokens": 420,
+    "stream": false,
+    "thinking_requested": false,
+    "input_messages": 2
+  },
+  "usage": {
+    "prompt_tokens": 447,
+    "completion_tokens": 89,
+    "total_tokens": 536,
+    "tokens_per_second_end_to_end_approx": 20.28,
+    "context_consumption_fraction": 0.2183
+  },
+  "completion": {
+    "response_id": "chatcmpl-8f71bfd62f0f854e",
+    "finish_reason": "stop",
+    "text_characters": 371,
+    "reasoning_field_present": false
+  },
+  "controls": {
+    "cart_count": 208,
+    "total_eur_validated": 3084145.42,
+    "average_cart_arithmetic_consistent": true,
+    "products_count": 5,
+    "top5_descending_by_quantity": true,
+    "final_commentary_accepted": true
+  },
+  "warnings": [],
+  "unmeasured": [
+    "Exact GPU VRAM usage",
+    "GPU utilization",
+    "True model inference duration",
+    "Independent semantic fact-checking"
+  ],
+  "provenance": "Model usage from vLLM /v1/chat/completions; financial numbers from the JavaScript calculation nodes."
+}
