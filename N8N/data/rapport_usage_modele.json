@@ -1,9 +1,9 @@
 {
   "schema": "A1-Nemotron-Usage-v1",
   "run": {
-    "started_at_utc": "2026-10-16T12:50:32.782Z",
-    "finished_at_utc": "2026-10-16T12:50:37.171Z",
-    "elapsed_end_to_end_seconds": 4.389,
+    "started_at_utc": "2026-10-19T09:12:55.697Z",
+    "finished_at_utc": "2026-10-19T09:13:01.090Z",
+    "elapsed_end_to_end_seconds": 5.393,
     "note": "Elapsed time includes n8n orchestration; not pure GPU inference time."
   },
   "model": {
@@ -21,27 +21,29 @@
     "input_messages": 2
   },
   "usage": {
-    "prompt_tokens": 447,
-    "completion_tokens": 89,
-    "total_tokens": 536,
-    "tokens_per_second_end_to_end_approx": 20.28,
-    "context_consumption_fraction": 0.2183
+    "prompt_tokens": 446,
+    "completion_tokens": 106,
+    "total_tokens": 552,
+    "tokens_per_second_end_to_end_approx": 19.66,
+    "context_consumption_fraction": 0.2178
   },
   "completion": {
-    "response_id": "chatcmpl-8f71bfd62f0f854e",
+    "response_id": "chatcmpl-8c1ded52560f80cb",
     "finish_reason": "stop",
-    "text_characters": 371,
+    "text_characters": 447,
     "reasoning_field_present": false
   },
   "controls": {
     "cart_count": 208,
-    "total_eur_validated": 3084145.42,
+    "total_eur_validated": 3071804.97,
     "average_cart_arithmetic_consistent": true,
     "products_count": 5,
     "top5_descending_by_quantity": true,
-    "final_commentary_accepted": true
+    "final_commentary_accepted": false
   },
-  "warnings": [],
+  "warnings": [
+    "AI interpretation includes digits; verify any numerical claims"
+  ],
   "unmeasured": [
     "Exact GPU VRAM usage",
     "GPU utilization",

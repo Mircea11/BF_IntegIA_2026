@@ -1,0 +1,6 @@
+# Ne jamais publier les secrets locaux ni les caches
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/

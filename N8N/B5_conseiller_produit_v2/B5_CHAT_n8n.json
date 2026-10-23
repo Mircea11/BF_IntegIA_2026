@@ -1,0 +1,93 @@
+{
+  "name": "B.5 — Conseiller Produit — Chat persistent",
+  "nodes": [
+    {
+      "parameters": {
+        "public": false,
+        "options": {}
+      },
+      "id": "6911129e-00d3-4b32-a800-a74606f2b617",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://172.21.0.1:8765/chat",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { \"session_id\": $json.sessionId, \"message\": $json.chatInput } }}",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "d1805b5f-1c46-4e44-87dc-289e13e82a2a",
+      "name": "B5 Chat - Backend Z4",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        290,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ae84655a-9995-45d1-835e-5d12b1042b07",
+              "name": "output",
+              "value": "={{ $json.answer }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "85f3fb84-115e-4f83-9191-b689959dd3ba",
+      "name": "Afficher réponse",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        570,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "B5 Chat - Backend Z4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "B5 Chat - Backend Z4": {
+      "main": [
+        [
+          {
+            "node": "Afficher réponse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Brussels"
+  },
+  "pinData": {}
+}

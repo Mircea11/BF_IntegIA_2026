@@ -2,22 +2,22 @@ RAPPORT DES VENTES — A.1
 
 INDICATEURS VALIDÉS (CALCULS JAVASCRIPT)
 Nombre de paniers : 208
-Chiffre d’affaires total après remises : 3 084 145,42 EUR
-Panier moyen : 14 827,62 EUR
-Taux de change appliqué : 1 USD = 0.89222 EUR
-Date du taux : 2026-10-15
+Chiffre d’affaires total après remises : 3 071 804,97 EUR
+Panier moyen : 14 768,29 EUR
+Taux de change appliqué : 1 USD = 0.88865 EUR
+Date du taux : 2026-10-16
 
 TOP 5 DES PRODUITS — CLASSÉS PAR QUANTITÉ
-1. Cat Food | 37 unités | CA 268,37 EUR
-2. Samsung Galaxy S10 | 31 unités | CA 18 278,61 EUR
-3. Generic Motorcycle | 28 unités | CA 87 837,05 EUR
-4. Apple Airpods | 27 unités | CA 2 644,83 EUR
-5. Plant Pot | 27 unités | CA 336,39 EUR
+1. Cat Food | 37 unités | CA 267,30 EUR
+2. Samsung Galaxy S10 | 31 unités | CA 18 205,47 EUR
+3. Generic Motorcycle | 28 unités | CA 87 485,59 EUR
+4. Apple Airpods | 27 unités | CA 2 634,25 EUR
+5. Plant Pot | 27 unités | CA 335,05 EUR
 
 CONSTAT CALCULÉ : Cat Food domine les quantités au sein du Top 5 ; Generic Motorcycle domine les revenus au sein de ces cinq produits.
 
 COMMENTAIRE ANALYTIQUE NEMOTRON
-CONSTATS : le panier moyen est élevé et le CA total est important. INTERPRÉTATIONS : les produits à forte valeur ajoutée dominent les ventes. LIMITES : les produits à faible volume génèrent peu de CA. ACTIONS RECOMMANDÉES : optimiser la promotion des produits à faible volume pour augmenter leur CA. Proposer une campagne ciblée pour les produits à faible valeur ajoutée.
+Le commentaire automatique nécessite une vérification et n’a pas été repris dans le rapport. Consulter le fichier de diagnostic.
 
 LIMITES : extraction de données factices ; absence de série temporelle, de coûts et de marges.
 NOTE : commentaire généré automatiquement ; validation humaine recommandée avant diffusion.
