@@ -1,0 +1,501 @@
+{
+  "name": "Exercice A.3",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        -48
+      ],
+      "id": "d2fe634f-143c-4766-baa8-6e8a69a9bc55",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/todos",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -224,
+        -160
+      ],
+      "id": "4d2d7dc5-6e85-4f20-b48b-85e3e1ad423c",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/users",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -224,
+        64
+      ],
+      "id": "4ef38838-9624-41d2-93c6-beebeed8386f",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "advanced": true,
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "userId",
+              "field2": "id"
+            }
+          ]
+        },
+        "joinMode": "enrichInput1",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        192,
+        -48
+      ],
+      "id": "d81899c7-3592-4946-b9ba-51076c0b4ee0",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "field": "completed"
+            },
+            {
+              "aggregation": "concatenate",
+              "field": "title"
+            }
+          ]
+        },
+        "fieldsToSplitBy": "userId, name, email",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1.1,
+      "position": [
+        784,
+        -48
+      ],
+      "id": "8fa4181f-924f-4b1a-b5af-06cd78163d96",
+      "name": "Summarize"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7232456d-694c-498b-9293-11ae17098f53",
+              "name": "userId",
+              "value": "={{ $json.userId }}",
+              "type": "number"
+            },
+            {
+              "id": "9acf42f4-121d-4dd4-83dc-2171f5147f91",
+              "name": "id_task",
+              "value": "={{ $json.id_task }}",
+              "type": "number"
+            },
+            {
+              "id": "f1f84a4d-530f-4b8d-8b65-96ae15de6c09",
+              "name": "completed",
+              "value": "={{ $json.completed }}",
+              "type": "boolean"
+            },
+            {
+              "id": "7c297263-3ce4-4227-a023-973410341c6b",
+              "name": "name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "4355c37c-ae69-4e73-a0f2-7e9c32405e04",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "9fe0d8cd-4831-4ee0-8b47-bf499befeb8c",
+              "name": "username",
+              "value": "={{ $json.username }}",
+              "type": "string"
+            },
+            {
+              "id": "0667bfb3-1e50-43e1-8a71-bb4ae85d3b25",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        368,
+        -48
+      ],
+      "id": "6c27b796-b96a-4908-9493-a5ffcc23f37b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "950c793e-ce8d-4f0e-b5ff-7e5e0513bc5b",
+              "name": "userId",
+              "value": "={{ $json.userId }}",
+              "type": "number"
+            },
+            {
+              "id": "0784cf88-9099-407d-9373-4e5dae9c0f08",
+              "name": "id_task",
+              "value": "={{ $json.id }}",
+              "type": "number"
+            },
+            {
+              "id": "59c8618b-dc32-4d3c-ba95-d3d1712bfd44",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "03dd0292-457e-4752-94cf-3aa01d31906a",
+              "name": "completed",
+              "value": "={{ $json.completed }}",
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -16,
+        -160
+      ],
+      "id": "9e722347-9dcc-4a4a-9aad-5d7d5914908f",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "eeca438c-a293-4d2f-8c6e-b75af682ca55",
+              "leftValue": "={{ $json.completed }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        576,
+        -48
+      ],
+      "id": "f176c1a9-b4c2-40d6-a5f2-4509ddae128e",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "64db8be8-c74f-4818-b95a-5cc4384375ef",
+              "name": "count_completed",
+              "value": "={{ $json.count_completed }}",
+              "type": "number"
+            },
+            {
+              "id": "415a1de3-d14c-4e5d-a98b-d9d68e126703",
+              "name": "name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1008,
+        -192
+      ],
+      "id": "67c90609-1d51-4b7d-9fd0-35c99000c849",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        -192
+      ],
+      "id": "7faa7dcc-d586-454e-8518-12af7239cae9",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bb7579f7-e68a-41a9-98b3-5a3d1a0ec80c",
+              "name": "Message",
+              "value": "={{ $json.data.map(e => `- ${e.name} : ${e.count_completed} tâches terminées`).join('\\n') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1424,
+        -192
+      ],
+      "id": "8d5cd548-9649-4a74-8f7b-1c5354f542ad",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "073fa6d6-cf02-4317-9ddb-5794bdffafa1",
+              "leftValue": "={{ $json.count_completed }}",
+              "rightValue": 10,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1008,
+        96
+      ],
+      "id": "238773b9-746c-4c03-ad45-0e55d6bf61b2",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "627db2df-5c76-4280-90a1-d4b321912982",
+              "name": "Message",
+              "value": "=Dear  {{ $json.name }} , we have noticed that you have {{ $json.count_completed }} ongoing tasks, including ({{ $json.concatenated_title.split(',').slice(0, 3).join('\\n') }}) MOVE YOUR FAT ASS AND WORK , Thx",
+              "type": "string"
+            },
+            {
+              "id": "e0e7e2ef-201c-409e-acf2-7897a0eb87e7",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1424,
+        0
+      ],
+      "id": "f82a9f4e-7ebe-40c6-980e-cef3fb2e7ba1",
+      "name": "Edit Fields4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Summarize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "223e2964-c480-40d2-9a85-6a175322bc4e",
+  "meta": {
+    "instanceId": "ab977d02a266b207ed8e7ab9a9155d834f9a10bc70872c61b58162c31ff69338"
+  },
+  "nodeGroups": [],
+  "id": "9JsdqW5rkAVtm39j",
+  "tags": []
+}

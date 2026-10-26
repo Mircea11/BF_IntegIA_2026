@@ -1,0 +1,504 @@
+{
+  "name": "Exercice A.1",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -544,
+        -96
+      ],
+      "id": "c35acb5e-eb2f-40e0-8cc4-ab2b3af19efd",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://dummyjson.com/carts?limit=0",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -336,
+        -96
+      ],
+      "id": "f0244e07-a6d2-4851-b8bf-cbb82b7ccab6",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "carts",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        -96
+      ],
+      "id": "7d213425-dfc3-4bb4-bd1b-12a3a23c155a",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "products",
+        "include": "selectedOtherFields",
+        "fieldsToInclude": "id",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        80,
+        -96
+      ],
+      "id": "4318e501-c740-4205-94c1-3b47cf4cdee0",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "93c9e1d8-c10d-4d54-85df-18540d69eb3e",
+              "name": "id_order",
+              "value": "={{ $json.id }}",
+              "type": "number"
+            },
+            {
+              "id": "b6cd5587-589b-40cc-a636-b0fd59082638",
+              "name": "id_product",
+              "value": "={{ $json.products.id }}",
+              "type": "number"
+            },
+            {
+              "id": "529912c9-caa3-4334-b44e-ee9d9fbac384",
+              "name": "title",
+              "value": "={{ $json.products.title }}",
+              "type": "string"
+            },
+            {
+              "id": "5b1d4469-a7b2-4779-839b-08a779d7bf31",
+              "name": "price",
+              "value": "={{ $json.products.price }}",
+              "type": "number"
+            },
+            {
+              "id": "87427888-dfbc-4a31-8784-94fa12ce7069",
+              "name": "quantity",
+              "value": "={{ $json.products.quantity }}",
+              "type": "number"
+            },
+            {
+              "id": "4ac086ac-137f-4f92-bf4f-3012f4d9fecd",
+              "name": "total",
+              "value": "={{ $json.products.total }}",
+              "type": "number"
+            },
+            {
+              "id": "a0b4b2ea-6b70-49f9-8bc8-e37dbb9c7635",
+              "name": "discountPercentage",
+              "value": "={{ $json.products.discountPercentage }}",
+              "type": "number"
+            },
+            {
+              "id": "e9e5127e-48a8-4c66-b951-0308429face6",
+              "name": "discountedTotal",
+              "value": "={{ $json.products.discountedTotal }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        288,
+        -96
+      ],
+      "id": "2074a526-5b29-48e1-b455-c04666c76343",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "sum",
+              "field": "discountedTotal"
+            },
+            {
+              "aggregation": "countUnique",
+              "field": "id_order"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1.1,
+      "position": [
+        496,
+        -208
+      ],
+      "id": "dcbbd48f-1ef9-424f-a3af-21a681733198",
+      "name": "Summarize"
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "sum",
+              "field": "quantity"
+            },
+            {
+              "aggregation": "sum",
+              "field": "discountedTotal"
+            }
+          ]
+        },
+        "fieldsToSplitBy": "id_product, title",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1.1,
+      "position": [
+        496,
+        16
+      ],
+      "id": "6589616a-2d01-4575-9d3b-b8c18ae712b9",
+      "name": "Summarize1"
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "sum_quantity",
+              "order": "descending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        704,
+        16
+      ],
+      "id": "269dd823-8e49-45fd-be07-a6cd32b3ab3e",
+      "name": "Sort"
+    },
+    {
+      "parameters": {
+        "maxItems": 5
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        912,
+        16
+      ],
+      "id": "1fccaf34-3fda-488f-8047-288fd7adc969",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "25f283a1-bc84-42b7-be7b-c29e51aff81d",
+              "name": "Message",
+              "value": "=La somme des ventes du jours est de {{ $json.rates.EUR   *  $('Summarize').item.json.sum_discountedTotal }} pour un total de {{ $('Summarize').item.json.unique_count_id_order }} commandes",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        912,
+        -208
+      ],
+      "id": "d6327b55-100f-44b3-b8d9-9df6601c9c01",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b6665f80-b616-45cc-99e4-4a9bb7ba9bf1",
+              "name": "title",
+              "value": "={{ $('Limit').item.json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "604e1e95-0fa3-4e14-a219-20f1caf57892",
+              "name": "id_product",
+              "value": "={{ $('Limit').item.json.id_product }}",
+              "type": "number"
+            },
+            {
+              "id": "1a6bcccf-2392-46b7-8e9c-04aa9a01d579",
+              "name": "sum_quantity",
+              "value": "={{ $('Limit').item.json.sum_quantity }}",
+              "type": "number"
+            },
+            {
+              "id": "9487f2ab-25eb-459f-ae05-d638cbced5c3",
+              "name": "sum_discountedTotal",
+              "value": "={{ ($('Limit').item.json.sum_discountedTotal * $json.rates.EUR).toFixed(2)}}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1232,
+        16
+      ],
+      "id": "d69b5de4-8334-419c-a385-5d61909853a5",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "url": "https://api.frankfurter.app/latest?from=USD&to=EUR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        704,
+        -208
+      ],
+      "id": "65b572e2-6ec0-4862-8f88-440fc1510de8",
+      "name": "HTTP taux"
+    },
+    {
+      "parameters": {
+        "url": "https://api.frankfurter.app/latest?from=USD&to=EUR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1072,
+        16
+      ],
+      "id": "490b8912-731a-4a61-8c1e-0b9253c23f07",
+      "name": "HTTP taux1"
+    },
+    {
+      "parameters": {
+        "binaryPropertyName": "top5",
+        "options": {
+          "delimiter": ",",
+          "fileName": "top5"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1440,
+        16
+      ],
+      "id": "1bbaff03-36a9-41a8-8ba0-a9a4d7fbe83b",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/data/top5.csv",
+        "dataPropertyName": "top5",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        1648,
+        16
+      ],
+      "id": "a2eddfbb-439e-4782-b925-f7f3473cff02",
+      "name": "Read/Write Files from Disk"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Summarize",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Summarize1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize": {
+      "main": [
+        [
+          {
+            "node": "HTTP taux",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize1": {
+      "main": [
+        [
+          {
+            "node": "Sort",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sort": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        []
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "HTTP taux1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP taux": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP taux1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c58c208c-1404-44dd-90e8-a78c024e73ce",
+  "meta": {
+    "instanceId": "ab977d02a266b207ed8e7ab9a9155d834f9a10bc70872c61b58162c31ff69338"
+  },
+  "nodeGroups": [],
+  "id": "jwiBj9hHba0XKpVQ",
+  "tags": []
+}
