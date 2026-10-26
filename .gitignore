@@ -29,3 +29,7 @@ RAG/backups/
 RAG/cours-rag/drive-download-20261008T064617Z-1-001/data_exo/data/
 .getenv
 docker-compose.yml
+
+# Exports d'images générés par Docling
+RAG/cours-rag/drive-download-20261008T064617Z-1-001/rag/demo/export_folder/*.png.json
+RAG/cours-rag/drive-download-20261008T064617Z-1-001/rag/demo/export_folder/*.png.md
