@@ -1,0 +1,21 @@
+[project]
+name = "rag-hopital"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Mircea Bordeianu~", email = "m.bordeianu@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "psycopg[binary]>=3.3.6",
+    "pydantic-settings>=2.15.0",
+    "qdrant-client>=1.20.0",
+]
+
+[project.scripts]
+rag-hopital = "rag_hopital:main"
+
+[build-system]
+requires = ["uv_build>=0.12.9,<0.13.0"]
+build-backend = "uv_build"
