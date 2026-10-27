@@ -33,3 +33,24 @@ docker-compose.yml
 # Exports d'images générés par Docling
 RAG/cours-rag/drive-download-20261008T064617Z-1-001/rag/demo/export_folder/*.png.json
 RAG/cours-rag/drive-download-20261008T064617Z-1-001/rag/demo/export_folder/*.png.md
+
+# RAG Exercise 03 exclusions
+**/.env
+**/.env.*
+!**/.env.example
+**/.venv/
+**/__pycache__/
+**/.~lock.*#
+
+# Generated exercise data
+/RAG/cours-rag/drive-download-20261008T064617Z-1-001/rag/demo/data/hopital-20261026T142532Z-1-001/
+/RAG/cours-rag/drive-download-20261008T064617Z-1-001/rag/demo/export_folder/veltis_chunks*.json
+/RAG/cours-rag/drive-download-20261008T064617Z-1-001/rag/demo/export_folder/veltis_embeddings*.npz
+/RAG/cours-rag/drive-download-20261008T064617Z-1-001/rag/demo/export_folder/rapport_annuel_2025.pdf.json
+/RAG/rag-20261014T092905Z-1-003/rag/demo/data/
+/RAG/rag-20261014T092905Z-1-003/rag/models/
+
+# New RAG application local data
+/RAG/rag-hopital/data/hopital/
+/RAG/rag-hopital/data/conversions/
+/RAG/rag-hopital/models/
