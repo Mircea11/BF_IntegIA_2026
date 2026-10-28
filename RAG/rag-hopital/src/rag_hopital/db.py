@@ -374,3 +374,135 @@ def finish_experiment(experiment_id: int, duration_s: float) -> None:
             """,
             (duration_s, experiment_id),
         )
+# ============================================================
+# [E09.5-D1] LIRE TOUTES LES QUESTIONS D'UNE EXPÉRIENCE
+# ============================================================
+
+def get_experiment_questions(experiment_id: int) -> list:
+    """
+    Lire toutes les questions enregistrées dans une expérience.
+
+    ENTRÉE
+    ------
+    experiment_id :
+        Identifiant de l'expérience PostgreSQL.
+
+    SORTIE
+    ------
+    Liste de résultats contenant :
+        - question_id : identifiant de la question ;
+        - chunks      : liste des chunks récupérés par Qdrant.
+
+    Exemple pour l'expérience 2 :
+        Q001 -> 5 chunks
+        Q002 -> 5 chunks
+        Q003 -> 5 chunks
+    """
+
+    # [D1.1] Ouvrir la connexion à PostgreSQL.
+    #
+    # Les paramètres de connexion viennent de settings.
+    with psycopg.connect(settings.postgres_url) as conn:
+
+        # [D1.2] Rechercher les questions de l'expérience.
+        #
+        # SELECT indique les colonnes à récupérer.
+        # FROM désigne la table PostgreSQL.
+        # WHERE limite la recherche à une expérience.
+        # ORDER BY classe les questions par identifiant.
+        result = conn.execute(
+            """
+            SELECT
+                question_id,
+                chunks
+            FROM answers
+            WHERE experiment_id = %s
+            ORDER BY question_id
+            """,
+            (experiment_id,),
+        )
+
+        # [D1.3] Récupérer toutes les lignes.
+        #
+        # fetchall() retourne une liste.
+        # Chaque élément contient :
+        # (question_id, chunks).
+        questions = result.fetchall()
+
+    # [D1.4] Renvoyer les résultats au programme.
+    return questions
+
+
+# ============================================================
+# [E09.5-D2-A] SAVE EVALUATION SCORES
+# ============================================================
+
+def save_question_scores(
+    experiment_id: int,
+    question: dict,
+    metrics: dict,
+    reason: str,
+) -> None:
+    """
+    Save the evaluation metrics for one question in PostgreSQL.
+
+    INPUTS
+    ------
+    experiment_id : ID of an existing experiment.
+    question      : Question from hopital_eval.json.
+    metrics       : Dictionary containing metric names and values.
+    reason        : Explanation of the evaluation results.
+
+    OUTPUT
+    ------
+    None. The function writes data into PostgreSQL.
+    """
+
+    # [D2-A1] Open a PostgreSQL connection.
+    #
+    # The connection parameters are stored in settings.
+    with psycopg.connect(settings.postgres_url) as conn:
+
+        # [D2-A2] Process each metric separately.
+        #
+        # Example:
+        # metric = "fact_recall@5"
+        # value  = 1.0
+        for metric, value in metrics.items():
+
+            # [D2-A3] Insert the metric into the scores table.
+            #
+            # ON CONFLICT updates an existing metric.
+            # This prevents duplicate records when rerunning
+            # the evaluation of the same experiment.
+            conn.execute(
+                """
+                INSERT INTO scores (
+                    experiment_id,
+                    question_id,
+                    question_type,
+                    metric,
+                    value,
+                    reason
+                )
+                VALUES (%s, %s, %s, %s, %s, %s)
+
+                ON CONFLICT (
+                    experiment_id,
+                    question_id,
+                    metric
+                )
+
+                DO UPDATE SET
+                    value = EXCLUDED.value,
+                    reason = EXCLUDED.reason
+                """,
+                (
+                    experiment_id,
+                    question["id"],
+                    question["type"],
+                    metric,
+                    float(value),
+                    reason,
+                ),
+            )

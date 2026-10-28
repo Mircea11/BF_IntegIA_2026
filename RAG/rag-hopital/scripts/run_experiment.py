@@ -1,200 +1,248 @@
 """
-E09.5-C — PREMIÈRE EXPÉRIENCE MULTIQUESTIONS
+[E10-D2] Exécuter une expérience RAG à partir d'un fichier TOML.
 
-OBJECTIF
---------
-1. Charger le golden dataset.
-2. Sélectionner trois questions.
-3. Créer une expérience PostgreSQL.
-4. Exécuter la recherche dense.
-5. Enregistrer les résultats de chaque question.
-6. Marquer l'expérience comme terminée.
+Exemples (depuis ~/formation/RAG/rag-hopital) :
+    uv run python scripts/run_experiment.py experiments/sparse_bm25.toml --check-config
+    uv run python scripts/run_experiment.py experiments/sparse_bm25.toml --limit 3
+    uv run python scripts/run_experiment.py --evaluate-existing 3
 
-Cette version ne calcule pas encore les métriques.
-Elles seront ajoutées lors de l'étape suivante.
+Une exécution normale crée UNE nouvelle expérience PostgreSQL.
+--check-config vérifie les paramètres SANS créer d'expérience.
+--evaluate-existing réévalue des résultats déjà enregistrés.
 """
 
-
 # ============================================================
-# [E09.5-C2 — SECTION 0] IMPORTS
+# [E10-D2 — SECTION 0] IMPORTS
 # ============================================================
 
-# Lire les fichiers JSON.
-import json
+import argparse  # Lire les options transmises dans le terminal.
+import json  # Lire les questions du golden dataset.
+import tomllib  # Lire les fichiers TOML (inclus dans Python 3.11+).
+from pathlib import Path  # Manipuler les chemins de fichiers.
+from time import perf_counter  # Mesurer la durée des recherches.
 
-# Mesurer les durées d'exécution.
-from time import perf_counter
-
-# Configuration du projet.
 from rag_hopital.config import settings
-
-# Fonctions PostgreSQL déjà développées.
 from rag_hopital.db import (
     create_experiment,
-    save_question_result,
     finish_experiment,
+    save_question_result,
 )
-
-# Nom de la collection Qdrant.
-from rag_hopital.etl.index import COLLECTION
-
-# Fonction de recherche dense validée en E08.
+from rag_hopital.etl.index import COLLECTION, HYBRID_COLLECTION
+from rag_hopital.evaluation.runner import evaluate_saved_experiment
 from rag_hopital.rag.search import search
 
 
 # ============================================================
-# [E09.5-C2 — SECTION 1] CHARGER LES QUESTIONS
+# [E10-D2 — SECTION 1] LIRE ET VALIDER LE TOML
 # ============================================================
 
-# Construire le chemin du fichier JSON.
-path = settings.corpus_path / "hopital_eval.json"
+def load_and_validate_config(path: Path) -> dict:
+    """Lire le TOML et refuser toute option pas encore implémentée."""
 
-# Lire et convertir le JSON en liste Python.
-questions = json.loads(
-    path.read_text(encoding="utf-8")
-)
+    # Le chemin est relatif au dossier où l'on lance la commande.
+    if not path.is_file():
+        raise FileNotFoundError(f"Fichier TOML introuvable : {path}")
 
-# Sélectionner les trois premières questions
-# contenant des preuves dans le corpus.
-#
-# Les questions out_of_corpus seront évaluées séparément.
-#
-# [:3] conserve les trois premiers éléments.
-selected_questions = [
-    question
-    for question in questions
-    if question["type"] != "out_of_corpus"
-][:3]
+    # tomllib.load() transforme le TOML en dictionnaire Python.
+    with path.open("rb") as file:
+        config = tomllib.load(file)
 
-print("Questions sélectionnées :")
+    # Les sections du TOML sont elles-mêmes des dictionnaires.
+    search_config = config.get("search", {})
+    chunk_config = config.get("chunking", {})
+    embedder_config = config.get("embedder", {})
 
-for question in selected_questions:
-    print(question["id"], "-", question["type"])
+    method = search_config.get("method")
+    if method not in {"dense", "sparse", "hybrid"}:
+        raise ValueError(f"Méthode non prise en charge : {method}")
+
+    if not config.get("name"):
+        raise ValueError("Le TOML doit définir 'name'.")
+
+    if config.get("dataset") != "hopital_eval.json":
+        raise ValueError("Seul hopital_eval.json est pris en charge actuellement.")
+
+    # Les collections sont déjà indexées avec ces paramètres.
+    # Changer le chunking ou l'embedder exige une autre collection.
+    if (
+        chunk_config.get("max_tokens") != 512
+        or chunk_config.get("patient_line") is not True
+        or chunk_config.get("overlap") != 0
+    ):
+        raise ValueError("Index actuel : chunks de 512 tokens, ligne patient, overlap=0.")
+
+    if embedder_config.get("model") != "bge-m3":
+        raise NotImplementedError("Autre embedder : nouvelle collection requise.")
+
+    # L'évaluateur actuel calcule les métriques à k=5.
+    if search_config.get("top_k") != 5:
+        raise NotImplementedError("L'évaluation actuelle utilise top_k=5.")
+
+    candidates = search_config.get("candidates", 30)
+    if not isinstance(candidates, int) or candidates < 5:
+        raise ValueError("'candidates' doit être un entier >= 5.")
+
+    expected_collection = COLLECTION if method == "dense" else HYBRID_COLLECTION
+    if search_config.get("collection") != expected_collection:
+        raise ValueError(
+            f"Collection incompatible avec {method} : attendue {expected_collection}"
+        )
+
+    if method in {"sparse", "hybrid"}:
+        if (
+            search_config.get("sparse_model") != "Qdrant/bm25"
+            or search_config.get("sparse_language") != "french"
+        ):
+            raise NotImplementedError("Sparse pris en charge : Qdrant/bm25, français.")
+
+    if method == "hybrid" and search_config.get("fusion") != "rrf":
+        raise NotImplementedError("Fusion implémentée actuellement : rrf.")
+
+    # Ces modules seront ajoutés lors des étapes suivantes.
+    # On refuse de prétendre les avoir utilisés avant leur implémentation.
+    if config.get("reranker", {}).get("enabled") is not False:
+        raise NotImplementedError("Le reranker n'est pas encore implémenté.")
+
+    if config.get("generation", {}).get("enabled") is not False:
+        raise NotImplementedError("La génération LLM n'est pas encore implémentée.")
+
+    return config
 
 
 # ============================================================
-# [E09.5-C2 — SECTION 2] CONFIGURATION
+# [E10-D2 — SECTION 2] SÉLECTIONNER LES QUESTIONS
 # ============================================================
 
-# Décrire précisément la configuration utilisée.
-#
-# Cette configuration sera enregistrée dans PostgreSQL.
-#
-# Elle permettra ensuite de comparer cette expérience
-# avec une recherche hybride utilisant les mêmes questions.
-config = {
-    "name": "dense_3_questions_test",
-    "dataset": "hopital_eval.json",
-    "question_ids": [
-        question["id"]
-        for question in selected_questions
-    ],
-    "method": "dense",
-    "embedding_model": "bge-m3",
-    "collection": COLLECTION,
-    "top_k": 5,
-    "reranker": None,
-    "generation": None,
-}
+def load_questions(limit: int | None) -> list[dict]:
+    """Charger les 100 questions avec preuves ; --limit en conserve N."""
+
+    path = settings.corpus_path / "hopital_eval.json"
+    questions = json.loads(path.read_text(encoding="utf-8"))
+
+    # Les six questions out_of_corpus seront évaluées avec le LLM.
+    grounded = [q for q in questions if q["type"] != "out_of_corpus"]
+
+    if len(grounded) != 100:
+        raise ValueError(f"100 questions attendues ; trouvé : {len(grounded)}")
+
+    # [:limit] permet de tester trois questions sans exécuter les 100.
+    return grounded[:limit] if limit is not None else grounded
 
 
 # ============================================================
-# [E09.5-C2 — SECTION 3] CRÉER L'EXPÉRIENCE
+# [E10-D2 — SECTION 3] EXÉCUTER LES RECHERCHES
 # ============================================================
 
-# Démarrer le chronomètre général.
-experiment_start = perf_counter()
+def run_retrieval(config: dict, questions: list[dict], source: Path) -> None:
+    """Créer une expérience, rechercher, enregistrer puis terminer."""
 
-# Créer une seule expérience PostgreSQL.
-#
-# La fonction retourne son identifiant.
-#
-# Cet identifiant sera réutilisé pour les trois questions.
-experiment_id = create_experiment(config)
+    search_config = config["search"]
+    method = search_config["method"]
+    top_k = search_config["top_k"]
+    candidates = search_config.get("candidates", 30)
 
-print("\nExpérience créée :", experiment_id)
+    # Copie indépendante : les résultats sont associés aux paramètres
+    # exacts du TOML et aux questions réellement sélectionnées.
+    recorded_config = {
+        **config,
+        "configuration_file": str(source),
+        "question_ids": [q["id"] for q in questions],
+        "question_count": len(questions),
+        "evaluation": "retrieval_only",
+    }
 
+    experiment_start = perf_counter()
+    experiment_id = create_experiment(recorded_config)
+    print(f"\nExpérience créée : {experiment_id}", flush=True)
 
-# ============================================================
-# [E09.5-C2 — SECTION 4] EXÉCUTER LES RECHERCHES
-# ============================================================
+    # Toutes les questions partagent le même experiment_id.
+    for question in questions:
+        start = perf_counter()
 
-# Parcourir les trois questions sélectionnées.
-for question in selected_questions:
+        # Les options du TOML pilotent la fonction search().
+        points = search(
+            question["question"],
+            top_k=top_k,
+            method=method,
+            candidates=candidates,
+        )
 
-    print("\nRecherche :", question["id"])
+        latency_ms = (perf_counter() - start) * 1000
 
-    # Démarrer le chronomètre de cette question.
-    start = perf_counter()
+        save_question_result(
+            experiment_id=experiment_id,
+            question=question,
+            points=points,
+            latency_ms=latency_ms,
+        )
 
-    # Exécuter la recherche dense dans Qdrant.
-    #
-    # top_k=5 : récupérer les cinq chunks les mieux classés.
-    points = search(
-        question["question"],
-        top_k=5,
+        print(
+            f"{question['id']} | {method} | "
+            f"{len(points)} chunks | {latency_ms:.2f} ms",
+            flush=True,
+        )
+
+    duration_s = perf_counter() - experiment_start
+    finish_experiment(experiment_id, duration_s)
+    print(
+        f"\nTerminé | experiment_id={experiment_id} | "
+        f"questions={len(questions)} | durée={duration_s:.2f}s",
+        flush=True,
     )
+    print(f"Pour évaluer : --evaluate-existing {experiment_id}")
 
-    # Calculer le temps de recherche.
-    #
-    # perf_counter() retourne le temps actuel du chronomètre.
-    #
-    # La différence donne la durée en secondes.
-    #
-    # Multiplier par 1000 convertit les secondes
-    # en millisecondes.
-    latency_ms = (perf_counter() - start) * 1000
 
-    # Enregistrer les résultats dans PostgreSQL.
-    #
-    # Toutes les questions reçoivent le même experiment_id.
-    #
-    # Cette fonction écrit dans la table answers.
-    save_question_result(
-        experiment_id=experiment_id,
-        question=question,
-        points=points,
-        latency_ms=latency_ms,
+# ============================================================
+# [E10-D2 — SECTION 4] INTERFACE DU TERMINAL
+# ============================================================
+
+def main() -> None:
+    """Choisir entre vérifier, lancer ou réévaluer une expérience."""
+
+    parser = argparse.ArgumentParser(description="Expériences RAG configurées par TOML")
+    parser.add_argument("config_file", nargs="?", type=Path)
+    parser.add_argument("--limit", type=int, help="Nombre de questions à tester")
+    parser.add_argument(
+        "--check-config", action="store_true",
+        help="Vérifier le TOML sans écrire dans PostgreSQL",
     )
+    parser.add_argument(
+        "--evaluate-existing", type=int, metavar="ID",
+        help="Évaluer une expérience PostgreSQL déjà enregistrée",
+    )
+    args = parser.parse_args()
+
+    # Mode réévaluation : ne pas créer une nouvelle expérience.
+    if args.evaluate_existing is not None:
+        if args.config_file or args.limit is not None or args.check_config:
+            parser.error("--evaluate-existing ne se combine pas avec les autres options")
+        evaluate_saved_experiment(args.evaluate_existing)
+        return
+
+    if args.config_file is None:
+        parser.error("Indiquer un fichier TOML ou --evaluate-existing ID")
+
+    if args.limit is not None and args.limit < 1:
+        parser.error("--limit doit être >= 1")
+
+    config = load_and_validate_config(args.config_file)
+    questions = load_questions(args.limit)
 
     print(
-        "Temps de recherche :",
-        round(latency_ms, 2),
-        "ms",
+        f"Configuration OK : {config['name']} | "
+        f"method={config['search']['method']} | "
+        f"top_k={config['search']['top_k']} | "
+        f"candidates={config['search'].get('candidates', 30)} | "
+        f"questions={len(questions)}",
+        flush=True,
     )
 
+    if args.check_config:
+        print("Vérification seule : aucune expérience créée.")
+        return
 
-# ============================================================
-# [E09.5-C2 — SECTION 5] TERMINER L'EXPÉRIENCE
-# ============================================================
-
-# Mesurer la durée totale.
-#
-# Elle comprend les recherches et les opérations
-# d'enregistrement effectuées pendant l'expérience.
-duration_s = perf_counter() - experiment_start
-
-# Modifier le statut PostgreSQL : running -> done.
-finish_experiment(
-    experiment_id=experiment_id,
-    duration_s=duration_s,
-)
+    run_retrieval(config, questions, args.config_file)
 
 
-# ============================================================
-# [E09.5-C2 — SECTION 6] AFFICHER LE BILAN
-# ============================================================
-
-print("\n=== EXPÉRIENCE TERMINÉE ===")
-
-print("Experiment ID :", experiment_id)
-
-print("Questions traitées :", len(selected_questions))
-
-print("Méthode :", config["method"])
-
-print("Collection :", COLLECTION)
-
-print("Durée totale :", round(duration_s, 2), "secondes")
-
-print("Résultats enregistrés dans PostgreSQL.")
+if __name__ == "__main__":
+    main()
