@@ -55,3 +55,6 @@ RAG/cours-rag/drive-download-20261008T064617Z-1-001/rag/demo/export_folder/*.png
 /RAG/rag-hopital/data/conversions/
 /RAG/rag-hopital/models/
 /RAG/rag-hopital/data/hopital
+
+/RAG/rag-hopital/data/chunks/
+/RAG/rag-hopital/data/conversions_enriched/
