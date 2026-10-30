@@ -8,14 +8,14 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: rag_hopital
     ports:
-      - "127.0.0.1:5432:5432"
+      - "127.0.0.1:15432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
   qdrant:
     image: qdrant/qdrant:latest
     ports:
-      - "127.0.0.1:6333:6333"
+      - "127.0.0.1:16333:6333"
     volumes:
       - qdrant_data:/qdrant/storage
 

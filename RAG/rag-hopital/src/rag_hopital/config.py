@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     postgres_password: str
 
     # Servers
-    qdrant_url: str = "http://localhost:6333"
+    qdrant_url: str = "http://localhost:16333"
     qdrant_api_key: str = ""
     embeddings_url: str = "http://localhost:8001/v1"
     rerank_url: str = "http://localhost:8002/rerank"

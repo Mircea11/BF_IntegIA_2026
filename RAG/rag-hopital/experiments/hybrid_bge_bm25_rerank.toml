@@ -1,0 +1,29 @@
+# E11 — Hybrid Search + BGE Reranker
+
+name = "hybrid_bge_bm25_rerank_100_v1"
+dataset = "hopital_eval.json"
+
+[chunking]
+max_tokens = 512
+patient_line = true
+overlap = 0
+
+[embedder]
+model = "bge-m3"
+
+[search]
+method = "hybrid"
+collection = "hopital_bge_m3_512_hybrid"
+sparse_model = "Qdrant/bm25"
+sparse_language = "french"
+fusion = "rrf"
+top_k = 5
+candidates = 30
+
+[reranker]
+enabled = true
+model = "BAAI/bge-reranker-v2-m3"
+device = "cpu"
+
+[generation]
+enabled = false

@@ -30,6 +30,7 @@ from rag_hopital.etl.index import (
     embed_texts,
 )
 
+from rag_hopital.rag.rerank import rerank_points
 
 # ============================================================
 # [E10-C — SECTION 1] LOAD THE SPARSE MODEL
@@ -89,6 +90,7 @@ def search(
     *,
     method: str = "dense",
     candidates: int = 30,
+    rerank: bool = False,
 ):
     """
     Search Qdrant using the selected retrieval method.
@@ -122,6 +124,10 @@ def search(
 
     if not query.strip():
         raise ValueError("The search query cannot be empty")
+    if rerank and method != "hybrid":
+        raise ValueError(
+        "E11 : le reranking est actuellement disponible uniquement avec hybrid."
+        )
 
     if top_k < 1 or candidates < 1:
         raise ValueError("top_k and candidates must be positive")
@@ -214,8 +220,16 @@ def search(
             fusion=models.Fusion.RRF,
         ),
 
-        limit=top_k,
+        limit=candidate_limit if rerank else top_k,
         with_payload=True,
+    )
+
+    # E11 — Reclasser les candidats si demandé.
+    if rerank:
+        return rerank_points(
+        question=query,
+        points=response.points,
+        top_k=top_k,
     )
 
     return response.points

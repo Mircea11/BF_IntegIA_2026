@@ -1,53 +1,46 @@
 """
-[E10-D2] Exécuter une expérience RAG à partir d'un fichier TOML.
+[E10 / E11] Exécuter et évaluer une expérience RAG définie en TOML.
 
-Exemples (depuis ~/formation/RAG/rag-hopital) :
-    uv run python scripts/run_experiment.py experiments/sparse_bm25.toml --check-config
-    uv run python scripts/run_experiment.py experiments/sparse_bm25.toml --limit 3
-    uv run python scripts/run_experiment.py --evaluate-existing 3
+Depuis le répertoire racine de rag-hopital :
+    PYTHONPATH=src .venv/bin/python scripts/run_experiment.py experiments/hybrid_bge_bm25_rerank.toml --check-config
+    PYTHONPATH=src .venv/bin/python scripts/run_experiment.py experiments/hybrid_bge_bm25_rerank.toml --limit 3
+    PYTHONPATH=src .venv/bin/python scripts/run_experiment.py --evaluate-existing 6
 
-Une exécution normale crée UNE nouvelle expérience PostgreSQL.
---check-config vérifie les paramètres SANS créer d'expérience.
---evaluate-existing réévalue des résultats déjà enregistrés.
+--check-config : valide sans écrire dans PostgreSQL ni lancer de modèle.
+--limit N      : crée une nouvelle expérience sur N questions.
+--evaluate-existing : évalue les résultats d'une expérience enregistrée.
 """
 
 # ============================================================
-# [E10-D2 — SECTION 0] IMPORTS
+# SECTION 0 — IMPORTS
 # ============================================================
 
-import argparse  # Lire les options transmises dans le terminal.
-import json  # Lire les questions du golden dataset.
-import tomllib  # Lire les fichiers TOML (inclus dans Python 3.11+).
-from pathlib import Path  # Manipuler les chemins de fichiers.
-from time import perf_counter  # Mesurer la durée des recherches.
+import argparse
+import json
+import tomllib
+from pathlib import Path
+from time import perf_counter
 
 from rag_hopital.config import settings
-from rag_hopital.db import (
-    create_experiment,
-    finish_experiment,
-    save_question_result,
-)
+from rag_hopital.db import create_experiment, finish_experiment, save_question_result
 from rag_hopital.etl.index import COLLECTION, HYBRID_COLLECTION
 from rag_hopital.evaluation.runner import evaluate_saved_experiment
 from rag_hopital.rag.search import search
 
 
 # ============================================================
-# [E10-D2 — SECTION 1] LIRE ET VALIDER LE TOML
+# SECTION 1 — LIRE ET VALIDER LE TOML
 # ============================================================
 
 def load_and_validate_config(path: Path) -> dict:
-    """Lire le TOML et refuser toute option pas encore implémentée."""
+    """Lire le TOML et vérifier les options réellement prises en charge."""
 
-    # Le chemin est relatif au dossier où l'on lance la commande.
     if not path.is_file():
         raise FileNotFoundError(f"Fichier TOML introuvable : {path}")
 
-    # tomllib.load() transforme le TOML en dictionnaire Python.
     with path.open("rb") as file:
         config = tomllib.load(file)
 
-    # Les sections du TOML sont elles-mêmes des dictionnaires.
     search_config = config.get("search", {})
     chunk_config = config.get("chunking", {})
     embedder_config = config.get("embedder", {})
@@ -62,8 +55,7 @@ def load_and_validate_config(path: Path) -> dict:
     if config.get("dataset") != "hopital_eval.json":
         raise ValueError("Seul hopital_eval.json est pris en charge actuellement.")
 
-    # Les collections sont déjà indexées avec ces paramètres.
-    # Changer le chunking ou l'embedder exige une autre collection.
+    # Les collections existantes ont déjà été indexées avec ces paramètres.
     if (
         chunk_config.get("max_tokens") != 512
         or chunk_config.get("patient_line") is not True
@@ -74,12 +66,12 @@ def load_and_validate_config(path: Path) -> dict:
     if embedder_config.get("model") != "bge-m3":
         raise NotImplementedError("Autre embedder : nouvelle collection requise.")
 
-    # L'évaluateur actuel calcule les métriques à k=5.
+    # Les métriques de retrieval sont actuellement calculées à k=5.
     if search_config.get("top_k") != 5:
         raise NotImplementedError("L'évaluation actuelle utilise top_k=5.")
 
     candidates = search_config.get("candidates", 30)
-    if not isinstance(candidates, int) or candidates < 5:
+    if type(candidates) is not int or candidates < 5:
         raise ValueError("'candidates' doit être un entier >= 5.")
 
     expected_collection = COLLECTION if method == "dense" else HYBRID_COLLECTION
@@ -98,11 +90,22 @@ def load_and_validate_config(path: Path) -> dict:
     if method == "hybrid" and search_config.get("fusion") != "rrf":
         raise NotImplementedError("Fusion implémentée actuellement : rrf.")
 
-    # Ces modules seront ajoutés lors des étapes suivantes.
-    # On refuse de prétendre les avoir utilisés avant leur implémentation.
-    if config.get("reranker", {}).get("enabled") is not False:
-        raise NotImplementedError("Le reranker n'est pas encore implémenté.")
+    # E11 — Le reranker est optionnel et réservé à Hybrid.
+    reranker_config = config.get("reranker", {})
+    rerank_enabled = reranker_config.get("enabled")
 
+    if not isinstance(rerank_enabled, bool):
+        raise ValueError("reranker.enabled doit être true ou false.")
+
+    if rerank_enabled:
+        if method != "hybrid":
+            raise ValueError("E11 : le reranking nécessite method='hybrid'.")
+        if reranker_config.get("model") != "BAAI/bge-reranker-v2-m3":
+            raise ValueError("E11 : modèle de reranking non pris en charge.")
+        if reranker_config.get("device") != "cpu":
+            raise ValueError("E11 : seul device='cpu' est pris en charge.")
+
+    # La génération LLM n'est pas encore intégrée à ce script.
     if config.get("generation", {}).get("enabled") is not False:
         raise NotImplementedError("La génération LLM n'est pas encore implémentée.")
 
@@ -110,39 +113,38 @@ def load_and_validate_config(path: Path) -> dict:
 
 
 # ============================================================
-# [E10-D2 — SECTION 2] SÉLECTIONNER LES QUESTIONS
+# SECTION 2 — SÉLECTIONNER LES QUESTIONS
 # ============================================================
 
 def load_questions(limit: int | None) -> list[dict]:
-    """Charger les 100 questions avec preuves ; --limit en conserve N."""
+    """Charger les 100 questions du golden dataset, puis appliquer --limit."""
 
     path = settings.corpus_path / "hopital_eval.json"
     questions = json.loads(path.read_text(encoding="utf-8"))
 
-    # Les six questions out_of_corpus seront évaluées avec le LLM.
+    # Les questions hors corpus seront traitées lors de l'étape génération LLM.
     grounded = [q for q in questions if q["type"] != "out_of_corpus"]
 
     if len(grounded) != 100:
         raise ValueError(f"100 questions attendues ; trouvé : {len(grounded)}")
 
-    # [:limit] permet de tester trois questions sans exécuter les 100.
     return grounded[:limit] if limit is not None else grounded
 
 
 # ============================================================
-# [E10-D2 — SECTION 3] EXÉCUTER LES RECHERCHES
+# SECTION 3 — EXÉCUTER UNE EXPÉRIENCE
 # ============================================================
 
 def run_retrieval(config: dict, questions: list[dict], source: Path) -> None:
-    """Créer une expérience, rechercher, enregistrer puis terminer."""
+    """Créer une expérience, chercher les chunks et enregistrer les résultats."""
 
     search_config = config["search"]
     method = search_config["method"]
     top_k = search_config["top_k"]
     candidates = search_config.get("candidates", 30)
+    rerank_enabled = config["reranker"]["enabled"]  # E11
 
-    # Copie indépendante : les résultats sont associés aux paramètres
-    # exacts du TOML et aux questions réellement sélectionnées.
+    # Conserver les paramètres exacts et la liste des questions de l'expérience.
     recorded_config = {
         **config,
         "configuration_file": str(source),
@@ -155,16 +157,16 @@ def run_retrieval(config: dict, questions: list[dict], source: Path) -> None:
     experiment_id = create_experiment(recorded_config)
     print(f"\nExpérience créée : {experiment_id}", flush=True)
 
-    # Toutes les questions partagent le même experiment_id.
     for question in questions:
         start = perf_counter()
 
-        # Les options du TOML pilotent la fonction search().
+        # E11 : rerank=True seulement si [reranker] enabled=true dans le TOML.
         points = search(
             question["question"],
             top_k=top_k,
             method=method,
             candidates=candidates,
+            rerank=rerank_enabled,
         )
 
         latency_ms = (perf_counter() - start) * 1000
@@ -177,13 +179,14 @@ def run_retrieval(config: dict, questions: list[dict], source: Path) -> None:
         )
 
         print(
-            f"{question['id']} | {method} | "
+            f"{question['id']} | {method} | rerank={rerank_enabled} | "
             f"{len(points)} chunks | {latency_ms:.2f} ms",
             flush=True,
         )
 
     duration_s = perf_counter() - experiment_start
     finish_experiment(experiment_id, duration_s)
+
     print(
         f"\nTerminé | experiment_id={experiment_id} | "
         f"questions={len(questions)} | durée={duration_s:.2f}s",
@@ -193,26 +196,26 @@ def run_retrieval(config: dict, questions: list[dict], source: Path) -> None:
 
 
 # ============================================================
-# [E10-D2 — SECTION 4] INTERFACE DU TERMINAL
+# SECTION 4 — INTERFACE DU TERMINAL
 # ============================================================
 
 def main() -> None:
-    """Choisir entre vérifier, lancer ou réévaluer une expérience."""
-
     parser = argparse.ArgumentParser(description="Expériences RAG configurées par TOML")
     parser.add_argument("config_file", nargs="?", type=Path)
     parser.add_argument("--limit", type=int, help="Nombre de questions à tester")
     parser.add_argument(
-        "--check-config", action="store_true",
+        "--check-config",
+        action="store_true",
         help="Vérifier le TOML sans écrire dans PostgreSQL",
     )
     parser.add_argument(
-        "--evaluate-existing", type=int, metavar="ID",
+        "--evaluate-existing",
+        type=int,
+        metavar="ID",
         help="Évaluer une expérience PostgreSQL déjà enregistrée",
     )
     args = parser.parse_args()
 
-    # Mode réévaluation : ne pas créer une nouvelle expérience.
     if args.evaluate_existing is not None:
         if args.config_file or args.limit is not None or args.check_config:
             parser.error("--evaluate-existing ne se combine pas avec les autres options")
@@ -231,6 +234,7 @@ def main() -> None:
     print(
         f"Configuration OK : {config['name']} | "
         f"method={config['search']['method']} | "
+        f"rerank={config['reranker']['enabled']} | "
         f"top_k={config['search']['top_k']} | "
         f"candidates={config['search'].get('candidates', 30)} | "
         f"questions={len(questions)}",
