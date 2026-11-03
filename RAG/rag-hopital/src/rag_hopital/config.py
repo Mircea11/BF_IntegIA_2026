@@ -28,6 +28,7 @@ class Settings(BaseSettings):
     embedder_path: str
 
     # Paths
+    bm25_cache_dir: Path = Path.home() / ".cache" / "rag-hopital" / "fastembed"
     corpus_path: Path = PROJECT_ROOT / "data" / "hopital"
 
 

@@ -44,9 +44,12 @@ def get_bm25_model():
     local_files_only=True prevents new model downloads.
     """
 
+    from rag_hopital.config import settings
+
     return SparseTextEmbedding(
         model_name="Qdrant/bm25",
         language="french",
+        cache_dir=str(settings.bm25_cache_dir),
         local_files_only=True,
     )
 
