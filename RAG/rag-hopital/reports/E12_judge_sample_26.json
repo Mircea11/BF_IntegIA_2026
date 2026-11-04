@@ -1,0 +1,719 @@
+[
+  {
+    "id": "Q046",
+    "type": "abbreviation",
+    "patient_ipp": "4100022",
+    "question": "À quel stade est l'insuffisance rénale chronique de Mme Odile Dubois ?",
+    "answer": "Stade 3b.",
+    "evidence": [
+      {
+        "document": "4100022_2025-03-03_consultation.docx",
+        "snippets": [
+          "IRC stade 3b"
+        ],
+        "grade": 2,
+        "fact": 0
+      }
+    ],
+    "care_path": "kidney"
+  },
+  {
+    "id": "Q034",
+    "type": "abbreviation",
+    "patient_ipp": "4100016",
+    "question": "Quelle est la sévérité de la bronchopneumopathie chronique obstructive de Mme Béatrice Dupont ?",
+    "answer": "Stade GOLD 3, VEMS à 48 % de la théorique.",
+    "evidence": [
+      {
+        "document": "4100016_2025-07-13_consultation.docx",
+        "snippets": [
+          "BPCO stade GOLD 3"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "4100016_2025-07-13_consultation.docx",
+        "snippets": [
+          "VEMS à 48 %"
+        ],
+        "grade": 1,
+        "fact": null
+      }
+    ],
+    "care_path": "copd"
+  },
+  {
+    "id": "Q055",
+    "type": "buried",
+    "patient_ipp": "4100004",
+    "question": "Quel stent a été posé chez Mme Corinne Legrand et sur quelle artère ?",
+    "answer": "Un stent actif de 3,0 x 22 mm sur l'IVA moyenne.",
+    "evidence": [
+      {
+        "document": "4100004_2025-12-03_coronarographie.docx",
+        "snippets": [
+          "stent actif de 3,0 x 22 mm sur l'IVA moyenne"
+        ],
+        "grade": 2,
+        "fact": 0
+      }
+    ],
+    "care_path": "myocardial_infarction"
+  },
+  {
+    "id": "Q017",
+    "type": "buried",
+    "patient_ipp": "4100008",
+    "question": "Quel était l'aspect de l'appendice de Mme Monique Morin pendant l'opération ?",
+    "answer": "Appendice perforé avec péritonite localisée.",
+    "evidence": [
+      {
+        "document": "4100008_2025-04-06_cro.docx",
+        "snippets": [
+          "appendice perforé avec péritonite localisée"
+        ],
+        "grade": 2,
+        "fact": 0
+      }
+    ],
+    "care_path": "appendicitis"
+  },
+  {
+    "id": "Q020",
+    "type": "cross_notice",
+    "patient_ipp": null,
+    "question": "Quels médicaments sont contre-indiqués ou doivent être adaptés quand le DFG est inférieur à 30 mL/min ?",
+    "answer": "Metformine et spironolactone (contre-indiquées), sitagliptine (25 mg par jour), amoxicilline-acide clavulanique (dose adaptée), énoxaparine (2000 UI par jour).",
+    "evidence": [
+      {
+        "document": "notice_metformine.docx",
+        "snippets": [
+          "DFG inférieur à 30 mL/min"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "notice_spironolactone.docx",
+        "snippets": [
+          "DFG inférieur à 30 mL/min"
+        ],
+        "grade": 2,
+        "fact": 1
+      },
+      {
+        "document": "notice_sitagliptine.docx",
+        "snippets": [
+          "25 mg par jour s'il est inférieur à 30 mL/min"
+        ],
+        "grade": 2,
+        "fact": 2
+      },
+      {
+        "document": "notice_amoxicilline_clavulanique.docx",
+        "snippets": [
+          "Adapter la dose si le DFG est inférieur à 30 mL/min"
+        ],
+        "grade": 2,
+        "fact": 3
+      },
+      {
+        "document": "notice_enoxaparine.docx",
+        "snippets": [
+          "2000 UI par jour si le DFG est inférieur à 30 mL/min"
+        ],
+        "grade": 2,
+        "fact": 4
+      }
+    ],
+    "care_path": "notices"
+  },
+  {
+    "id": "Q092",
+    "type": "cross_notice",
+    "patient_ipp": null,
+    "question": "Quels médicaments faut-il arrêter ou suspendre avant une chirurgie programmée, et avec quel délai ?",
+    "answer": "Apixaban (24 à 48 heures avant), ticagrelor (5 jours avant, après avis du cardiologue), dapagliflozine (au moins 3 jours avant), metformine (le jour de l'intervention), ramipril (la veille d'une anesthésie générale).",
+    "evidence": [
+      {
+        "document": "notice_apixaban.docx",
+        "snippets": [
+          "arrêter l'apixaban 24 heures avant"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "notice_ticagrelor.docx",
+        "snippets": [
+          "arrêter le ticagrelor 5 jours avant l'intervention"
+        ],
+        "grade": 2,
+        "fact": 1
+      },
+      {
+        "document": "notice_dapagliflozine.docx",
+        "snippets": [
+          "Suspendre la dapagliflozine au moins 3 jours avant une chirurgie programmée"
+        ],
+        "grade": 2,
+        "fact": 2
+      },
+      {
+        "document": "notice_metformine.docx",
+        "snippets": [
+          "arrêter la metformine le jour de l'intervention"
+        ],
+        "grade": 2,
+        "fact": 3
+      },
+      {
+        "document": "notice_ramipril.docx",
+        "snippets": [
+          "suspendu la veille de l'intervention"
+        ],
+        "grade": 2,
+        "fact": 4
+      }
+    ],
+    "care_path": "notices"
+  },
+  {
+    "id": "Q036",
+    "type": "cross_patient",
+    "patient_ipp": null,
+    "question": "Quels patients ont eu un drain de Redon après leur cholécystectomie ?",
+    "answer": "M. René Fontaine, Mme Josiane Masson.",
+    "evidence": [
+      {
+        "document": "4100047_2025-11-25_cro.docx",
+        "snippets": [
+          "Mise en place d'un drain de Redon"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "4100057_2025-06-20_cro.docx",
+        "snippets": [
+          "Mise en place d'un drain de Redon"
+        ],
+        "grade": 2,
+        "fact": 1
+      }
+    ],
+    "care_path": "drain"
+  },
+  {
+    "id": "Q062",
+    "type": "cross_patient",
+    "patient_ipp": null,
+    "question": "Quels patients ont une hypothyroïdie due à une thyroïdite de Hashimoto ?",
+    "answer": "M. Luc Robert, Mme Hélène Leroy.",
+    "evidence": [
+      {
+        "document": "4100010_2025-10-31_consultation.docx",
+        "snippets": [
+          "thyroïdite de Hashimoto"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "4100030_2025-08-25_consultation.docx",
+        "snippets": [
+          "thyroïdite de Hashimoto"
+        ],
+        "grade": 2,
+        "fact": 1
+      }
+    ],
+    "care_path": "hashimoto"
+  },
+  {
+    "id": "Q021",
+    "type": "dose",
+    "patient_ipp": "4100039",
+    "question": "Pendant combien de jours Mme Catherine Boyer doit-elle faire des piqûres d'anticoagulant après sa prothèse ?",
+    "answer": "35 jours (énoxaparine 4000 UI, une injection par jour).",
+    "evidence": [
+      {
+        "document": "4100039_2025-07-16_sortie.docx",
+        "snippets": [
+          "Énoxaparine",
+          "35 jours"
+        ],
+        "grade": 2,
+        "fact": 0
+      }
+    ],
+    "care_path": "hip_replacement"
+  },
+  {
+    "id": "Q056",
+    "type": "dose",
+    "patient_ipp": "4100014",
+    "question": "Pendant combien de temps Mme Simone Fournier doit-elle prendre du ticagrelor ?",
+    "answer": "12 mois, à 90 mg matin et soir.",
+    "evidence": [
+      {
+        "document": "4100014_2025-02-24_sortie.docx",
+        "snippets": [
+          "Ticagrelor",
+          "12 mois"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "4100014_2025-02-24_ordonnance.docx",
+        "snippets": [
+          "Ticagrelor 90 mg",
+          "pendant 12 mois"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "4100014_2025-04-30_consultation.docx",
+        "snippets": [
+          "ticagrelor jusqu'à 12 mois"
+        ],
+        "grade": 2,
+        "fact": 0
+      }
+    ],
+    "care_path": "myocardial_infarction"
+  },
+  {
+    "id": "Q054",
+    "type": "drug_info",
+    "patient_ipp": null,
+    "question": "Quel antifongique est contre-indiqué avec le gliclazide ?",
+    "answer": "Le miconazole.",
+    "evidence": [
+      {
+        "document": "notice_gliclazide.docx",
+        "snippets": [
+          "Association au miconazole"
+        ],
+        "grade": 2,
+        "fact": 0
+      }
+    ],
+    "care_path": "notices"
+  },
+  {
+    "id": "Q033",
+    "type": "drug_info",
+    "patient_ipp": null,
+    "question": "Quel est l'effet indésirable grave, quoique très rare, de la metformine ?",
+    "answer": "L'acidose lactique.",
+    "evidence": [
+      {
+        "document": "notice_metformine.docx",
+        "snippets": [
+          "Très rare mais grave : acidose lactique"
+        ],
+        "grade": 2,
+        "fact": 0
+      }
+    ],
+    "care_path": "notices"
+  },
+  {
+    "id": "Q003",
+    "type": "imaging",
+    "patient_ipp": "4100037",
+    "question": "Quelle était la taille du calcul vu à l'échographie abdominale de Mme Sylvie Roux ?",
+    "answer": "10 mm.",
+    "evidence": [
+      {
+        "document": "4100037_2025-06-13_imagerie.pdf",
+        "snippets": [
+          "calcul de 10 mm"
+        ],
+        "grade": 2,
+        "fact": 0
+      }
+    ],
+    "care_path": "cholecystectomy"
+  },
+  {
+    "id": "Q102",
+    "type": "imaging",
+    "patient_ipp": "4100058",
+    "question": "Le scanner abdominal de M. Jacques Rousseau montrait-il une perforation de l'appendice ?",
+    "answer": "Non, absence de perforation.",
+    "evidence": [
+      {
+        "document": "4100058_2025-10-07_imagerie.pdf",
+        "snippets": [
+          "Absence de perforation"
+        ],
+        "grade": 2,
+        "fact": 0
+      }
+    ],
+    "care_path": "appendicitis"
+  },
+  {
+    "id": "Q079",
+    "type": "lay_language",
+    "patient_ipp": "4100030",
+    "question": "Pourquoi la thyroïde de Mme Hélène Leroy fonctionne-t-elle au ralenti ?",
+    "answer": "Hypothyroïdie due à une thyroïdite de Hashimoto (anticorps anti-TPO très élevés).",
+    "evidence": [
+      {
+        "document": "4100030_2025-08-25_consultation.docx",
+        "snippets": [
+          "Hypothyroïdie en rapport avec une thyroïdite de Hashimoto (anticorps anti-TPO très élevés)"
+        ],
+        "grade": 2,
+        "fact": 0
+      }
+    ],
+    "care_path": "hypothyroidism"
+  },
+  {
+    "id": "Q029",
+    "type": "lay_language",
+    "patient_ipp": "4100033",
+    "question": "Quel trouble du rythme cardiaque a été découvert chez M. Robert Sanchez ?",
+    "answer": "Une fibrillation auriculaire (FA) paroxystique.",
+    "evidence": [
+      {
+        "document": "4100033_2025-12-13_consultation.docx",
+        "snippets": [
+          "FA paroxystique"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "4100033_2025-12-24_imagerie.pdf",
+        "snippets": [
+          "fibrillation auriculaire"
+        ],
+        "grade": 1,
+        "fact": null
+      }
+    ],
+    "care_path": "atrial_fibrillation"
+  },
+  {
+    "id": "Q086",
+    "type": "multi_hop",
+    "patient_ipp": "4100033",
+    "question": "M. Robert Sanchez doit être opéré sous rachianesthésie : combien de temps avant faut-il arrêter son anticoagulant ?",
+    "answer": "48 heures avant (apixaban, anesthésie rachidienne), sans relais par héparine.",
+    "evidence": [
+      {
+        "document": "4100033_2025-12-13_ordonnance.docx",
+        "snippets": [
+          "Apixaban 2,5 mg"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "4100033_2025-12-13_consultation.docx",
+        "snippets": [
+          "apixaban 2,5 mg matin et soir"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "notice_apixaban.docx",
+        "snippets": [
+          "48 heures avant une intervention à risque hémorragique élevé ou une anesthésie rachidienne"
+        ],
+        "grade": 2,
+        "fact": 1
+      },
+      {
+        "document": "notice_bupivacaine.docx",
+        "snippets": [
+          "Respecter les délais d'arrêt des anticoagulants"
+        ],
+        "grade": 1,
+        "fact": null
+      }
+    ],
+    "care_path": "atrial_fibrillation"
+  },
+  {
+    "id": "Q089",
+    "type": "multi_hop",
+    "patient_ipp": "4100005",
+    "question": "Le médecin traitant de Mme Nathalie Girard envisage d'ajouter du ramipril : est-ce possible ?",
+    "answer": "Non : l'association d'un IEC comme le ramipril au sacubitril/valsartan est contre-indiquée (il faut 36 heures entre les deux).",
+    "evidence": [
+      {
+        "document": "4100005_2025-06-14_sortie.docx",
+        "snippets": [
+          "Sacubitril/valsartan",
+          "24/26 mg"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "4100005_2025-06-14_ordonnance.docx",
+        "snippets": [
+          "Sacubitril/valsartan 24/26 mg"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "notice_sacubitril_valsartan.docx",
+        "snippets": [
+          "arrêter l'IEC au moins 36 heures avant la première prise"
+        ],
+        "grade": 2,
+        "fact": 1
+      },
+      {
+        "document": "notice_ramipril.docx",
+        "snippets": [
+          "Association au sacubitril/valsartan"
+        ],
+        "grade": 2,
+        "fact": 1
+      }
+    ],
+    "care_path": "heart_failure"
+  },
+  {
+    "id": "Q005",
+    "type": "negation",
+    "patient_ipp": "4100039",
+    "question": "Mme Catherine Boyer a-t-elle été transfusée pendant la pose de sa prothèse de hanche ?",
+    "answer": "Non, sans transfusion.",
+    "evidence": [
+      {
+        "document": "4100039_2025-07-13_cro.docx",
+        "snippets": [
+          "sans transfusion"
+        ],
+        "grade": 2,
+        "fact": 0
+      }
+    ],
+    "care_path": "hip_replacement"
+  },
+  {
+    "id": "Q026",
+    "type": "negation",
+    "patient_ipp": "4100016",
+    "question": "Mme Béatrice Dupont est-elle allergique à la pénicilline ?",
+    "answer": "Oui (urticaire généralisée en 2009).",
+    "evidence": [
+      {
+        "document": "4100016_2025-07-13_consultation.docx",
+        "snippets": [
+          "Allergie à la pénicilline (urticaire généralisée en 2009)."
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "4100016_2025-09-18_sortie.docx",
+        "snippets": [
+          "Allergie à la pénicilline (urticaire généralisée en 2009)."
+        ],
+        "grade": 2,
+        "fact": 0
+      }
+    ],
+    "care_path": "copd"
+  },
+  {
+    "id": "Q031",
+    "type": "split",
+    "patient_ipp": "4100005",
+    "question": "Quel jour le relais oral des diurétiques a-t-il été décidé pour Mme Nathalie Girard, et à quelle dose de furosémide ?",
+    "answer": "Le 12/06/2025, avec du furosémide à 60 mg le matin.",
+    "evidence": [
+      {
+        "document": "4100005_2025-06-14_sortie.docx",
+        "snippets": [
+          "relais par voie orale a été décidé le 12/06/2025",
+          "furosémide à 60 mg le matin"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "4100005_2025-06-14_sortie.docx",
+        "snippets": [
+          "relais par voie orale a été décidé le 12/06/2025"
+        ],
+        "grade": 1,
+        "fact": null
+      },
+      {
+        "document": "4100005_2025-06-14_sortie.docx",
+        "snippets": [
+          "furosémide à 60 mg le matin"
+        ],
+        "grade": 1,
+        "fact": null
+      }
+    ],
+    "care_path": "heart_failure"
+  },
+  {
+    "id": "Q047",
+    "type": "split",
+    "patient_ipp": "4100045",
+    "question": "Quel jour le relais oral des diurétiques a-t-il été décidé pour Mme Valérie Roussel, et à quelle dose de furosémide ?",
+    "answer": "Le 14/03/2025, avec du furosémide à 60 mg le matin.",
+    "evidence": [
+      {
+        "document": "4100045_2025-03-18_sortie.docx",
+        "snippets": [
+          "relais par voie orale a été décidé le 14/03/2025",
+          "furosémide à 60 mg le matin"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "4100045_2025-03-18_sortie.docx",
+        "snippets": [
+          "relais par voie orale a été décidé le 14/03/2025"
+        ],
+        "grade": 1,
+        "fact": null
+      },
+      {
+        "document": "4100045_2025-03-18_sortie.docx",
+        "snippets": [
+          "furosémide à 60 mg le matin"
+        ],
+        "grade": 1,
+        "fact": null
+      }
+    ],
+    "care_path": "heart_failure"
+  },
+  {
+    "id": "Q073",
+    "type": "table",
+    "patient_ipp": "4100052",
+    "question": "Quel était le débit de filtration glomérulaire de M. Pierre Perrin sur le bilan de juillet 2025 ?",
+    "answer": "22 mL/min/1,73 m².",
+    "evidence": [
+      {
+        "document": "4100052_2025-07-04_bilan.docx",
+        "snippets": [
+          "DFG",
+          "22"
+        ],
+        "grade": 2,
+        "fact": 0
+      }
+    ],
+    "care_path": "kidney"
+  },
+  {
+    "id": "Q011",
+    "type": "table",
+    "patient_ipp": "4100005",
+    "question": "Quelle était la valeur du NT-proBNP de Mme Nathalie Girard au bilan de contrôle après sa sortie ?",
+    "answer": "1408 pg/mL.",
+    "evidence": [
+      {
+        "document": "4100005_2025-06-22_bilan.docx",
+        "snippets": [
+          "NT-proBNP",
+          "1408"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "4100005_2025-06-14_sortie.docx",
+        "snippets": [
+          "NT-proBNP"
+        ],
+        "grade": 1,
+        "fact": null
+      }
+    ],
+    "care_path": "heart_failure"
+  },
+  {
+    "id": "Q104",
+    "type": "temporal",
+    "patient_ipp": "4100050",
+    "question": "Quelle est la dose actuelle de lévothyroxine de M. Christian Bonnet ?",
+    "answer": "50 µg par jour.",
+    "evidence": [
+      {
+        "document": "4100050_2025-07-17_consultation.docx",
+        "snippets": [
+          "Lévothyroxine maintenue à 50 µg"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "4100050_2025-05-08_consultation.docx",
+        "snippets": [
+          "de 25 µg à 50 µg"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "4100050_2025-03-22_consultation.docx",
+        "snippets": [
+          "lévothyroxine à 25 µg"
+        ],
+        "grade": 1,
+        "fact": null
+      }
+    ],
+    "care_path": "hypothyroidism"
+  },
+  {
+    "id": "Q093",
+    "type": "temporal",
+    "patient_ipp": "4100055",
+    "question": "Quelle est la dose actuelle de furosémide de M. Denis Petit ?",
+    "answer": "40 mg le matin.",
+    "evidence": [
+      {
+        "document": "4100055_2025-09-17_consultation.docx",
+        "snippets": [
+          "furosémide à 40 mg"
+        ],
+        "grade": 2,
+        "fact": 0
+      },
+      {
+        "document": "4100055_2025-07-23_sortie.docx",
+        "snippets": [
+          "Furosémide",
+          "60 mg"
+        ],
+        "grade": 1,
+        "fact": null
+      },
+      {
+        "document": "4100055_2025-07-23_ordonnance.docx",
+        "snippets": [
+          "Furosémide 60 mg"
+        ],
+        "grade": 1,
+        "fact": null
+      }
+    ],
+    "care_path": "heart_failure"
+  }
+]

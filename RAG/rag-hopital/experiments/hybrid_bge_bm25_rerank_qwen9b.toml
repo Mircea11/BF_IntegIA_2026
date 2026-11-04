@@ -1,6 +1,6 @@
 # E11 — Hybrid Search + BGE Reranker
 
-name = "hybrid_bge_bm25_rerank_qwen9b_v1"
+name = "hybrid_bge_bm25_rerank_qwen9b_v2"
 dataset = "hopital_eval.json"
 
 [chunking]
@@ -29,7 +29,7 @@ device = "cpu"
 enabled = true
 model = "qwen3.5-9b"
 #system_prompt = "references/RagRecapCorrige/prompts/detailed.txt"
-system_prompt = "prompts/baseline_detailed_v1.txt"
+system_prompt = "prompts/hopital_strict_v1.txt"
 temperature = 0.0
 max_tokens = 400
 reasoning = false
