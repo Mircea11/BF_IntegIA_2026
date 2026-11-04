@@ -24,7 +24,10 @@ from time import perf_counter
 from rag_hopital.config import settings
 from rag_hopital.db import create_experiment, finish_experiment, save_question_result
 from rag_hopital.etl.index import COLLECTION, HYBRID_COLLECTION
-from rag_hopital.evaluation.runner import evaluate_saved_experiment
+from rag_hopital.evaluation.runner import (
+    evaluate_saved_experiment,
+    run_generation_experiment,
+)
 from rag_hopital.rag.search import search
 
 
@@ -105,10 +108,30 @@ def load_and_validate_config(path: Path) -> dict:
         if reranker_config.get("device") != "cpu":
             raise ValueError("E11 : seul device='cpu' est pris en charge.")
 
-    # La génération LLM n'est pas encore intégrée à ce script.
-    if config.get("generation", {}).get("enabled") is not False:
-        raise NotImplementedError("La génération LLM n'est pas encore implémentée.")
+        # E12 — Valider la configuration de génération.
+    generation = config.get("generation", {})
+    enabled = generation.get("enabled")
 
+    if not isinstance(enabled, bool):
+        raise ValueError("generation.enabled doit être true ou false.")
+
+    if enabled:
+        if not generation.get("model"):
+            raise ValueError("generation.model est obligatoire.")
+
+        prompt_path = generation.get("system_prompt")
+        if not prompt_path or not Path(prompt_path).is_file():
+            raise ValueError(
+                f"Prompt introuvable : {prompt_path}"
+            )
+
+        max_tokens = generation.get("max_tokens", 400)
+        if type(max_tokens) is not int or max_tokens < 1:
+            raise ValueError("generation.max_tokens doit être un entier positif.")
+
+        if not isinstance(generation.get("reasoning", False), bool):
+            raise ValueError("generation.reasoning doit être true ou false.")
+        
     return config
 
 
@@ -116,21 +139,33 @@ def load_and_validate_config(path: Path) -> dict:
 # SECTION 2 — SÉLECTIONNER LES QUESTIONS
 # ============================================================
 
-def load_questions(limit: int | None) -> list[dict]:
-    """Charger les 100 questions du golden dataset, puis appliquer --limit."""
+def load_questions(
+    limit: int | None,
+    include_out_of_corpus: bool = False,
+    question_type: str | None = None,
+) -> list[dict]:
+    """Charger et sélectionner les questions du dataset."""
 
     path = settings.corpus_path / "hopital_eval.json"
     questions = json.loads(path.read_text(encoding="utf-8"))
 
-    # Les questions hors corpus seront traitées lors de l'étape génération LLM.
-    grounded = [q for q in questions if q["type"] != "out_of_corpus"]
+    grounded = [
+        q for q in questions
+        if q["type"] != "out_of_corpus"
+    ]
 
     if len(grounded) != 100:
-        raise ValueError(f"100 questions attendues ; trouvé : {len(grounded)}")
+        raise ValueError("100 questions attendues pour le retrieval.")
 
-    return grounded[:limit] if limit is not None else grounded
+    selected = questions if include_out_of_corpus else grounded
 
+    if question_type:
+        selected = [
+            q for q in selected
+            if q["type"] == question_type
+        ]
 
+    return selected[:limit] if limit is not None else selected
 # ============================================================
 # SECTION 3 — EXÉCUTER UNE EXPÉRIENCE
 # ============================================================
@@ -214,6 +249,11 @@ def main() -> None:
         metavar="ID",
         help="Évaluer une expérience PostgreSQL déjà enregistrée",
     )
+    parser.add_argument(
+        "--question-type",
+        type=str,
+        help="Tester uniquement un type de question.",
+    )
     args = parser.parse_args()
 
     if args.evaluate_existing is not None:
@@ -229,8 +269,11 @@ def main() -> None:
         parser.error("--limit doit être >= 1")
 
     config = load_and_validate_config(args.config_file)
-    questions = load_questions(args.limit)
-
+    questions = load_questions(
+        args.limit,
+        include_out_of_corpus=config["generation"]["enabled"],
+        question_type=args.question_type,
+    )
     print(
         f"Configuration OK : {config['name']} | "
         f"method={config['search']['method']} | "
@@ -245,8 +288,18 @@ def main() -> None:
         print("Vérification seule : aucune expérience créée.")
         return
 
-    run_retrieval(config, questions, args.config_file)
-
+    if config["generation"]["enabled"]:
+        run_generation_experiment(
+            config,
+            questions,
+            args.config_file,
+        )
+    else:
+        run_retrieval(
+            config,
+            questions,
+            args.config_file,
+        )
 
 if __name__ == "__main__":
     main()

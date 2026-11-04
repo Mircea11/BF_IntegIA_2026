@@ -506,3 +506,46 @@ def save_question_scores(
                     reason,
                 ),
             )
+def save_generated_answer(
+    experiment_id: int,
+    question: dict,
+    result: dict,
+) -> None:
+    """Enregistrer une réponse E12 et ses sources dans PostgreSQL."""
+
+    chunks = [
+        {
+            "rank": source["id"],
+            "chunk_id": source["chunk_id"],
+            "document": source["document"],
+            "chunk_index": source["chunk_index"],
+            "patient_ipp": source["patient_ipp"],
+            "score": source["score"],
+        }
+        for source in result["sources"]
+    ]
+
+    with psycopg.connect(settings.postgres_url) as conn:
+        conn.execute(
+            """
+            INSERT INTO answers (
+                experiment_id, question_id, question_text,
+                expected_answer, chunks, answer, latency_ms
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (experiment_id, question_id)
+            DO UPDATE SET
+                chunks = EXCLUDED.chunks,
+                answer = EXCLUDED.answer,
+                latency_ms = EXCLUDED.latency_ms
+            """,
+            (
+                experiment_id,
+                question["id"],
+                question["question"],
+                question.get("answer"),
+                Jsonb(chunks),
+                result["answer"],
+                result["total_seconds"] * 1000,
+            ),
+        ) 

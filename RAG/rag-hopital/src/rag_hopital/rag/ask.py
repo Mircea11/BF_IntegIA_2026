@@ -122,13 +122,16 @@ def ask(
     result.update({
         "question": question,
         "sources": [
-            {
-                "id": i,
-                "document": chunk.payload.get("document"),
-                "chunk_index": chunk.payload.get("chunk_index"),
-            }
-            for i, chunk in enumerate(chunks, 1)
-        ],
+        {
+            "id": i,
+            "chunk_id": chunk.payload.get("chunk_id"),
+            "document": chunk.payload.get("document"),
+            "chunk_index": chunk.payload.get("chunk_index"),
+            "patient_ipp": chunk.payload.get("patient_ipp"),
+            "score": float(chunk.score),
+        }
+        for i, chunk in enumerate(chunks, 1)
+    ],
         "retrieval_seconds": round(retrieval_seconds, 2),
         "total_seconds": round(perf_counter() - start, 2),
         "status": "completed",

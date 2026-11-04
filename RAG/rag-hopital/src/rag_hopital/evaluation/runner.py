@@ -237,3 +237,80 @@ def evaluate_saved_experiment(experiment_id: int) -> None:
     print("Experiment ID:", experiment_id)
     print("Questions evaluated:", len(saved_questions))
     print("Scores saved in PostgreSQL.")
+
+# ============================================================
+# E12 — EXÉCUTER UNE EXPÉRIENCE AVEC GÉNÉRATION
+# ============================================================
+
+def run_generation_experiment(config, questions, source):
+    """Exécuter et enregistrer une expérience RAG avec LLM."""
+
+    from pathlib import Path
+    from time import perf_counter
+
+    from rag_hopital.config import settings
+    from rag_hopital.db import (
+        create_experiment,
+        finish_experiment,
+        save_generated_answer,
+    )
+    from rag_hopital.rag.ask import ask
+
+    generation = config["generation"]
+    retrieval = config["search"]
+
+    # Lire le prompt défini par l'expérience.
+    prompt = Path(
+        generation["system_prompt"]
+    ).read_text(encoding="utf-8")
+
+    # Enregistrer les paramètres exacts de l'expérience.
+    recorded_config = {
+        **config,
+        "configuration_file": str(source),
+        "question_ids": [q["id"] for q in questions],
+        "question_count": len(questions),
+        "evaluation": "retrieval_and_generation",
+        "generation": {
+            **generation,
+            "system_prompt_text": prompt,
+        },
+    }
+
+    experiment_id = create_experiment(recorded_config)
+    start = perf_counter()
+
+    print(f"\nExpérience E12 créée : {experiment_id}", flush=True)
+
+    for question in questions:
+
+        result = ask(
+            question["question"],
+            model=generation["model"],
+            llm_url=settings.llm_url,
+            system_prompt=prompt,
+            method=retrieval["method"],
+            candidates=retrieval.get("candidates", 30),
+            top_k=retrieval["top_k"],
+            rerank=config["reranker"]["enabled"],
+            max_tokens=generation.get("max_tokens", 400),
+            enable_thinking=generation.get("reasoning", False),
+        )
+
+        save_generated_answer(
+            experiment_id,
+            question,
+            result,
+        )
+
+        print(
+            f'{question["id"]} | '
+            f'{result["status"]} | '
+            f'{result["total_seconds"]:.2f} s',
+            flush=True,
+        )
+
+    duration = perf_counter() - start
+    finish_experiment(experiment_id, duration)
+
+    print(f"\nE12 terminée : expérience {experiment_id}")
