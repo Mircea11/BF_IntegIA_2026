@@ -25,8 +25,8 @@ from helpdesk_ops.observabilite import init_observabilite
 from helpdesk_ops.texte import normaliser
 
 TICKETS = sys.argv[1:] if len(sys.argv) > 1 else [
-    "Bonjour, le VPN est bloqué depuis ce matin, c'est urgent. Jean (jean.dupont@nordtech.example)"
-    "Mon imprimante laser couleur du 2eme ne fonctionne plus"
+    "Bonjour, le VPN est bloqué depuis ce matin, c'est urgent. Jean (jean.dupont@nordtech.example)",
+    "Mon imprimante laser couleur du 2eme ne fonctionne plus",
 ]
 
 llm = creer_llm("agent")                         # le modèle désigné par infrastructure/.env
