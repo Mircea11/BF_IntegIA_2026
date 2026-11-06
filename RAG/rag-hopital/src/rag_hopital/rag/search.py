@@ -94,6 +94,7 @@ def search(
     method: str = "dense",
     candidates: int = 30,
     rerank: bool = False,
+    patient_ipp: str | None = None,
 ):
     """
     Search Qdrant using the selected retrieval method.
@@ -135,6 +136,25 @@ def search(
     if top_k < 1 or candidates < 1:
         raise ValueError("top_k and candidates must be positive")
 
+    
+    
+    patient_filter = None
+
+    if patient_ipp is not None:
+        patient_ipp = str(patient_ipp).strip()
+
+        if not patient_ipp:
+            raise ValueError("patient_ipp cannot be empty")
+
+        patient_filter = models.Filter(
+            must=[
+                models.FieldCondition(
+                    key="patient_ipp",
+                    match=models.MatchValue(value=patient_ipp)
+                )
+            ]
+        )
+    
     # --------------------------------------------------------
     # [E10-C3.2] DENSE SEARCH — EXISTING METHOD
     # --------------------------------------------------------
@@ -152,6 +172,7 @@ def search(
             query=vector,
             limit=top_k,
             with_payload=True,
+            query_filter=patient_filter,
         )
 
         return response.points
@@ -181,6 +202,8 @@ def search(
             using="bm25",
             limit=top_k,
             with_payload=True,
+            query_filter=patient_filter,
+
         )
 
         return response.points
@@ -210,12 +233,14 @@ def search(
                 query=dense_vector,
                 using="dense",
                 limit=candidate_limit,
+                filter=patient_filter,
             ),
 
             models.Prefetch(
                 query=sparse_vector,
                 using="bm25",
                 limit=candidate_limit,
+                filter=patient_filter,
             ),
         ],
 
