@@ -58,3 +58,10 @@ RAG/cours-rag/drive-download-20261008T064617Z-1-001/rag/demo/export_folder/*.png
 
 /RAG/rag-hopital/data/chunks/
 /RAG/rag-hopital/data/conversions_enriched/
+
+# Local backup files
+*.bak
+*.backup
+
+# Local link to instructor repository
+/helpdesk-ops
