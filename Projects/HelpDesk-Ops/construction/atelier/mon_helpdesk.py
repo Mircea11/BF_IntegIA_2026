@@ -1,40 +1,63 @@
-"""Étape 3 : le système devient un graphe explicite.             (carte : étape 3 · J1-03, Ex1.1)
+"""Étape 5 : la validation humaine et le ticket.                  (carte : étape 5 · J2-02, Ex2.1)
 
-Ce qu'on ajoute à l'étape 2 :
-    - un état partagé (EtatTicket) : les messages ET les champs du tri (catégorie, priorité, file) ;
-    - trois nœuds : trier → agent ⇄ outils, câblés par des arêtes ; tools_condition décide de boucler ou finir ;
-    - le dessin du graphe : en ASCII dans le terminal, en Mermaid dans construction/sortie/.
+Ce qu'on ajoute à l'étape 4 :
+    - un nœud creer_ticket : la première ACTION À IMPACT du système, écrite dans data/checkpoints/construction_tickets.json ;
+    - un nœud valider : pour un P1, le graphe s'arrête (interrupt) et attend la décision d'un humain ;
+      le checkpoint garde tout : on peut fermer le terminal et reprendre plus tard ;
+    - l'idempotence : la clé du ticket vient du thread et de la demande, rejouer ne crée pas de doublon.
 
-Ce qui disparaît : create_agent (on écrit sa boucle nous-mêmes) et la fonction traiter_ticket
-(le graphe EST le traitement ; sa trace devient la racine).
+Adaptation du fichier officiel : nom de fichier propre à l'atelier, options
+--approuver/--refuser mutuellement exclusives, motif de refus facultatif.
 
 Lancer :
-    uv run --project infrastructure python construction/etape_03_stategraph.py "srv-erp-02 est-il en ligne ?"
+    # un P3 : le ticket est créé directement
+    uv run --project infrastructure python construction/atelier/mon_helpdesk_etape5.py --thread t-imprimante "Mon imprimante affiche une erreur papier"
+    # un P1 : le graphe s'arrête et attend…
+    uv run --project infrastructure python construction/atelier/mon_helpdesk_etape5.py --thread t-vpn "Le VPN est bloqué pour tout le service, urgent"
+    # … la décision d'un responsable, plus tard, dans un autre terminal
+    uv run --project infrastructure python construction/atelier/mon_helpdesk_etape5.py --thread t-vpn --approuver marie
+    uv run --project infrastructure python construction/atelier/mon_helpdesk_etape5.py --thread t-vpn --refuser marie --motif "doublon de NT-0001"
 
 À observer :
-    - le terminal : le graphe dessiné, puis chaque nœud au moment où il s'exécute (stream) ;
-    - construction/sortie/etape_03_graphe.md : ouvrir dans JupyterLab, le schéma Mermaid s'affiche ;
-    - Langfuse : une trace « helpdesk » dont les enfants portent les NOMS DES NŒUDS (trier, agent, tools).
+    - le terminal : ⏸ « en attente de validation », puis 🎫 le ticket créé, avec « validé par » ;
+    - data/checkpoints/construction_tickets.json : le ticket, sa file, qui l'a validé ;
+    - Langfuse › Sessions › t-vpn : DEUX traces (avant et après la pause), une seule conversation.
 """
-import sys
+import argparse
+import json
 from pathlib import Path
+from typing import Literal
 
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnableConfig                    # ═══ NOUVEAU (étape 5)
 from langchain_core.tools import tool
 from langfuse import propagate_attributes
-from langgraph.graph import END, START, MessagesState, StateGraph      # ═══ NOUVEAU (étape 3)
-from langgraph.prebuilt import ToolNode, tools_condition              # ═══ NOUVEAU (étape 3)
+from langgraph.checkpoint.sqlite import SqliteSaver
+from langgraph.graph import END, START, MessagesState, StateGraph
+from langgraph.prebuilt import ToolNode, tools_condition
+from langgraph.types import Command, interrupt                         # ═══ NOUVEAU (étape 5)
 
 from helpdesk_ops.config import creer_llm
 from helpdesk_ops.donnees import CATEGORIES, INVENTAIRE, KB
 from helpdesk_ops.observabilite import init_observabilite
 from helpdesk_ops.texte import mots_cles, normaliser
 
-TICKET = sys.argv[1] if len(sys.argv) > 1 else "srv-erp-02 est-il en ligne ? L'ERP ne répond plus"
+parser = argparse.ArgumentParser(description="HelpDesk-Ops, étape 5 : validation humaine et ticket")
+parser.add_argument("message", nargs="?", default="Le VPN est bloqué pour tout le service, urgent")
+parser.add_argument("--thread", default="conv-demo", help="identifiant de la conversation")
+parser.add_argument("--oublier", action="store_true", help="effacer la conversation (RGPD)")
+decision_flags = parser.add_mutually_exclusive_group()
+decision_flags.add_argument("--approuver", metavar="NOM", help="valider le ticket P1 en attente")      # ═══ NOUVEAU (étape 5)
+decision_flags.add_argument("--refuser", metavar="NOM", help="refuser le ticket P1 en attente")       # ═══ NOUVEAU (étape 5)
+parser.add_argument("--motif", default="", help="motif du refus")                             # ═══ NOUVEAU (étape 5)
+args = parser.parse_args()
+
 RACINE = next(p for p in Path(__file__).resolve().parents if (p / "infrastructure").is_dir())   # la racine du cours
 SORTIE = Path(__file__).resolve().parent / "sortie"
+BASE = RACINE / "data" / "checkpoints" / "construction.sqlite"
+TICKETS = RACINE / "data" / "checkpoints" / "construction_tickets.json"   # ═══ NOUVEAU (étape 5) : ignoré par Git
 
 llm = creer_llm("agent")                         # le modèle désigné par infrastructure/.env
 langfuse, handler = init_observabilite()         # client Langfuse avec masque PII + CallbackHandler
@@ -97,23 +120,35 @@ SYSTEME = SystemMessage(
     "Tu es l'agent support N1 du help-desk de NordTech SA. Réponds en français, en 3 phrases maximum. "
     "Utilise statut_serveur pour l'état d'un serveur et chercher_kb pour une procédure. "
     "N'invente jamais de procédure ni de nom de serveur : si les outils ne donnent rien, propose d'ouvrir un ticket.")
-llm_outils = llm.bind_tools(OUTILS)                  # ═══ NOUVEAU (étape 3) : le modèle connaît les outils
+llm_outils = llm.bind_tools(OUTILS)
 
 
-# ═══ NOUVEAU (étape 3) : l'état partagé. MessagesState apporte `messages` et son reducer add_messages ═══
+# ═══ NOUVEAU (étape 5) : le ticketing de NordTech (en vrai : l'API de l'outil ITSM), idempotent ═══
+def enregistrer_ticket(cle: str, **champs) -> tuple[dict, bool]:
+    """Renvoie (ticket, créé). La même clé renvoie le ticket existant : pas de doublon au rejeu."""
+    tickets = json.loads(TICKETS.read_text(encoding="utf-8")) if TICKETS.exists() else {}
+    if cle in tickets:
+        return tickets[cle], False
+    ticket = {"id": f"NT-{len(tickets) + 1:04d}", **champs}
+    tickets[cle] = ticket
+    TICKETS.write_text(json.dumps(tickets, ensure_ascii=False, indent=2), encoding="utf-8")
+    return ticket, True
+
+
+# --------------------------------------------------------------------------- l'état et les nœuds
 class EtatTicket(MessagesState):
     ticket: str
     categorie: str
     priorite: str
     file: str
+    valide_par: str          # ═══ NOUVEAU (étape 5)
 
 
-# ═══ NOUVEAU (étape 3) : les nœuds. Chacun lit l'état et renvoie une MISE À JOUR PARTIELLE ═══
 def trier(state: EtatTicket) -> dict:
     brute = tri.invoke({"ticket": state["ticket"], "categories": ", ".join(CATEGORIES)})
     categorie = normaliser_categorie(brute)
     priorite = estimer_priorite(state["ticket"])
-    return {"categorie": categorie, "priorite": priorite, "file": file_attente(categorie),
+    return {"categorie": categorie, "priorite": priorite, "file": file_attente(categorie), "valide_par": "",
             "messages": [HumanMessage(f"[{categorie} · {priorite}] {state['ticket']}")]}
 
 
@@ -121,48 +156,104 @@ def agent(state: EtatTicket) -> dict:
     return {"messages": [llm_outils.invoke([SYSTEME] + state["messages"])]}
 
 
-# ═══ NOUVEAU (étape 3) : le câblage ═══
+# ═══ NOUVEAU (étape 5) : après l'agent, trois chemins au lieu de deux ═══
+def apres_agent(state: EtatTicket) -> Literal["tools", "valider", "creer_ticket"]:
+    if tools_condition(state) == "tools":
+        return "tools"
+    return "valider" if state["priorite"] == "P1" else "creer_ticket"
+
+
+# ═══ NOUVEAU (étape 5) : la pause humaine. À la reprise, le nœud repart DU DÉBUT : rien avant interrupt() ═══
+def valider(state: EtatTicket) -> Command[Literal["creer_ticket", "__end__"]]:
+    decision = interrupt({"question": "Créer ce ticket P1 ?", "ticket": state["ticket"],
+                          "categorie": state["categorie"], "file": state["file"]})
+    if decision["action"] == "approuver":
+        return Command(goto="creer_ticket", update={"valide_par": decision["par"]})
+    motif = decision.get("motif", "")
+    refus = AIMessage(f"Ticket P1 refusé par {decision['par']}" + (f" : {motif}" if motif else "."))
+    return Command(goto=END, update={"messages": [refus]})
+
+
+# ═══ NOUVEAU (étape 5) : l'action à impact, dans son propre nœud ═══
+def creer_ticket(state: EtatTicket, config: RunnableConfig) -> dict:
+    cle = f"{config['configurable']['thread_id']}:{normaliser(state['ticket'])}"
+    ticket, cree = enregistrer_ticket(cle, categorie=state["categorie"], priorite=state["priorite"],
+                                      file=state["file"], resume=state["ticket"][:120],
+                                      valide_par=state["valide_par"] or None)
+    texte = f"Ticket {ticket['id']} {'créé' if cree else 'déjà existant'} dans la file {ticket['file']}"
+    return {"messages": [AIMessage(texte + (f", validé par {ticket['valide_par']}." if ticket["valide_par"] else "."))]}
+
+
 builder = StateGraph(EtatTicket)
 builder.add_node("trier", trier)
 builder.add_node("agent", agent)
 builder.add_node("tools", ToolNode(OUTILS))
+builder.add_node("valider", valider)                    # ═══ NOUVEAU (étape 5)
+builder.add_node("creer_ticket", creer_ticket)          # ═══ NOUVEAU (étape 5)
 builder.add_edge(START, "trier")
 builder.add_edge("trier", "agent")
-builder.add_conditional_edges("agent", tools_condition)   # un appel d'outil → "tools", sinon → END
-builder.add_edge("tools", "agent")                        # après l'outil, on revient à l'agent : la boucle
-graphe = builder.compile()
+builder.add_conditional_edges("agent", apres_agent)     # ═══ NOUVEAU (étape 5) : remplace tools_condition seul
+builder.add_edge("tools", "agent")
+builder.add_edge("creer_ticket", END)                   # ═══ NOUVEAU (étape 5)
 
 
-# ═══ NOUVEAU (étape 3) : dessiner le graphe, sans service en ligne ═══
 def dessiner(graphe, nom: str) -> None:
     SORTIE.mkdir(exist_ok=True)
     (SORTIE / f"{nom}.md").write_text(f"```mermaid\n{graphe.get_graph().draw_mermaid()}\n```\n", encoding="utf-8")
     try:
-        print(graphe.get_graph().draw_ascii())       # grandalf, installé par uv sync
+        print(graphe.get_graph().draw_ascii())
     except ImportError:
         print("(dessin ASCII indisponible : grandalf absent)")
     print(f"🗺️  Schéma Mermaid : {(SORTIE / (nom + '.md')).relative_to(RACINE)}\n")
 
 
-dessiner(graphe, "etape_03_graphe")
+# ═══ NOUVEAU (étape 5) : la question posée à l'humain, lue dans le checkpoint ═══
+def en_attente(graphe, config) -> list[dict]:
+    return [i.value for t in graphe.get_state(config).tasks for i in t.interrupts]
 
-# --------------------------------------------------------------------------- exécuter
-with propagate_attributes(session_id="construction-etape-3", user_id="agent-n1-042",
-                          tags=["construction", "etape-3"]):
-    config = {"callbacks": [handler], "run_name": "helpdesk", "recursion_limit": 10}
-    print(f"🎫 {TICKET}")
-    for etape in graphe.stream({"ticket": TICKET}, config=config, stream_mode="updates"):
-        for noeud, maj in etape.items():                    # ═══ NOUVEAU (étape 3) : voir passer chaque nœud
-            if noeud == "trier":
-                print(f"   ▶ trier  : {maj['categorie']} · {maj['priorite']} · file {maj['file']}")
-            elif noeud == "agent":
-                msg = maj["messages"][-1]
-                if msg.tool_calls:
-                    print(f"   ▶ agent  : demande {', '.join(f'{a['name']}({a['args']})' for a in msg.tool_calls)}")
-                else:
-                    print(f"   ▶ agent  : répond « {msg.content} »")
-            else:
-                print(f"   ▶ {noeud}  : {maj['messages'][-1].content[:90]}")
+
+BASE.parent.mkdir(parents=True, exist_ok=True)
+with SqliteSaver.from_conn_string(str(BASE)) as memoire:
+    graphe = builder.compile(checkpointer=memoire)
+    config = {"configurable": {"thread_id": args.thread}, "callbacks": [handler],
+              "run_name": "helpdesk", "recursion_limit": 10}
+
+    if args.oublier:
+        memoire.delete_thread(args.thread)
+        print(f"🧹 Conversation {args.thread} effacée du fichier SQLite (les tickets créés restent : c'est l'ITSM).")
+        raise SystemExit(0)
+
+    avant = len(graphe.get_state(config).values.get("messages", []))
+    # ═══ NOUVEAU (étape 5) : reprendre une conversation en pause, ou en commencer une ═══
+    if args.approuver or args.refuser:
+        if not en_attente(graphe, config):
+            raise SystemExit(f"Rien à valider sur le thread {args.thread}.")
+        entree = Command(resume={"action": "approuver" if args.approuver else "refuser",
+                                 "par": args.approuver or args.refuser, "motif": args.motif})
+        print(f"✍️  Décision de {args.approuver or args.refuser} : {'approuvé' if args.approuver else 'refusé'}")
+    else:
+        if en_attente(graphe, config):
+            raise SystemExit(f"Le thread {args.thread} attend une validation : --approuver NOM ou --refuser NOM.")
+        if avant == 0:
+            dessiner(graphe, "etape_05_graphe")
+        entree = {"ticket": args.message}
+        print(f"🎫 {args.message}")
+
+    with propagate_attributes(session_id=args.thread, user_id="agent-n1-042", tags=["construction", "etape-5"]):
+        etat = graphe.invoke(entree, config=config)
+
+    for appel in (a for m in etat["messages"][avant:] for a in getattr(m, "tool_calls", [])):
+        print(f"   🧰 outil appelé : {appel['name']}({appel['args']})")
+    attente = en_attente(graphe, config)
+    if attente:
+        q = attente[0]
+        print(f"   🏷️  {etat['categorie']} · {etat['priorite']} · file {etat['file']}")
+        print(f"   🤖 {etat['messages'][-1].content}")
+        print(f"⏸  {q['question']} Le graphe est arrêté, son état est dans le checkpoint. Pour reprendre :")
+        print(f"   ... mon_helpdesk_etape5.py --thread {args.thread} --approuver <nom>   (ou --refuser <nom> --motif ...)")
+    else:
+        print(f"   🎫 {etat['messages'][-1].content}")
+        print(f"📒 Tickets : {TICKETS.relative_to(RACINE)}")
 
 langfuse.flush()
-print("🔭 Langfuse › Tracing › helpdesk (enfants : trier, agent, tools)")
+print(f"🔭 Langfuse › Sessions › {args.thread}")
