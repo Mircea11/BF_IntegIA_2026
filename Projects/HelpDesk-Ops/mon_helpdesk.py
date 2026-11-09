@@ -1,33 +1,40 @@
-"""Étape 0 : une chaîne de tri, tracée dans Langfuse.            (carte : étape 0 · vu le 04/11, J1-01 §1 à 5)
+"""Étape 3 : le système devient un graphe explicite.             (carte : étape 3 · J1-03, Ex1.1)
 
-Le point de départ de HelpDesk-Ops : un ticket entre, la chaîne LCEL `prompt | llm | parser` renvoie une
-catégorie, deux règles métier fixent la priorité et la file d'attente. Le CallbackHandler envoie la trace.
+Ce qu'on ajoute à l'étape 2 :
+    - un état partagé (EtatTicket) : les messages ET les champs du tri (catégorie, priorité, file) ;
+    - trois nœuds : trier → agent ⇄ outils, câblés par des arêtes ; tools_condition décide de boucler ou finir ;
+    - le dessin du graphe : en ASCII dans le terminal, en Mermaid dans construction/sortie/.
 
-Lancer (depuis la racine du cours) :
-    uv run --project infrastructure python construction/etape_00_chaine_tri.py "Mon VPN ne marche plus"
+Ce qui disparaît : create_agent (on écrit sa boucle nous-mêmes) et la fonction traiter_ticket
+(le graphe EST le traitement ; sa trace devient la racine).
+
+Lancer :
+    uv run --project infrastructure python construction/etape_03_stategraph.py "srv-erp-02 est-il en ligne ?"
 
 À observer :
-    - le terminal : catégorie brute renvoyée par le modèle, puis catégorie normalisée, priorité, file ;
-    - Langfuse › Tracing : une trace « tri-ticket » (CHAIN → ChatPromptTemplate, ChatOpenAI, StrOutputParser) ;
-    - l'adresse e-mail du ticket apparaît <EMAIL> dans la trace : le masque est posé à la création du client.
+    - le terminal : le graphe dessiné, puis chaque nœud au moment où il s'exécute (stream) ;
+    - construction/sortie/etape_03_graphe.md : ouvrir dans JupyterLab, le schéma Mermaid s'affiche ;
+    - Langfuse : une trace « helpdesk » dont les enfants portent les NOMS DES NŒUDS (trier, agent, tools).
 """
 import sys
+from pathlib import Path
 
-from traitlets import observe
-
+from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langfuse import observe, Langfuse, propagate_attributes
+from langchain_core.tools import tool
+from langfuse import propagate_attributes
+from langgraph.graph import END, START, MessagesState, StateGraph      # ═══ NOUVEAU (étape 3)
+from langgraph.prebuilt import ToolNode, tools_condition              # ═══ NOUVEAU (étape 3)
 
 from helpdesk_ops.config import creer_llm
-from helpdesk_ops.donnees import CATEGORIES
+from helpdesk_ops.donnees import CATEGORIES, INVENTAIRE, KB
 from helpdesk_ops.observabilite import init_observabilite
-from helpdesk_ops.texte import normaliser
+from helpdesk_ops.texte import mots_cles, normaliser
 
-TICKETS = sys.argv[1:] if len(sys.argv) > 1 else [
-    "Bonjour, le VPN est bloqué depuis ce matin, c'est urgent. Jean (jean.dupont@nordtech.example)",
-    "Mon imprimante laser couleur du 2eme ne fonctionne plus",
-]
+TICKET = sys.argv[1] if len(sys.argv) > 1 else "srv-erp-02 est-il en ligne ? L'ERP ne répond plus"
+RACINE = next(p for p in Path(__file__).resolve().parents if (p / "infrastructure").is_dir())   # la racine du cours
+SORTIE = Path(__file__).resolve().parent / "sortie"
 
 llm = creer_llm("agent")                         # le modèle désigné par infrastructure/.env
 langfuse, handler = init_observabilite()         # client Langfuse avec masque PII + CallbackHandler
@@ -60,51 +67,102 @@ def file_attente(categorie: str) -> str:
     return "N2-infra" if categorie in ("reseau", "materiel") else "N1"
 
 
+# --------------------------------------------------------------------------- les outils
+@tool(parse_docstring=True)
+def statut_serveur(nom: str) -> str:
+    """Retourne le statut (en ligne, hors ligne, dégradé) d'un serveur de l'inventaire NordTech.
 
-# --------------------------------------------------------------------------- exécuter
+    Args:
+        nom: nom d'hôte exact en minuscules, par exemple 'srv-vpn-01'
+    """
+    return INVENTAIRE.get(nom.strip().lower(), f"inconnu : '{nom}' n'est pas dans l'inventaire")
 
 
-#Observation
-@observe(name="traiter-ticket")
-def traiter_ticket(ticket: str)-> dict:
-    brute=tri.invoke(
-        #parrametres
-        {
-            "ticket": ticket,
-            "categories": ", ".join(CATEGORIES)
-        },
-    #configuration
-        config=
-        {
-            "callbacks": [handler],
-            "run_name": "tri-ticket"
-        }
-    )
+@tool(parse_docstring=True)
+def chercher_kb(question: str) -> str:
+    """Cherche dans la base de connaissances NordTech les procédures utiles pour un problème.
+
+    Args:
+        question: description courte du problème, par exemple 'configurer le VPN'
+    """
+    mots = mots_cles(question)
+    trouves = [a for a in KB if mots & mots_cles(a["titre"] + " " + a["contenu"])]
+    if not trouves:
+        return "Aucun article trouvé. Proposer d'ouvrir un ticket."
+    return "\n".join(f"[{a['id']}] {a['titre']} : {a['contenu']}" for a in trouves[:2])
+
+
+OUTILS = [statut_serveur, chercher_kb]
+SYSTEME = SystemMessage(
+    "Tu es l'agent support N1 du help-desk de NordTech SA. Réponds en français, en 3 phrases maximum. "
+    "Utilise statut_serveur pour l'état d'un serveur et chercher_kb pour une procédure. "
+    "N'invente jamais de procédure ni de nom de serveur : si les outils ne donnent rien, propose d'ouvrir un ticket.")
+llm_outils = llm.bind_tools(OUTILS)                  # ═══ NOUVEAU (étape 3) : le modèle connaît les outils
+
+
+# ═══ NOUVEAU (étape 3) : l'état partagé. MessagesState apporte `messages` et son reducer add_messages ═══
+class EtatTicket(MessagesState):
+    ticket: str
+    categorie: str
+    priorite: str
+    file: str
+
+
+# ═══ NOUVEAU (étape 3) : les nœuds. Chacun lit l'état et renvoie une MISE À JOUR PARTIELLE ═══
+def trier(state: EtatTicket) -> dict:
+    brute = tri.invoke({"ticket": state["ticket"], "categories": ", ".join(CATEGORIES)})
     categorie = normaliser_categorie(brute)
-    priorite = estimer_priorite(ticket)
-    file = file_attente(categorie)
-    return { "categorie": categorie, "priorite": priorite, "file": file}
+    priorite = estimer_priorite(state["ticket"])
+    return {"categorie": categorie, "priorite": priorite, "file": file_attente(categorie),
+            "messages": [HumanMessage(f"[{categorie} · {priorite}] {state['ticket']}")]}
+
+
+def agent(state: EtatTicket) -> dict:
+    return {"messages": [llm_outils.invoke([SYSTEME] + state["messages"])]}
+
+
+# ═══ NOUVEAU (étape 3) : le câblage ═══
+builder = StateGraph(EtatTicket)
+builder.add_node("trier", trier)
+builder.add_node("agent", agent)
+builder.add_node("tools", ToolNode(OUTILS))
+builder.add_edge(START, "trier")
+builder.add_edge("trier", "agent")
+builder.add_conditional_edges("agent", tools_condition)   # un appel d'outil → "tools", sinon → END
+builder.add_edge("tools", "agent")                        # après l'outil, on revient à l'agent : la boucle
+graphe = builder.compile()
+
+
+# ═══ NOUVEAU (étape 3) : dessiner le graphe, sans service en ligne ═══
+def dessiner(graphe, nom: str) -> None:
+    SORTIE.mkdir(exist_ok=True)
+    (SORTIE / f"{nom}.md").write_text(f"```mermaid\n{graphe.get_graph().draw_mermaid()}\n```\n", encoding="utf-8")
+    try:
+        print(graphe.get_graph().draw_ascii())       # grandalf, installé par uv sync
+    except ImportError:
+        print("(dessin ASCII indisponible : grandalf absent)")
+    print(f"🗺️  Schéma Mermaid : {(SORTIE / (nom + '.md')).relative_to(RACINE)}\n")
+
+
+dessiner(graphe, "etape_03_graphe")
 
 # --------------------------------------------------------------------------- exécuter
-#Ajuter une session, utilisateur, des tg ==> heerite pour toue ce qui se retrouveera dans mon BlockingIOError
-with propagate_attributes(session_id="construction-etape-1", user_id="mb", tags=["construction", "Etape-1"]):
-    for TICKET in TICKETS:
-        decision = traiter_ticket(TICKET)
-        print(f"🎫 Ticket      : {TICKET}")
-        print(f"🏷️ Resultat     : {decision}")
-        print(f" -> {decision['categorie']}  -{decision['priorite']} - file_attente: {decision['file']}")
+with propagate_attributes(session_id="construction-etape-3", user_id="agent-n1-042",
+                          tags=["construction", "etape-3"]):
+    config = {"callbacks": [handler], "run_name": "helpdesk", "recursion_limit": 10}
+    print(f"🎫 {TICKET}")
+    for etape in graphe.stream({"ticket": TICKET}, config=config, stream_mode="updates"):
+        for noeud, maj in etape.items():                    # ═══ NOUVEAU (étape 3) : voir passer chaque nœud
+            if noeud == "trier":
+                print(f"   ▶ trier  : {maj['categorie']} · {maj['priorite']} · file {maj['file']}")
+            elif noeud == "agent":
+                msg = maj["messages"][-1]
+                if msg.tool_calls:
+                    print(f"   ▶ agent  : demande {', '.join(f'{a['name']}({a['args']})' for a in msg.tool_calls)}")
+                else:
+                    print(f"   ▶ agent  : répond « {msg.content} »")
+            else:
+                print(f"   ▶ {noeud}  : {maj['messages'][-1].content[:90]}")
 
-
-# --------------------------------------------------------------------------- exécuter
-# brute = tri.invoke({"ticket": TICKET, "categories": ", ".join(CATEGORIES)},
-#                    config={"callbacks": [handler], "run_name": "tri-ticket"})
-# categorie = normaliser_categorie(brute)
-# priorite = estimer_priorite(TICKET)
-
-# print(f"🎫 Ticket      : {TICKETS}")
-# print(f"🏷️  Catégorie   : {categorie}   (le modèle a répondu {brute!r})")
-# print(f"🚦 Priorité    : {priorite}")
-# print(f"📥 File        : {file_attente(categorie)}")
-
-langfuse.flush()                                 # l'envoi est asynchrone : sans flush, la trace peut se perdre
-print("🔭 Trace envoyée : Langfuse › Tracing › tri-ticket")
+langfuse.flush()
+print("🔭 Langfuse › Tracing › helpdesk (enfants : trier, agent, tools)")
