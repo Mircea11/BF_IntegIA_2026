@@ -1,0 +1,23 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Python environments
+.venv/
+venv/
+
+# Python temporary files
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Secrets and local configuration
+.env
+.env.*
+
+# Downloaded applications
+*.AppImage
+*.deb
+squashfs-root/
+
