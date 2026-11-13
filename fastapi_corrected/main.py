@@ -1,9 +1,12 @@
+
+
+
 """FastAPI training application: GET, POST, PUT and error handling."""
 
 from fastapi import FastAPI, HTTPException, status
 
 from datas import users
-from datas.models import UserCreate, UserRead
+from datas.models import UserCreate, UserRead, UserUpdate, UserUpdatePassword
 
 app = FastAPI(title="FastAPI Formation")
 
