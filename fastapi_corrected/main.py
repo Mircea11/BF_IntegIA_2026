@@ -1,4 +1,4 @@
-"""A minimal FastAPI training app: GET, POST, validation, and 404 errors."""
+"""FastAPI training application: GET, POST, PUT and error handling."""
 
 from fastapi import FastAPI, HTTPException, status
 
@@ -8,35 +8,72 @@ from datas.models import UserCreate, UserRead
 app = FastAPI(title="FastAPI Formation")
 
 
+# 1. HOME
 @app.get("/")
 def home():
-    """A helpful landing endpoint so GET / does not return 404."""
-    return {"message": "FastAPI is running", "documentation": "/docs"}
+    return {
+        "message": "FastAPI is running",
+        "documentation": "/docs"
+    }
 
 
+# 2. GET ALL USERS
 @app.get("/users", response_model=list[UserRead])
-def get_all_users():
-    """Return the list of names."""
-    return users
+def get_all_users(limit: int = 3, offset: int = 0):
+    """Return users with pagination."""
+    return users[offset:offset + limit]
 
 
+# 3. GET ONE USER
 @app.get("/users/{id}", response_model=UserRead)
 def get_user(id: int):
-    """Read a user by zero-based list position (0, 1, 2, ...)."""
+    """Find a user by ID."""
+
     if id < 0 or id >= len(users):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found",
+            detail="User not found"
         )
+
     return users[id]
 
 
-@app.post("/user", status_code=status.HTTP_201_CREATED, response_model=int)
+# 4. CREATE USER
+@app.post("/user", status_code=201, response_model=int)
 def create_user(user: UserCreate):
-    """Append a name and return its new zero-based position.
+    """Create a new user."""
 
-    /user is intentionally kept singular to match the original exercise.
-    """
     new_user = UserRead(name=user.name)
+
     users.append(new_user)
-    return users.index(new_user)
+
+    return len(users) - 1
+
+
+# 5. UPDATE USER
+@app.put("/users/{id}", response_model=UserRead)
+def update_user(id: int, user: UserCreate):
+    """Update an existing user by ID."""
+
+    if id < 0 or id >= len(users):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+
+    users[id] = UserRead(name=user.name)
+
+    return users[id]
+
+@app.delete("/users/{id}", status_code=204)
+def delete_user(id: int):
+    """Delete a user by ID."""
+
+    if id < 0 or id >= len(users):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+
+    users.pop(id) 
+    return {"message": "User deleted successfully"}
