@@ -1,49 +1,79 @@
-"""Pydantic model for the POST /user JSON request."""
-from pydantic import BaseModel, Field, field_validator, model_validator
+"""Modèles Pydantic : données entrantes, publiques et internes."""
+
 from datetime import date
-from models import UserRead, UserCreate, UserUpdate, UserUpdatePassword
+
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+
+
+def clean_name(value: str) -> str:
+    """Accepte les espaces, accents, apostrophes et traits d'union."""
+    value = value.strip()
+    if len(value) < 2 or not all(
+        char.isalpha() or char in " -'’" for char in value
+    ):
+        raise ValueError("Name must contain at least two letters and valid separators")
+    if not any(char.isalpha() for char in value):
+        raise ValueError("Name must contain letters")
+    return value
 
 
 class UserCreate(BaseModel):
-    name: str | None= Field(min_length=2, pattern="^[a-zA-Z]+$", description="User name must contain only letters and be at least 2 characters long.")
-    password: str
-    validation: str
-    birthday: date
+    name: str = Field(min_length=2, max_length=100)
+    password: str = Field(min_length=8, max_length=128)
+    validation: str = Field(min_length=8, max_length=128)
+    birthdate: date
 
-    @field_validator("password")
-    def check_password(cls, v: str):
-        if len(v) < 8:
-            raise ValueError("Password must be at least 8 characters long.")
-        return v
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, value: str) -> str:
+        return clean_name(value)
+
+    @field_validator("birthdate")
+    @classmethod
+    def validate_birthdate(cls, value: date) -> date:
+        if value > date.today():
+            raise ValueError("Birthdate cannot be in the future")
+        return value
 
     @model_validator(mode="after")
     def check_confirmation(self):
         if self.password != self.validation:
-            raise ValueError("Password and validation do not match.")
-        return self;
+            raise ValueError("Password and confirmation do not match")
+        return self
+
 
 class UserRead(BaseModel):
-    name: str
-    #password: str
-    birthday: date
+    """Ce modèle est renvoyé par GET/PATCH : aucun mot de passe."""
 
-class UserUpdate(BaseModel):
-    name: str = Field(min_length=1)
+    model_config = ConfigDict(from_attributes=True)
+    name: str
+    birthdate: date
 
 
 class User(BaseModel):
+    """Modèle interne : seul le hash est conservé en mémoire."""
+
     name: str
-    password: str
-    birthday: date
+    birthdate: date
+    password_hash: str
+
+
+class UserUpdateName(BaseModel):
+    name: str = Field(min_length=2, max_length=100)
+
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, value: str) -> str:
+        return clean_name(value)
 
 
 class UserUpdatePassword(BaseModel):
-    old_password: str = Field(min_length=8)
-    password: str = Field(min_length=8)     
-    validation: str = Field(min_length=8)
+    old_password: str
+    new_password: str = Field(min_length=8, max_length=128)
+    validation: str = Field(min_length=8, max_length=128)
 
     @model_validator(mode="after")
     def check_confirmation(self):
-        if self.password != self.validation:
-            raise ValueError("Password and validation do not match.")
+        if self.new_password != self.validation:
+            raise ValueError("New password and confirmation do not match")
         return self

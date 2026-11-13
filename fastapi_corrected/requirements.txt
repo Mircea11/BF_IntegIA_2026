@@ -1,1 +1,3 @@
 fastapi[standard]
+httpx
+pwdlib[argon2]

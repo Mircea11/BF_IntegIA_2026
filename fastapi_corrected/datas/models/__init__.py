@@ -1,4 +1,5 @@
-"""Data models used to validate incoming JSON requests."""
-from .users import UserCreate, UserRead
-from models import UserRead, UserCreate, UserUpdate, UserUpdatePassword
+"""Expose les modèles utilisés dans main.py et dans datas/users.py."""
 
+from .users import User, UserCreate, UserRead, UserUpdateName, UserUpdatePassword
+
+__all__ = ["User", "UserCreate", "UserRead", "UserUpdateName", "UserUpdatePassword"]

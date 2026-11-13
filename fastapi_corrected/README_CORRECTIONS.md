@@ -1,54 +1,53 @@
-# FastAPI — corrected training exercise (12 November 2026)
+# FastAPI — exercice utilisateurs (version corrigée)
 
-This is a **small fix of your instructor's original exercise**, not a new application. It retains the same three default users and the same GET `/users`, GET `/users/{id}`, and POST `/user` endpoints. It adds GET `/` for a simple health/landing response.
+Cette version adapte ton projet `fastapi_corrected/` au ZIP du formateur du
+13 novembre 2026, en conservant son emplacement `datas/models/`.
 
-## What was wrong
+## Installation sous Ubuntu
 
-1. `from models import UserCreate` could not find `models` at project root. The Pydantic model is now imported from `datas.models`.
-2. `from datas import users` previously resolved to the `datas.users` **module**, not the list. `datas/__init__.py` now explicitly exports the `users` list.
-3. The user ID check `len(users) > id or id < 0` was reversed. Fixed to `id < 0 or id >= len(users)`.
-4. `users.index(user.name)` returned the wrong ID for duplicate names. Replaced with `len(users) - 1` after appending.
-5. Removed duplicate Pydantic models and an incomplete `create_user` class. Only the request model actually used by the exercise remains.
-6. Enabled `/`, avoiding an unnecessary 404 while learning.
-7. Added simple validation: an empty name returns HTTP 422.
-
-## Run on your Ubuntu machine — no new Python installation
-
-Your existing environment is at `~/formation/fastapi/.venv`.
-
-**Safest: try this corrected project alongside the original.** Extract the ZIP into `~/formation/`, giving `~/formation/fastapi_corrected/`. Then:
+Depuis `~/formation/fastapi_corrected` :
 
 ```bash
-cd ~/formation/fastapi_corrected
-source ~/formation/fastapi/.venv/bin/activate
-fastapi dev main.py --port 8001
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+fastapi dev main.py
 ```
 
-Use **port 8001** so you do not collide with the original server on 8000.
+Si `.venv` existe déjà, saute la première commande. Sur Windows uniquement,
+l'activation est `.venv\\Scripts\\activate`.
 
-Open: `http://127.0.0.1:8001/docs`
+Ouvre http://127.0.0.1:8000/docs, puis teste :
 
-In Bruno, send these requests:
+| Méthode | Route | Corps JSON | Résultat |
+| --- | --- | --- | --- |
+| GET | `/users?limit=5&offset=0` | aucun | 5 utilisateurs sans mot de passe |
+| GET | `/user/0` | aucun | Gustave et sa date de naissance |
+| POST | `/user` | `{"name":"Ana","password":"TestPassword123!","validation":"TestPassword123!","birthdate":"1990-01-01"}` | 201, nouvel ID |
+| PATCH | `/user/0` | `{"name":"Gustave Martin"}` | 200, nom modifié |
+| PATCH | `/user/0/password` | `{"old_password":"Password123!","new_password":"OtherPassword123!","validation":"OtherPassword123!"}` | 204, sans corps |
+| DELETE | `/user/0` | aucun | 204, sans corps |
 
-| Method | URL | Expected |
-| --- | --- | --- |
-| GET | `http://127.0.0.1:8001/` | 200, welcome JSON |
-| GET | `http://127.0.0.1:8001/users` | 200, array of names |
-| GET | `http://127.0.0.1:8001/users/1` | 200, `"Jane Smith"` |
-| GET | `http://127.0.0.1:8001/users/9` | 404, `User not found` |
-| POST | `http://127.0.0.1:8001/user` | 201; JSON body `{"name":"Ana"}`, returns index `3` |
+L'ancien `GET /users/{id}` fonctionne aussi, mais n'apparaît plus dans Swagger.
+L'ancien `PUT /users/{id}` est remplacé par les deux routes PATCH du cours.
 
-To run local tests (with the same virtual environment activated):
+Pour tester le programme :
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-## Two important concepts
+## Notes
 
-- **ID is a list position** starting at 0, not a persistent database ID. Names and indices are suitable only for this demonstration.
-- **Data is in memory.** New users disappear when the server is fully restarted. Production applications need persistent storage.
-
-## What was intentionally not added
-
-No database, no authentication, no BLL/DAL layers, no extra endpoints: those belong to later lessons. The goal is to understand GET, POST, validation, and 404 responses first.
+- Les 20 utilisateurs sont fictifs et correspondent aux exemples du formateur.
+- Le mot de passe n'est jamais envoyé dans les réponses GET/PATCH.
+- Les mots de passe sont stockés sous forme de hash Argon2 dans la liste mémoire.
+- Le fichier source contient des mots de passe **de démonstration**. Ne jamais
+  y placer de véritables identifiants ou mots de passe.
+- Un redémarrage complet réinitialise la liste.
+- Comme l'ID est l'index de liste, DELETE déplace les IDs des utilisateurs suivants.
+- `POST /chat?prompt=Bonjour` appelle un LLM local : URL par défaut
+  `http://127.0.0.1:8080/v1`, modèle par défaut `local`. Il faut lancer le LLM
+  séparément. Les variables `LLM_BASE_URL` et `LLM_MODEL` permettent de changer
+  ces valeurs. Ce chatbot n'est **pas** une chaîne RAG et n'a pas de contrôle
+  d'accès : utiliser uniquement des prompts fictifs pour cet exercice.
