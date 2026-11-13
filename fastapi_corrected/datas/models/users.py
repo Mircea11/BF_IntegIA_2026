@@ -1,6 +1,7 @@
 """Pydantic model for the POST /user JSON request."""
 from pydantic import BaseModel, Field, field_validator, model_validator
 from datetime import date
+from models import UserRead, UserCreate, UserUpdate, UserUpdatePassword
 
 
 class UserCreate(BaseModel):
@@ -23,7 +24,7 @@ class UserCreate(BaseModel):
 
 class UserRead(BaseModel):
     name: str
-    password: str
+    #password: str
     birthday: date
 
 class UserUpdate(BaseModel):

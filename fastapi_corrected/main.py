@@ -80,3 +80,21 @@ def delete_user(id: int):
 
     users.pop(id) 
     return {"message": "User deleted successfully"}
+
+
+@app.post("/chat")
+async def chat(prompt: str):
+    async with httpx.AsyncClient(timeout=120) as client:
+        r= await client.post(
+            "https://api.openai.com/v1/chat/completions",
+            json={
+                "messages": [{"role": "user", "content": prompt}]
+            })
+     return {"reply": r.json()["choices"][0]["message"]["content"]
+         
+     }   
+        
+                # lancer dans dockers, 
+                # une modalite de verifie si auqune informations sensible n'est pas envoyee,
+                #  et que le prompt est comforme a la politique de l'entreprise,
+                
